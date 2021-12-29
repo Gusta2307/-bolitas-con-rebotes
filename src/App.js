@@ -21,7 +21,7 @@ export default class App extends Component{
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     this.ctx.fillRect(0, 0, this.width, this.height);
 
-    while (this.balls.length < 10){
+    while (this.balls.length < 5){
       const size = this.random(10, 20);
 
       const x = this.random(0 + size, this.width - size);
@@ -65,8 +65,6 @@ export default class App extends Component{
     this.height = this.canvas.height = window.innerHeight;
     //start the animation
     this.loop();
-    let a = new My_Audio()
-    a.playAudio()
   }
 
   render() {

@@ -3,13 +3,13 @@ import React, {Component} from 'react';
 export default class My_Audio extends Component{
     constructor(){
         super();
-        this.file = '../public/ball.mp3'
+        this.file = './ball.mp3'
     }
 
     render(){
         return(
             <div>
-                <audio className="audio-element" autoplay={"true"} muted={"muted"}>
+                <audio id="audio-element">
                     <source src={this.file}></source>
                 </audio>
             </div>
@@ -17,8 +17,11 @@ export default class My_Audio extends Component{
     }
 
     playAudio() {
-        const audioEl = document.getElementsByClassName("audio-element")[0]
-        audioEl.mute = true
-        audioEl.play()
+        const audioEl = document.getElementById("audio-element")
+        console.log(audioEl)
+        // audioEl.autoPlay = true
+        let _audio = new Audio(this.file)
+        _audio.play()
+        // audioEl.play()
       }
 }

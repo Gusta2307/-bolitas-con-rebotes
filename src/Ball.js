@@ -5,8 +5,8 @@ import My_Audio from "./Audio_";
 export default class Ball{
     constructor(ctx, x, y, speedX, speedY, color, size) {
         this.ctx = ctx;
-        this.x = x; //horizontal position
-        this.y = y; //vertical position
+        this.x = x;
+        this.y = y;
         this.speedX = speedX;
         this.speedY = speedY;
         this.color = color;
@@ -23,14 +23,15 @@ export default class Ball{
 
     update(width, height) {
         //change orientation if necessary
-        this.x + this.size >= width && (this.speedX = -this.speedX);
-        this.x - this.size <= 0 && (this.speedX = -this.speedX);
-        this.y + this.size >= height && (this.speedY = -this.speedY);
-        this.y - this.size <= 0 && (this.speedY = -this.speedY);
+        this.x + this.size >= width && (this.speedX = -this.speedX) && this.audio.playAudio();
+        this.x - this.size <= 0 && (this.speedX = -this.speedX) && this.audio.playAudio();
+
+        this.y + this.size >= height && (this.speedY = -this.speedY) && this.audio.playAudio();
+        this.y - this.size <= 0 && (this.speedY = -this.speedY) && this.audio.playAudio();
+
         //update position
         this.x += this.speedX;
         this.y += this.speedY;
-
     }
     
     collisionDetect(balls) {
@@ -44,8 +45,7 @@ export default class Ball{
                     const red = this.random(0, 255);
                     const green = this.random(0, 255);
                     const blue = this.random(0, 255);
-                    this.audio.playAudio()
-    
+                  
               balls[j].color = this.color =
                 "rgb(" + red + "," + green + "," + blue + ")";
             }
@@ -55,29 +55,5 @@ export default class Ball{
 
     random(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
-      }
-
-
-    //   componentDidMount() {
-        
-        
-    //     this.playAudio()
-    // }
-    
-    // playAudio() {
-
-    //     console.log("ADD")
-    //     this.audio.load()
-    //     const audioPromise = this.audio.play()
-    //     if (audioPromise !== undefined) {
-    //         audioPromise
-    //         .then(_ => {
-    //             // autoplay started
-    //         })
-    //         .catch(err => {
-    //             // catch dom exception
-    //             console.info(err)
-    //         })
-    //     }
-    // }
+    }
 }
