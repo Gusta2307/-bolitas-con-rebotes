@@ -21,10 +21,25 @@ export default class App extends Component{
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     this.ctx.fillRect(0, 0, this.width, this.height);
 
+    const ball1 = new Ball(
+      this.ctx, this.width*0.3, this.height/2, 0, 0,
+      "rgb(" + "100" + "," + "23" + "," + "1" + ")",
+      30,
+      this.balls.length%2
+    ).draw();
+
+    const ball2 = new Ball(
+      this.ctx, this.width*0.7, this.height/2, 0, 0,
+      "rgb(" + "200" + "," + "200" + "," + "1" + ")",
+      30,
+      this.balls.length%2
+    ).draw();
+
+
     while (this.balls.length < 2){
       const size = 15 //this.random(10, 20);
 
-      const x = this.balls.length == 0? this.width*0.3: this.width*0.7 //this.random(0 + size, this.width - size);
+      const x = this.balls.length%2? this.width*0.7: this.width*0.3 //this.random(0 + size, this.width - size);
       const y = this.height/2 //this.random(0 + size, this.height - size);
 
       const speedX = 0//this.random(-7, 7);
@@ -41,13 +56,17 @@ export default class App extends Component{
         this.balls.length%2
       );
 
+      console.log(ball.state)
       this.balls.push(ball);
+      ball.draw()
+      ball.state == 1? ball.update_state_1(this.width, this.height): ball.update_state_0(this.width, this.height);
     }
 
     for (let i = 0; i < this.balls.length; i++){
       this.balls[i].draw();
-      this.balls[i].state? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
+      this.balls[i].state == 1? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
       this.balls[i].collisionDetect(this.balls);
+      // this.sleep(500)
     }
 
     requestAnimationFrame(this.loop)
@@ -66,6 +85,14 @@ export default class App extends Component{
     this.height = this.canvas.height = window.innerHeight;
     //start the animation
     this.loop();
+  }
+
+  sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
   }
 
   render() {

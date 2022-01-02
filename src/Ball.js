@@ -1,5 +1,5 @@
 import My_Audio from "./Audio_";
-import get_v0 from "./utils";
+import get_v0, {pendiente} from "./utils";
 
 // const _audio = new My_Audio()
 
@@ -8,18 +8,23 @@ export default class Ball{
         this.ctx = ctx;
         this.x = x;
         this.y = y;
-        this.v0 = null
-        this.t = 0
         this.speedX = speedX;
         this.speedY = speedY;
         this.color = color;
         this.size = size;
         this.state = state
         this.audio = new My_Audio()
-
+        
+        this.t = 0
+        this.v0 = null
         this.x0 = x
         this.y0 = y
-        this.vy = null
+
+        this.m1 = null
+        this.m2 = null
+        this.alpha = null
+        this.vx = 15
+        this.vy = 15
     }
 
     draw() {
@@ -42,19 +47,48 @@ export default class Ball{
         this.y += this.speedY;
     }
 
-    update_state_0(){
-      return
+    update_state_0(width, height){
+      // return
+      if (Math.abs(this.y - height/2) < this.size && this.t > 4){
+        this.state = (this.state + 1) % 2
+        this.t = 0
+        this.x0 = this.x 
+        this.y0 = this.y 
+        this.m1 = null
+        this.vx = 15
+        this.vy = 15
+        return
+      }
+
+      if (this.m1 === null){
+        this.m1 = pendiente(this.x, this.y, width/2, height)
+        console.log("A", this.m1)
+        this.alpha = Math.atan(this.m1)
+      }
+
+      this.y + this.size >= height && (this.vy = -this.vy) && this.audio.playAudio()
+      
+      this.x += this.vx * Math.abs(Math.cos(this.alpha))
+      this.y += this.vy * Math.sin(this.alpha)
+
+      // console.log(this.vy * Math.sin(this.alpha))
+      
+      this.t += 0.1
+
+
+
     }
 
     update_state_1(width, height){
-      console.log(this.x, width*0.3, this.t, Math.abs(this.x - width*0.3))
-      if (Math.abs(this.x - width*0.3) < 1.5 && this.t > 0){
-        console.log("asdsf")
+      // return
+      // console.log(this.x, width*0.3)
+      if (Math.abs(this.y - height/2) < this.size && this.t > 5){
         this.state = (this.state + 1) % 2
+        this.t = 0
+        this.v0 = null
         return
       }
       var angle = Math.PI/3;
-      console.log(angle)
       if (this.v0 === null)
         this.v0 = get_v0(width*0.3, this.x, angle)
       
