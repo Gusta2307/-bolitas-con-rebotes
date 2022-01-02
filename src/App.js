@@ -21,14 +21,14 @@ export default class App extends Component{
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     this.ctx.fillRect(0, 0, this.width, this.height);
 
-    while (this.balls.length < 5){
-      const size = this.random(10, 20);
+    while (this.balls.length < 2){
+      const size = 15 //this.random(10, 20);
 
-      const x = this.random(0 + size, this.width - size);
-      const y = this.random(0 + size, this.height - size);
+      const x = this.balls.length == 0? this.width*0.3: this.width*0.7 //this.random(0 + size, this.width - size);
+      const y = this.height/2 //this.random(0 + size, this.height - size);
 
-      const speedX = this.random(-7, 7);
-      const speedY = this.random(-7, 7);
+      const speedX = 0//this.random(-7, 7);
+      const speedY = 0//this.random(-7, 7);
 
       const red = this.random(0, 255);
       const green = this.random(0, 255);
@@ -37,7 +37,8 @@ export default class App extends Component{
       const ball = new Ball(
         this.ctx, x, y, speedX, speedY,
         "rgb(" + red + "," + green + "," + blue + ")",
-        size
+        size,
+        this.balls.length%2
       );
 
       this.balls.push(ball);
@@ -45,7 +46,7 @@ export default class App extends Component{
 
     for (let i = 0; i < this.balls.length; i++){
       this.balls[i].draw();
-      this.balls[i].update(this.width, this.height);
+      this.balls[i].state? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
       this.balls[i].collisionDetect(this.balls);
     }
 
