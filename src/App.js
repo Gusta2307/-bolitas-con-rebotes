@@ -41,7 +41,7 @@ export default class App extends Component{
     // var time_aux = [0, 3, 4.8, 5.5, 6, 8.6]
 
     // Claves
-    var time_aux = [0, 2.5, 5, 8, 9 ]
+    var time_aux = [0, 3, 6, 9.5, 11 ]
     var index = 0
 
     while (this.balls.length < time_aux.length){
