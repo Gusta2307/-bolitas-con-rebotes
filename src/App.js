@@ -14,6 +14,8 @@ export default class App extends Component{
     this.height = null
 
     this.balls = []
+
+    this.time = 0
   }
 
 
@@ -22,24 +24,30 @@ export default class App extends Component{
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     const ball1 = new Ball(
-      this.ctx, this.width*0.3, this.height/2, 0, 0,
+      this.ctx, this.width*0.4, this.height/2, 0, 0,
       "rgb(" + "100" + "," + "23" + "," + "1" + ")",
       30,
       this.balls.length%2
     ).draw();
 
     const ball2 = new Ball(
-      this.ctx, this.width*0.7, this.height/2, 0, 0,
+      this.ctx, this.width*0.6, this.height/2, 0, 0,
       "rgb(" + "200" + "," + "200" + "," + "1" + ")",
       30,
       this.balls.length%2
     ).draw();
 
+    // Believer
+    // var time_aux = [0, 3, 4.8, 5.5, 6, 8.6]
 
-    while (this.balls.length < 2){
+    // Claves
+    var time_aux = [0, 2.5, 5, 8, 9 ]
+    var index = 0
+
+    while (this.balls.length < time_aux.length){
       const size = 15 //this.random(10, 20);
 
-      const x = this.balls.length%2? this.width*0.7: this.width*0.3 //this.random(0 + size, this.width - size);
+      const x = this.width*0.4 //this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
       const y = this.height/2 //this.random(0 + size, this.height - size);
 
       const speedX = 0//this.random(-7, 7);
@@ -53,22 +61,30 @@ export default class App extends Component{
         this.ctx, x, y, speedX, speedY,
         "rgb(" + red + "," + green + "," + blue + ")",
         size,
-        this.balls.length%2
+        0,
+        time_aux[index]
       );
+      index += 1
 
-      console.log(ball.state)
+
       this.balls.push(ball);
-      ball.draw()
-      ball.state == 1? ball.update_state_1(this.width, this.height): ball.update_state_0(this.width, this.height);
+
+      // ball.draw()
+      // ball.state == 1? ball.update_state_1(this.width, this.height): ball.update_state_0(this.width, this.height);
     }
 
     for (let i = 0; i < this.balls.length; i++){
-      this.balls[i].draw();
-      this.balls[i].state == 1? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
-      this.balls[i].collisionDetect(this.balls);
+      console.log(this.balls[i].initial_time)
+      if (this.balls[i].initial_time <= this.time){
+        this.balls[i].draw();
+        this.balls[i].state == 1? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
+
+        // this.time += this.balls[0].state == 0? 0.1: 0.2
+      }
+      // this.balls[i].collisionDetect(this.balls);
       // this.sleep(500)
     }
-
+    this.time += 0.15//this.balls[0].state == 0? 0.1: 0.25
     requestAnimationFrame(this.loop)
   }
 

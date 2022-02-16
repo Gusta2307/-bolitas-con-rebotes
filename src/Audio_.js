@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class My_Audio extends Component{
     constructor(){
         super();
-        this.file = './ball.mp3'
+        this.file = './ping-pong-ball.mp3'
     }
 
     render(){
