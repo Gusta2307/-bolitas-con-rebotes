@@ -17,11 +17,7 @@ export default class My_Audio extends Component{
     }
 
     playAudio() {
-        const audioEl = document.getElementById("audio-element")
-        console.log(audioEl)
-        // audioEl.autoPlay = true
-        let _audio = new Audio(this.file)
-        _audio.play()
-        // audioEl.play()
+        new Audio(this.file).play()
+        return true
       }
 }

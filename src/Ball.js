@@ -1,40 +1,44 @@
 import My_Audio from "./Audio_";
-import get_v0, {pendiente} from "./utils";
+import {calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, calculate_h, change_hand_done, g} from "./utils";
 
 // const _audio = new My_Audio()
 
+
 export default class Ball{
-    constructor(ctx, x, y, speedX, speedY, color, size, state, _initial_time) {
+    constructor(ctx, x, y, color, size, _initial_hand, _initial_time, _list_of_throw) {
         this.ctx = ctx;
         this.x = x;
         this.y = y;
-        this.speedX = speedX;
-        this.speedY = speedY;
+
         this.color = color;
         this.size = size;
-        this.state = state
-        this.audio = new My_Audio()
-        
         this.initial_time = _initial_time
+        this.list_of_throw = _list_of_throw
+        this.index_list = 0
+        this.audio = new My_Audio()
 
-        this.t = 0
-        this.v0 = null
+        this.current_hand = _initial_hand // 0 left hand, 1 right hand
+
         this.x0 = x
         this.y0 = y
 
-        this.m1 = null
-        this.m2 = null
-        this.alpha = null
-        this.vx = 15
-        this.vy = 15
+        this.h = this.y
+        this.h_max = null
 
-        this.init = false
+        this.vy0 = 0
+        this.vy = null
+        this.vx = null
+        this.t = 0
+
+        this.total_time = null
+        this.current_bounce = 0
     }
 
     draw() {
         this.ctx.beginPath();
         this.ctx.fillStyle = this.color;
         this.ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+
         this.ctx.fill();
       }
 
@@ -51,55 +55,70 @@ export default class Ball{
         this.y += this.speedY;
       }
       
-      update_state_0(width, height){
-        // return
-        if (Math.abs(this.y - height/2) < this.size && this.t > 4){
-          this.state = (this.state + 1) % 2
-        this.t = 0
-        this.x0 = this.x 
-        this.y0 = this.y 
-        this.m1 = null
-        this.vx = 15
-        this.vy = 15
+    apply_throw(width, height){
+      if (this.list_of_throw.length <= this.index_list /*|| (this.vy != null && this.vy < 1)*/)
         return
+
+      console.log("APPLY THROW", this.list_of_throw[this.index_list].bounce_amount, this.index_list, this.list_of_throw.length)
+      if (this.list_of_throw[this.index_list].bounce_amount <= 0 && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t)){
+        this.index_list += 1
+
+        if (this.index_list >= this.list_of_throw.length){
+          console.log("RETURNNNNNNNNNNN")
+          return 
+        }
+
+        this.current_hand = (this.current_hand + 1)%2
+
+        this.x0 = this.x
+        this.y0 = this.y
+
+        this.h = this.y
+        this.h_max = null
+
+        this.vy0 = 0
+        this.vy = null
+        this.vx = null
+        this.t = 0
+
+        this.total_time = null
+        this.current_bounce = 0
+        // console.log("AAAAAAAAAAAAaa")
+        // reset params
+        // return
       }
       
-      if (this.m1 === null){
-        this.m1 = pendiente(this.x, this.y, width/2, height)
-        // console.log("A", this.m1)
-        this.alpha = Math.atan(this.m1)
-      }
+      this.vy == null && (this.vy = this.list_of_throw[this.index_list].initial_velocity)
       
-      this.y + this.size >= height && (this.vy = -this.vy) && this.audio.playAudio()
+      //Calculo la velocidad de la pelota despues del rebote y se restablece el tiempo
+      this.y + this.size >= height && this.t > 1 && (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) 
+      && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio() && (this.vy0 = this.vy) && (this.t = 0) 
       
-      this.x += this.vx * Math.abs(Math.cos(this.alpha))
-      this.y += this.vy * Math.sin(this.alpha)
+      this.h_max == null && this.vy > 0 && (this.h_max = calculate_h_max(this.vy))
       
-      // console.log(this.vy * Math.sin(this.alpha))
+      //Calculo la velocidad con que cae la pelota
+      this.h_max != null && this.h_max > 0 && this.y - this.size <= Math.abs(this.h - this.h_max) && (this.vy0 = -calculate_speed_vy_hmax(this.vy, Math.abs(window.innerHeight - (this.h - this.h_max)))) && (this.h_max = 0)
+      
+      this.vy0 == 0 && this.vy < 0 && (this.vy0 = this.vy) && (this.h_max = 0)
+      
+      this.list_of_throw[this.index_list].bounce_amount > 0 && this.total_time == null && 
+        (this.total_time = calculate_total_time(this.vy, this.h, this.list_of_throw[this.index_list].bounce_amount, this.list_of_throw[this.index_list].catch_ball))
+      
+
+      this.total_time != null && this.vx == null && (this.vx = calculate_speed_vx_with_tt(this.total_time, this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x))
+
+      this.vx == null && (this.vx = calculate_speed_vx(this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x, this.vy))
+      
+
+
+      // console.log("VY0", this.vy0, this.h_max)
+
+      this.x = this.x0 - this.vx * this.t 
+      this.y = this.y0 - (this.vy * this.t - 1/2 * g * (this.t * this.t))
       
       this.t += 0.1
     }
 
-    update_state_1(width, height){
-      // return
-      // console.log(this.x, width*0.3)
-      if (Math.abs(this.y - height/2) < this.size && this.t > 5){
-        this.state = (this.state + 1) % 2
-        this.t = 0
-        this.v0 = null
-        return
-      }
-      var angle = Math.PI/2.5;
-      if (this.v0 === null)
-        this.v0 = get_v0(width*0.4, this.x, angle)
-      
-      var g = 9.81
-
-      
-      this.x = this.x0 - this.v0 * this.t * Math.cos(angle)
-      this.y = this.y0 - (this.v0 * Math.sin(angle) * this.t - 1/2 * g * (this.t * this.t))
-      this.t += 0.2
-    }
     
     collisionDetect(balls) {
         for (let j = 0; j < balls.length; j++) {
