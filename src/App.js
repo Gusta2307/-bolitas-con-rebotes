@@ -17,6 +17,7 @@ export default class App extends Component{
     this.balls = []
 
     this.time = 0
+    this.time_aux = 0
   }
 
 
@@ -46,54 +47,145 @@ export default class App extends Component{
     while (this.balls.length < time_aux.length){
       const size = 15 //this.random(10, 20);
 
-      const x = this.width*0.6 //this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
+      const x = this.width*0.4 //this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
       const y = this.height/2 //this.random(0 + size, this.height - size);
-
-      const red = this.random(0, 255);
-      const green = this.random(0, 255);
-      const blue = this.random(0, 255);
+      var red = this.random(0, 255);
+      var green = this.random(0, 255);
+      var blue = this.random(0, 255);
 
       const ball1 = new Ball(
         this.ctx, x, y, 
         "rgb(" + red + "," + green + "," + blue + ")",
         size,
-        1, time_aux[index],
+        0, 
         [new Ball_Throw(
-         -150, 1, 3, 1
+          -5.46845298527163, 1, 1, 0, 2.5551751647444356, 1.0551751647444354
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 4.912318021887285, 1.0551751647444354
         )]
       );
 
-      // const ball2 = new Ball(
-      //   this.ctx, this.width*0.4, y, 
-      //   "rgb(" + red + "," + green + "," + blue + ")",
-      //   size,
-      //   0, time_aux[index],
-      //   [new Ball_Throw(
-      //    50, 1, 0, 0
-      //   )]
-      // );
-      // index += 1
+      red = this.random(0, 255);
+      green = this.random(0, 255);
+      blue = this.random(0, 255);
+
+      const ball2 = new Ball(
+        this.ctx, x, y, 
+        "rgb(" + red + "," + green + "," + blue + ")",
+        size,
+        0, 
+        [new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 1.0551751647444354, 2.3155577404928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 1.4837465933158553, 2.3155577404928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 4.269460879030145, 2.3155577404928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 6.198032307601575, 2.3155577404928653
+        )]
+      );
+
+      red = this.random(0, 255);
+      green = this.random(0, 255);
+      blue = this.random(0, 255);
+
+      const ball3 = new Ball(
+        this.ctx, x, y, 
+        "rgb(" + red + "," + green + "," + blue + ")",
+        size,
+        0, 
+        [new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 0.19803230760157442, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 2.7694608790301456, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 4.483746593315855, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 5.983746593315855, 2.1530180604928653
+        ),]
+      );
+
+      red = this.random(0, 255);
+      green = this.random(0, 255);
+      blue = this.random(0, 255);
+
+      const ball4 = new Ball(
+        this.ctx, x, y, 
+        "rgb(" + red + "," + green + "," + blue + ")",
+        size,
+        0, 
+        [new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 3.6266037361730055, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 5.555175164744435, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 6.6266037361730055, 2.1530180604928653
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 7.055175164744435, 2.1530180604928653
+        ),]
+      );
+
+      red = this.random(0, 255);
+      green = this.random(0, 255);
+      blue = this.random(0, 255);
+
+      const ball5 = new Ball(
+        this.ctx, x, y, 
+        "rgb(" + red + "," + green + "," + blue + ")",
+        size,
+        0, 
+        [new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 0.8408894504587154, 2.5245373304928656
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 1.9123180218872855, 2.5245373304928656
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 3.1980323076015758, 2.5245373304928656
+        ),
+        new Ball_Throw(
+          -5.46845298527163, 1, 1, 0, 5.340889450458715, 2.5245373304928656
+        ),]
+      );
+
 
 
       this.balls.push(ball1);
-      // this.balls.push(ball2);
+      this.balls.push(ball2);
+      this.balls.push(ball3);
+      this.balls.push(ball4);
+      this.balls.push(ball5);
 
       // ball.draw()
       // ball.state == 1? ball.update_state_1(this.width, this.height): ball.update_state_0(this.width, this.height);
     }
+    this.time_aux == 0 && (this.time_aux = new Date())
     for (let i = 0; i < this.balls.length; i++){
       // console.log(this.balls[i].initial_time)
-      if (this.balls[i].initial_time <= this.time){
-        this.balls[i].draw();
+      this.balls[i].draw();
+      if (this.balls[i].list_of_throw.length && this.balls[i].list_of_throw[0].initial_time <= ((new Date() - this.time_aux)/1000)){
+        // console.log(this.balls[i].list_of_throw[0].initial_time)
         this.balls[i].apply_throw(this.width, this.height)
-        // this.balls[i].state == 1? this.balls[i].update_state_1(this.width, this.height): this.balls[i].update_state_0(this.width, this.height);
-
-        // this.time += this.balls[0].state == 0? 0.1: 0.2
       }
-      // this.balls[i].collisionDetect(this.balls);
-      // this.sleep(500)
     }
-    this.time += 0.15//this.balls[0].state == 0? 0.1: 0.25
+
+    // this.time_aux = (new Date() - this.time_aux)/1000
+    
+    
+    
+    // console.log(this.time)
+    // this.time += this.time_aux  
+    
     requestAnimationFrame(this.loop)
   }
 
@@ -108,7 +200,7 @@ export default class App extends Component{
     this.ctx = this.canvas.getContext("2d");
     this.width = this.canvas.width = window.innerWidth;
     this.height = this.canvas.height = window.innerHeight;
-    console.log(this.width*0.4, this.width*0.6)
+    // console.log(this.width*0.4, this.width*0.6)
     //start the animation
     this.loop();
   }
