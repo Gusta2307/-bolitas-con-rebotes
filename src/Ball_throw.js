@@ -13,6 +13,6 @@ export default class Ball_Throw{
         
         this.total_time = _end_time
         
-        console.log("BT", _initial_velocity, this.initial_velocity,  this.total_time)
+        // console.log("BT", _initial_velocity, this.initial_velocity,  this.total_time)
     }
 }

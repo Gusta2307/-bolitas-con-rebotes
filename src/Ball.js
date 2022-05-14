@@ -6,6 +6,9 @@ import {g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate
 
 export default class Ball{
     constructor(ctx, x, y, color, size, _initial_hand, _list_of_throw) {
+        this.is_init = false
+        this.all_time = null
+
         this.ctx = ctx;
         this.x = x;
         this.y = y;
@@ -58,6 +61,11 @@ export default class Ball{
         this.y += this.speedY;
       }
       
+    init_prop(){
+      this.is_init = true
+      this.all_time = new Date()
+    }
+
     apply_throw(width, height){
       var temp_time = null
       this.t == 0 && (temp_time = new Date())
@@ -70,6 +78,9 @@ export default class Ball{
       if (this.list_of_throw[this.index_list].bounce_amount <= 0 && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t)){
         // this.index_list += 1
         this.list_of_throw.shift()
+        console.log('TT', this.is_init, ((new Date() - this.all_time)/1000))
+        this.is_init = false
+        this.all_time = null
         if (!this.list_of_throw.length){
           console.log("RETURNNNNNNNNNNN")
           return 
@@ -124,7 +135,7 @@ export default class Ball{
       this.vx == null && (this.vx = calculate_speed_vx(this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x, this.vy))
       
       
-      console.log(this.vx)
+      // console.log(this.vx)
 
 
       this.x = this.x0 - this.vx * this.t 

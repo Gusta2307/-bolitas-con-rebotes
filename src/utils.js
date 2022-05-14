@@ -11,7 +11,7 @@ export const pos_hands = {
     1: [window.innerWidth*0.6, window.innerHeight/2]
 };
 
-console.log("POS_HANDS", pos_hands)
+// console.log("POS_HANDS", pos_hands)
 
 
 export function change_hand_done(x, y, current_hand, change_hand, t){
@@ -34,7 +34,7 @@ export function calculate_h(h){
 };
 
 export function calculate_speed_vx(change_hand, current_hand, x, vy){
-    console.log("SSSSSSSSSSSSSSSSs")
+    // console.log("SSSSSSSSSSSSSSSSs")
     let xf = change_hand? pos_hands[(current_hand + 1) % 2][0] : x
     let t = Math.abs((2*vy)/g_k)
     return (x - xf)/t
@@ -42,7 +42,7 @@ export function calculate_speed_vx(change_hand, current_hand, x, vy){
 
 export function calculate_speed_vx_with_tt(total_time, change_hand, current_hand, x){
     let xf = change_hand? pos_hands[(current_hand + 1) % 2][0] : x
-    console.log("VX TT", (x - xf), (x - xf)/total_time)
+    // console.log("VX TT", (x - xf), (x - xf)/total_time)
 
     // ! no esta del todo correcto
     // ! xq hay q sumarle un 0.1 para q no se desfase Y NO ENCUENTRO EL ERROR :(
@@ -78,7 +78,7 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         if (bounce_amount == 1 && catch_ball == 0){
             // time += Math.abs(vy1/g_k)  (b - math.sqrt(d))/(-g)
 
-            console.log("AAA", (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k))
+            // console.log("AAA", (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k))
 
             time += (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k)
 
@@ -100,7 +100,7 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         current_bounce += 1
     }
 
-    console.log("TIME", time)
+    // console.log("TIME", time)
     return time
 };
 
