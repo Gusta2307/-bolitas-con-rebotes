@@ -86,7 +86,7 @@ export default class Ball{
           return 
         }
 
-        this.current_hand = (this.current_hand + 1)%2
+        // this.current_hand = (this.current_hand + 1)%2
 
         this.x = pos_hands[this.current_hand][0]
         this.y = pos_hands[this.current_hand][1]
