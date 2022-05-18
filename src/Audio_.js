@@ -16,7 +16,8 @@ export default class My_Audio extends Component{
         )
     }
 
-    playAudio() {
+    playAudio(global_time) {
+        console.log("BOUNCE", (new Date() - global_time)/1000)
         new Audio(this.file).play()
         return true
       }

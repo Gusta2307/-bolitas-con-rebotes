@@ -15,8 +15,12 @@ export default class App extends Component{
 
     this.balls = []
 
-    this.time = 0
+    // this.time = 0
     this.time_aux = 0
+
+    this.t3 = 0
+
+    this.animation_loop = true
   }
 
 
@@ -36,21 +40,21 @@ export default class App extends Component{
       30,
     ).draw();
 
-  //   var throws = [
-  //     [[-5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [-5.837291666666657, 1, 2, 0, 2.578245641860764, 0], [-5.83729166666666, 1, 2, 0, 4.935388499003614, 0]], 
-  
-  //     [[-5.837291666666659, 1, 2, 0, 0.863959927575044, 0], [-5.467519199250946, 1, 1, 0, 3.19799293431352, 0], [-5.467519199250946, 1, 1, 0, 6.62656436288495, 0]], 
-      
-  //     [[-5.467519199250946, 1, 1, 0, 0.19799293431351866, 0], [-5.837291666666713, 1, 2, 0, 4.506817070432187, 0]], 
-      
-  //     [[-5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [-5.83729166666666, 1, 2, 0, 4.292531356146474, 0], [-5.467519199250946, 1, 1, 0, 6.197992934313519, 0], [-5.467519199250946, 1, 1, 0, 7.0551357914563795, 0]]
-  // ]
-
     var throws = [
-      [[-5.467519199250946, 0, 1, 0, 1.4837072200277996, 0], [-5.467519199250946, 0, 1, 0, 2.5551357914563795, 0], [-5.467519199250946, 0, 1, 0, 4.912278648599229, 0], [-5.837291666666713, 0, 2, 0, 6.006817070432187, 0]], 
-      [[-5.467519199250946, 0, 1, 0, 0.19799293431351866, 0]], 
-      [[-5.467519199250946, 0, 1, 0, 0.8408500771706597, 0], [-5.467519199250946, 0, 1, 0, 1.9122786485992298, 0], [-5.837291666666657, 0, 2, 0, 3.221102784717904, 0], [-5.467519199250946, 0, 1, 0, 5.34085007717066, 0], [-5.467519199250946, 0, 1, 0, 6.197992934313519, 0]], 
-      [[-5.467519199250946, 0, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 0, 1, 0, 2.7694215057420895, 0], [-5.467519199250946, 0, 1, 0, 3.6265643628849498, 0], [-5.837291666666713, 0, 2, 0, 4.506817070432187, 0], [-5.467519199250946, 0, 1, 0, 6.62656436288495, 0]]]
+      [[-5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [-5.837291666666657, 1, 2, 0, 2.578245641860764, 0], [-5.83729166666666, 1, 2, 0, 4.935388499003614, 0]], 
+  
+      [[-5.837291666666659, 1, 2, 0, 0.863959927575044, 0], [-5.467519199250946, 1, 1, 0, 3.19799293431352, 0], [-5.467519199250946, 1, 1, 0, 6.62656436288495, 0]], 
+      
+      [[-5.467519199250946, 1, 1, 0, 0.19799293431351866, 0], [-5.837291666666713, 1, 2, 0, 4.506817070432187, 0]], 
+      
+      [[-5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [-5.83729166666666, 1, 2, 0, 4.292531356146474, 0], [-5.467519199250946, 1, 1, 0, 6.197992934313519, 0], [-5.467519199250946, 1, 1, 0, 7.0551357914563795, 0]]
+  ]
+
+    
+    // var throws = [[[-5.819254723389721, 1, 2, 0, 0.18628056750102215, 0], [-5.467519199250946, 1, 1, 0, 0.7678795557420897, 0]], [[-5.467519199250946, 1, 1, 0, -0.11447872425791032, 0]]]
+    var is_loop = false
+    this.t3 = 1.90403628
+
 
     while (this.balls.length < throws.length){
       const size = 15 //this.random(10, 20);
@@ -72,20 +76,56 @@ export default class App extends Component{
 
       this.balls.push(ball);
     }
+
     this.time_aux == 0 && (this.time_aux = new Date())
+
+    if (is_loop){
+      this.loop_problem()
+    }
+    else{
+      this.default_problem()
+    }
+
+    requestAnimationFrame(this.loop)
+  }
+
+  default_problem(){
     for (let i = 0; i < this.balls.length; i++){
-      this.balls[i].draw();
+      this.balls[i].draw()
       let current_time = ((new Date() - this.time_aux)/1000)
-      if (this.balls[i].list_of_throw.length && this.balls[i].list_of_throw[0].initial_time <= current_time){
-        
+      if (this.balls[i].list_of_throw.length > this.balls[i].index_list && this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
+        this.balls[i].global_time = this.time_aux
         if (!this.balls[i].is_init){
-          console.log("TSS", i, this.balls[i].list_of_throw[0].initial_time, current_time)
+          // console.log("TSS", i, this.balls[i].list_of_throw[0].initial_time, current_time)
           this.balls[i].init_prop()
         }
         this.balls[i].apply_throw(this.width, this.height)
       }
-    }    
-    requestAnimationFrame(this.loop)
+    }
+  }
+
+  loop_problem(){
+    for (let i = 0; i < this.balls.length; i++){
+      this.balls[i].draw()
+      var current_time = ((new Date() - this.time_aux)/1000)
+      if (this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
+        this.balls[i].global_time = this.time_aux
+        this.balls[i].is_move = true
+        if (!this.balls[i].is_init){
+          // console.log("TSS", i, this.balls[i].list_of_throw[0].initial_time, current_time)
+          this.balls[i].init_prop()
+        }
+        this.balls[i].apply_throw(this.width, this.height)
+      }
+      else{
+        if (this.balls[i].is_move){
+          this.balls[i].draw()
+          this.balls[i].apply_throw(this.width, this.height)
+        }
+      }
+    }
+
+    current_time > this.t3 && (this.time_aux = new Date()) 
   }
 
 
@@ -115,7 +155,7 @@ export default class App extends Component{
         throws_list[i][1], // change hand
         throws_list[i][2], // bounce amount
         throws_list[i][3], // catch ball
-        throws_list[i][4],  // initial time
+        throws_list[i][4], // initial time
         throws_list[i][5]  // total time
       ))
     }

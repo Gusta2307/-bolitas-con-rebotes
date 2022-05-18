@@ -12,6 +12,8 @@ export default class Ball_Throw{
         this.initial_time = _initial_time
         
         this.total_time = _end_time
+
+        this.is_negative = 0
         
         // console.log("BT", _initial_velocity, this.initial_velocity,  this.total_time)
     }

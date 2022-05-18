@@ -34,7 +34,6 @@ export function calculate_h(h){
 };
 
 export function calculate_speed_vx(change_hand, current_hand, x, vy){
-    // console.log("SSSSSSSSSSSSSSSSs")
     let xf = change_hand? pos_hands[(current_hand + 1) % 2][0] : x
     let t = Math.abs((2*vy)/g_k)
     return (x - xf)/t
@@ -42,10 +41,6 @@ export function calculate_speed_vx(change_hand, current_hand, x, vy){
 
 export function calculate_speed_vx_with_tt(total_time, change_hand, current_hand, x){
     let xf = change_hand? pos_hands[(current_hand + 1) % 2][0] : x
-    // console.log("VX TT", (x - xf), (x - xf)/total_time)
-
-    // ! no esta del todo correcto
-    // ! xq hay q sumarle un 0.1 para q no se desfase Y NO ENCUENTRO EL ERROR :(
     return (x - xf)/(total_time)
 };
 

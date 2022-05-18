@@ -35,9 +35,12 @@ export default class Ball{
 
         this.time_aux = null
         this.out_time = null
+        this.global_time = null
 
         this.total_time = null
         this.current_bounce = 0
+
+        this.is_move = false
     }
 
     draw() {
@@ -67,6 +70,7 @@ export default class Ball{
     }
 
     apply_throw(width, height){
+      
       var temp_time = null
       this.t == 0 && (temp_time = new Date())
       
@@ -75,18 +79,31 @@ export default class Ball{
         return
 
       // console.log("APPLY THROW", this.list_of_throw[this.index_list].bounce_amount, this.index_list, this.list_of_throw.length)
-      if (this.list_of_throw[this.index_list].bounce_amount <= 0 && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t)){
-        // this.index_list += 1
-        this.list_of_throw.shift()
-        console.log('TT', this.is_init, ((new Date() - this.all_time)/1000))
+      if (this.list_of_throw[this.index_list].bounce_amount == this.current_bounce && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t)){
+        // this.list_of_throw[this.index_list].is_negative == 1 && (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time - 1.90403628) &&
+        // (this.list_of_throw[this.index_list].is_negative = 0)
+
+        this.list_of_throw[this.index_list].initial_time < 0 && this.list_of_throw[this.index_list].is_negative == 0 && 
+          (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time + 1.90403628) && 
+            (this.list_of_throw[this.index_list].is_negative = 1) && console.log("12345")
+
+        this.is_move = false
+        
+        //default
+        this.index_list += 1
+        // for loop
+        // this.index_list = (this.index_list + 1)%this.list_of_throw.length
+
+        // this.list_of_throw.shift()
+        // console.log('TT', this.is_init, ((new Date() - this.all_time)/1000))
         this.is_init = false
         this.all_time = null
         if (!this.list_of_throw.length){
-          console.log("RETURNNNNNNNNNNN")
+          // console.log("RETURNNNNNNNNNNN")
           return 
         }
 
-        // this.current_hand = (this.current_hand + 1)%2
+        this.current_hand = (this.current_hand + 1)%2
 
         this.x = pos_hands[this.current_hand][0]
         this.y = pos_hands[this.current_hand][1]
@@ -108,16 +125,18 @@ export default class Ball{
         this.out_time = null
         this.time_aux = null
 
-        console.log("AAAAAAAAAAAAaa")
+        // console.log("AAAAAAAAAAAAaa")
         // reset params
         return
       }
       
       this.vy == null && (this.vy = this.list_of_throw[this.index_list].initial_velocity)
+
+      this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0 && (this.t = Math.abs(this.list_of_throw[this.index_list].initial_time))
       
       //Calculo la velocidad de la pelota despues del rebote y se restablece el tiempo
-      this.y + this.size >= height && this.t > 0.1  && (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) 
-      && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio() && (this.vy0 = this.vy) && (this.t = 0) 
+      this.y + this.size >= height && this.t > 0.1  /*&& (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) */
+      && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio(this.global_time) && (this.vy0 = this.vy) && (this.t = 0) 
 
       this.h_max == null && this.vy > 0 && (this.h_max = calculate_h_max(this.vy))
       
@@ -135,7 +154,7 @@ export default class Ball{
       this.vx == null && (this.vx = calculate_speed_vx(this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x, this.vy))
       
       
-      // console.log(this.vx)
+      // console.log(this.vy, this.vx)  
 
 
       this.x = this.x0 - this.vx * this.t 

@@ -8,16 +8,14 @@ def P_aux(ti, h, throw_ball, current_time):
     v0 = (math.sqrt(2*g*h*(1-math.pow(e, 2)))/e)  if throw_ball else (math.sqrt(2*g*h)/math.pow(e, 2))
     tk = ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    print("P tk ti", tk, ti)
+    # tf = v0/g if throw_ball else ((abs(v0) - math.sqrt(math.pow(v0,2) - 2*g*h))/g)
 
-    tf = v0/g if throw_ball else ((abs(v0) - math.sqrt(math.pow(v0,2) - 2*g*h))/g)
+    # vf = v0
 
-    vf = v0
-
-    if throw_ball:
-        h_max = (vf*vf)/(2*g)
-        tf += math.sqrt(2*g*h_max)/g
-        vf = math.sqrt(2*g*h_max)
+    # if throw_ball:
+    #     h_max = (vf*vf)/(2*g)
+    #     tf += math.sqrt(2*g*h_max)/g
+    #     vf = math.sqrt(2*g*h_max)
 
 
     # print(throw_type, "v0", v0, ((v0 - math.sqrt(v0**2 - 2*g*h))/g), tk, ti, current_time)
@@ -27,10 +25,10 @@ def Q_aux(ti, tj, h, throw_ball, current_time):
     v0 =math.sqrt(((g*g)*(tj - ti)**2)/(4*(e*e)) - 2*g *h) if throw_ball else (g*(tj - ti))/(2*e)
     tk =  ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    print("Q tk ti", tk, ti)
+    # print("Q tk ti", tk, ti)
 
 
-    tf = v0/g if throw_ball else (abs(v0) - math.sqrt(v0*v0 - 2*g*h))/g
+    # tf = v0/g if throw_ball else (abs(v0) - math.sqrt(v0*v0 - 2*g*h))/g
 
     return [v0 if throw_type else (-v0), 1, 2, 0, tk, 0]
 
