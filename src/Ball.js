@@ -5,7 +5,9 @@ import {g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate
 
 
 export default class Ball{
-    constructor(ctx, x, y, color, size, _initial_hand, _list_of_throw) {
+    constructor(id, ctx, x, y, color, size, _initial_hand, _list_of_throw) {
+        this.id = id
+
         this.is_init = false
         this.all_time = null
 
@@ -85,12 +87,13 @@ export default class Ball{
 
         this.list_of_throw[this.index_list].initial_time < 0 && this.list_of_throw[this.index_list].is_negative == 0 && 
           (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time + 1.90403628) && 
-            (this.list_of_throw[this.index_list].is_negative = 1) && console.log("12345")
+            (this.list_of_throw[this.index_list].is_negative = 1) && (this.index_list = 0) && console.log("12345")
 
         this.is_move = false
         
         //default
-        this.index_list += 1
+        if (!this.list_of_throw[this.index_list].is_negative)
+          this.index_list += 1
         // for loop
         // this.index_list = (this.index_list + 1)%this.list_of_throw.length
 
@@ -125,7 +128,7 @@ export default class Ball{
         this.out_time = null
         this.time_aux = null
 
-        // console.log("AAAAAAAAAAAAaa")
+        // console.log("AAAAAAAAAAAAaa", this.id)
         // reset params
         return
       }
@@ -136,7 +139,7 @@ export default class Ball{
       
       //Calculo la velocidad de la pelota despues del rebote y se restablece el tiempo
       this.y + this.size >= height && this.t > 0.1  /*&& (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) */
-      && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio(this.global_time) && (this.vy0 = this.vy) && (this.t = 0) 
+      && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio(this.global_time, this.id) && (this.vy0 = this.vy) && (this.t = 0) 
 
       this.h_max == null && this.vy > 0 && (this.h_max = calculate_h_max(this.vy))
       

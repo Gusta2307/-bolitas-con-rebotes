@@ -29,30 +29,30 @@ export default class App extends Component{
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     const ball1 = new Ball(
-      this.ctx, this.width*0.4, this.height/2,
+      -1,this.ctx, this.width*0.4, this.height/2,
       "rgb(" + "100" + "," + "23" + "," + "1" + ")",
       30,
     ).draw();
 
     const ball2 = new Ball(
-      this.ctx, this.width*0.6, this.height/2,
+      -1,this.ctx, this.width*0.6, this.height/2,
       "rgb(" + "200" + "," + "200" + "," + "1" + ")",
       30,
     ).draw();
 
-    var throws = [
-      [[-5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [-5.837291666666657, 1, 2, 0, 2.578245641860764, 0], [-5.83729166666666, 1, 2, 0, 4.935388499003614, 0]], 
+  //   var throws = [
+  //     [[-5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [-5.837291666666657, 1, 2, 0, 2.578245641860764, 0], [-5.83729166666666, 1, 2, 0, 4.935388499003614, 0]], 
   
-      [[-5.837291666666659, 1, 2, 0, 0.863959927575044, 0], [-5.467519199250946, 1, 1, 0, 3.19799293431352, 0], [-5.467519199250946, 1, 1, 0, 6.62656436288495, 0]], 
+  //     [[-5.837291666666659, 1, 2, 0, 0.863959927575044, 0], [-5.467519199250946, 1, 1, 0, 3.19799293431352, 0], [-5.467519199250946, 1, 1, 0, 6.62656436288495, 0]], 
       
-      [[-5.467519199250946, 1, 1, 0, 0.19799293431351866, 0], [-5.837291666666713, 1, 2, 0, 4.506817070432187, 0]], 
+  //     [[-5.467519199250946, 1, 1, 0, 0.19799293431351866, 0], [-5.837291666666713, 1, 2, 0, 4.506817070432187, 0]], 
       
-      [[-5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [-5.83729166666666, 1, 2, 0, 4.292531356146474, 0], [-5.467519199250946, 1, 1, 0, 6.197992934313519, 0], [-5.467519199250946, 1, 1, 0, 7.0551357914563795, 0]]
-  ]
+  //     [[-5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [-5.83729166666666, 1, 2, 0, 4.292531356146474, 0], [-5.467519199250946, 1, 1, 0, 6.197992934313519, 0], [-5.467519199250946, 1, 1, 0, 7.0551357914563795, 0]]
+  // ]
 
     
-    // var throws = [[[-5.819254723389721, 1, 2, 0, 0.18628056750102215, 0], [-5.467519199250946, 1, 1, 0, 0.7678795557420897, 0]], [[-5.467519199250946, 1, 1, 0, -0.11447872425791032, 0]]]
-    var is_loop = false
+    var throws = [[[-5.467519199250946, 1, 1, 0, 0.7678795557420897, 0]], [[-5.819254723389721, 1, 2, 0, 0.18628056750102215, 0]], [[-5.467519199250946, 1, 1, 0, -0.11447872425791032, 0]]]
+    var is_loop = true
     this.t3 = 1.90403628
 
 
@@ -67,7 +67,7 @@ export default class App extends Component{
       var blue = this.random(0, 255);
 
       const ball = new Ball(
-        this.ctx, x, y, 
+        this.balls.length, this.ctx, x, y, 
         "rgb(" + red + "," + green + "," + blue + ")",
         size,
         0, 
@@ -108,7 +108,15 @@ export default class App extends Component{
     for (let i = 0; i < this.balls.length; i++){
       this.balls[i].draw()
       var current_time = ((new Date() - this.time_aux)/1000)
-      if (this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
+      
+      // console.log(this.balls[i].index_list)
+      // if (i == 2){
+      //   console.log(this.balls[i].list_of_throw.length > this.balls[i].index_list, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time)
+      // }
+
+      if ((this.balls[i].list_of_throw.length > this.balls[i].index_list) && this.balls[i].index_list >= 0 && this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
+        // console.log(i, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time , current_time)
+
         this.balls[i].global_time = this.time_aux
         this.balls[i].is_move = true
         if (!this.balls[i].is_init){
@@ -119,15 +127,22 @@ export default class App extends Component{
       }
       else{
         if (this.balls[i].is_move){
+          this.balls[i].global_time = this.time_aux
           this.balls[i].draw()
           this.balls[i].apply_throw(this.width, this.height)
         }
       }
     }
 
-    current_time > this.t3 && (this.time_aux = new Date()) 
+    current_time > this.t3 && (this.time_aux = new Date()) && this.reset_index() && console.log("RESET")
   }
 
+  reset_index(){
+    for (let i = 0; i < this.balls.length; i++){
+      this.balls[i].index_list = this.balls[i].index_list%this.balls[i].list_of_throw.length
+    }
+    return true
+  }
 
   random(min, max){
     return Math.floor(Math.random() * (max - min)) + min;

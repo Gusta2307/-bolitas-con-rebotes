@@ -7,7 +7,8 @@ from functions import (
 from const import *
 from utils import (
     get_interval,
-    get_positions
+    get_positions,
+    check_init
 )
 
 class Optimizer:
@@ -24,11 +25,6 @@ class Optimizer:
                 self.times.append(self.times[-1] + (self.times[j] - self.times[i]))
                 i += 1
                 j += 1
-            
-            # self.d = list(self.times[i + 1] - self.times[i] for i in range(len(self.times) - 1))
-            # for i in range(len(self.d)):
-            #     self.times.append(self.times[-1] + self.d[i])
-            # print(self.times)
         
         self.prob = None #pl.LpProblem("Problem", pl.LpMinimize)
 
@@ -91,7 +87,7 @@ class Optimizer:
                         
                         self.prob += pl.LpConstraint(self.X[b*self.__original_length + i] + self.X[b*self.__original_length + j] - 1 - R(self.times[position['i']], self.times[position['j']], h, throw_type), sense=pl.LpConstraintLE, name=f"X{b}{i} X{b}{j} <= 1 R{b}{i}{j}")
                         self.prob += pl.LpConstraint(self.Y[b*self.__original_length**2 + i*self.__original_length + j] - Q(self.times[position['i']], self.times[position['j']], h, throw_type), sense=pl.LpConstraintLE, name=f"Y{b}{i}{j} <= Q{b}{i}{j}")
-                                            
+
                         inter1 = get_interval(i, j, self.__original_length) 
                         for k in inter1:
                             if k != j:
@@ -104,8 +100,7 @@ class Optimizer:
                                 inter2 = get_interval(i, k, self.__original_length) 
                                 for m in inter2:
                                     if k != m:
-                                        position = get_positions(len=self.__original_length, i=i, j=j, k=k, m=m)
-                                        
+                                        position = get_positions(len=self.__original_length - 1, i=i, j=j, k=k, m=m)
                                         self.prob += pl.LpConstraint(self.Y[b*self.__original_length**2 + i*self.__original_length + j] + self.Y[b*self.__original_length**2 + k*self.__original_length + m] - 1 - SS(self.times[position['i']], self.times[position['j']], self.times[position['k']], self.times[position['m']], h, throw_type), sense=pl.LpConstraintLE, name=f"Y{b}{i}{j} Y{b}{k}{m} <= 1 S{b}{i}{j}{k}{m}")
                             
                                     
@@ -116,20 +111,31 @@ class Optimizer:
 
             for j in range(self.__original_length):
                 for b in range(self.balls):
-                    if i != j:
+                    if i != j and check_init(i, j, end=self.__original_length - 1):
                         sum_ti.append(self.Y[b*self.__original_length**2 + i*self.__original_length + j])
 
             for k in range(self.__original_length):
                 for b in range(self.balls):
-                    if k != i:
+                    if k != i and check_init(i, k, end=self.__original_length - 1):
                         sum_ti.append(self.Y[b*self.__original_length**2 + k*self.__original_length + i])
 
             self.prob += pl.LpConstraint(sum(sum_ti) - 1, sense=pl.LpConstraintEQ, name=f"Sum t{i}")
+        
+        # sum_Xi = []
+        # for b in range(self.balls):
+        #     self.prob += pl.LpConstraint(self.X[b*self.__original_length] - self.X[b*self.__original_length + self.__original_length - 1], sense=pl.LpConstraintEQ)
+            
+        #     sum_Xi.append(self.X[b*self.__original_length])
+        #     sum_Xi.append(self.X[b*self.__original_length + self.__original_length - 1])
+            
+        # self.prob += pl.LpConstraint(sum(sum_ti) - 2, sense=pl.LpConstraintEQ)
+            
+                
     
     def solve(self) -> int:
         self.prob = pl.LpProblem("Problem", pl.LpMinimize)
 
-        self.X = pl.LpVariable.dicts("X", range(self.balls*len(self.times)), cat=pl.LpBinary)
+        self.X = pl.LpVariable.dicts("X", range(self.balls*self.__original_length), cat=pl.LpBinary)
         self.Y = pl.LpVariable.dicts("Y", range(self.balls*self.__original_length*self.__original_length), cat=pl.LpBinary)
         
         if self.loop:
@@ -167,9 +173,9 @@ class Optimizer:
                     list_total_times_balls[b] += list_throw_balls[b][-1][-1]
 
                 for j in range(i+1,len(self.times)):
-                        if self.Y[b*len(self.times)**2 + i*len(self.times) + j].varValue == 1:
-                            list_throw_balls[b].append(Q_aux(self.times[i], self.times[j], h, throw_type, current_time=list_total_times_balls[b]))
-                            list_total_times_balls[b] += list_throw_balls[b][-1][-1]
+                    if self.Y[b*len(self.times)**2 + i*len(self.times) + j].varValue == 1:
+                        list_throw_balls[b].append(Q_aux(self.times[i], self.times[j], h, throw_type, current_time=list_total_times_balls[b]))
+                        list_total_times_balls[b] += list_throw_balls[b][-1][-1]
 
             list_throw_balls[b].sort(key=lambda x: x[4])
             
@@ -185,9 +191,10 @@ class Optimizer:
                     list_throw_balls[b].append(P_aux(self.times[i], h, throw_ball=throw_type, current_time=list_total_times_balls[b]))
                     list_total_times_balls[b] += list_throw_balls[b][-1][-1]
 
-                for j in range(i+1,self.__original_length):
+                for j in range(self.__original_length):
                         if self.Y[b*self.__original_length**2 + i*self.__original_length + j].varValue == 1:
-                            list_throw_balls[b].append(Q_aux(self.times[i], self.times[j], h, throw_type, current_time=list_total_times_balls[b]))
+                            position = get_positions(len=self.__original_length - 1, i=i, j=j)
+                            list_throw_balls[b].append(Q_aux(self.times[position['i']], self.times[position['j']], h, throw_type, current_time=list_total_times_balls[b]))
                             list_total_times_balls[b] += list_throw_balls[b][-1][-1]
 
             list_throw_balls[b].sort(key=lambda x: x[4])
