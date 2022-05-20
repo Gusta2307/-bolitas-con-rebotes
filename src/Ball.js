@@ -1,5 +1,5 @@
 import My_Audio from "./Audio_";
-import {g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, change_hand_done, g} from "./utils";
+import {calculate_position,g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, change_hand_done, g} from "./utils";
 
 // const _audio = new My_Audio()
 
@@ -133,9 +133,14 @@ export default class Ball{
         return
       }
       
+      if (this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0){
+        console.log("AASASASAS")
+        this.x0, this.y0, this.t = calculate_position(this.x, this.y, this.list_of_throw[this.index_list])
+      }
+
       this.vy == null && (this.vy = this.list_of_throw[this.index_list].initial_velocity)
 
-      this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0 && (this.t = Math.abs(this.list_of_throw[this.index_list].initial_time))
+      // this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0 && (this.t = Math.abs(this.list_of_throw[this.index_list].initial_time))
       
       //Calculo la velocidad de la pelota despues del rebote y se restablece el tiempo
       this.y + this.size >= height && this.t > 0.1  /*&& (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) */

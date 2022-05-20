@@ -10,7 +10,7 @@ export default class Ball_Throw{
         this.bounce_amount = _bounce_amount
         this.catch_ball = _catch_ball // si es 1 la captura por arriba, si es 0 por debajo
         this.initial_time = _initial_time
-        
+        console.log(this.initial_time)
         this.total_time = _end_time
 
         this.is_negative = 0
@@ -18,3 +18,5 @@ export default class Ball_Throw{
         // console.log("BT", _initial_velocity, this.initial_velocity,  this.total_time)
     }
 }
+
+

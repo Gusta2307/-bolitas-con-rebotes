@@ -70,21 +70,32 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         
         vy1 = calculate_speed_vy(vy1, current_bounce)
         
-        if (bounce_amount == 1 && catch_ball == 0){
-            // time += Math.abs(vy1/g_k)  (b - math.sqrt(d))/(-g)
 
-            // console.log("AAA", (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k))
-
-            time += (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k)
-
-            break;
-        }
-        else{
-            if(bounce_amount == 1 && catch_ball == 1){
+        if (bounce_amount == 1){
+            if (catch_ball){
                 current_h = Math.abs(((vy1*vy1)/(2*g_k)) - h)
                 time += Math.sqrt(2*g_k*current_h)/g_k
             }
+            else{
+                time += (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k)
+                break;
+            }
         }
+        // if (bounce_amount == 1 && catch_ball == 0){
+        //     // time += Math.abs(vy1/g_k)  (b - math.sqrt(d))/(-g)
+
+        //     // console.log("AAA", (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k))
+
+        //     time += (vy1 - Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k)
+
+        //     break;
+        // }
+        // else{
+        //     if(bounce_amount == 1 && catch_ball == 1){
+        //         current_h = Math.abs(((vy1*vy1)/(2*g_k)) - h)
+        //         time += Math.sqrt(2*g_k*current_h)/g_k
+        //     }
+        // }
         
         //REBOTE
         time += Math.abs(vy1/g_k)
@@ -111,4 +122,113 @@ export function calculate_speed_vy_hmax(h_max){
     return Math.sqrt(2*g_k*h_max)
 }
 
+export function calculate_position(x, y, current_throw){
+    var total_wt = Math.abs(current_throw.initial_time)
+    var current_x = x, current_y = y
+    var current_hand = 0? x == pos_hands[0][0]: 1
+    while (true){
+        var temp_bounce = current_throw.bounce_amount
+        var current_v = current_throw.initial_velocity
+        var current_h = y
+        var temp_t = 0
+        console.log({total_wt})
+        if (current_v > 0){
+            temp_t = current_v/g_k
+            if (temp_t > total_wt){
+                return current_x, current_y, total_wt 
+            }
+            else{
+                total_wt -= temp_t
+                current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+            }
+        }
+        while(temp_bounce > 0){
+            if (current_v < 0 && total_wt == Math.abs(current_throw.initial_time)){
+                temp_t = (Math.abs(current_v) - Math.sqrt(current_v*current_v - 2*g_k*current_h))/(g_k)
+                console.log({temp_t})
+                if (temp_t > total_wt)
+                    return current_x, current_y, total_wt
+                else{
+                    total_wt -= temp_t
+                    current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+                }
+            }
+            else{
+                temp_t = Math.sqrt(2*g_k*current_h)/g_k
+                if (temp_t > total_wt)
+                    return current_x, current_y, total_wt
+                else{
+                    total_wt -= temp_t
+                    current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+                }
+            } 
 
+            current_v = calculate_speed_vy(current_v, Math.abs(temp_bounce - current_throw.bounce_amount))
+
+            if (temp_bounce == 1){
+                if (current_throw.catch_ball){
+                    current_h = Math.abs(((current_v*current_v)/(2*g_k)) - h)
+                    temp_t = Math.sqrt(2*g_k*current_h)/g_k
+                    if (temp_t > total_wt)
+                        return current_x, current_y, total_wt
+                    else{
+                        total_wt -= temp_t
+                        current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+                    }
+                }
+                else{
+                    temp_t = (current_v - Math.sqrt(current_v*current_v - 2*g_k*current_h))/(g_k)
+                    if (temp_t > total_wt)
+                        return current_x, current_y, total_wt
+                    else{
+                        total_wt -= temp_t
+                        current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+                        break
+                    }
+                }
+            }
+            temp_t = Math.abs(current_v/g_k)
+            if (temp_t > total_wt)
+                return current_x, current_y, total_wt
+            else{
+                total_wt -= temp_t
+                current_x, current_y = get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw)
+            }
+
+            current_h = calculate_h_max(current_v)
+
+            temp_bounce -= 1
+        }
+
+        if (current_throw.change_hand){
+            current_hand = (current_hand + 1) % 2
+            current_x = pos_hands[current_hand][0]
+            current_y = pos_hands[current_hand][1]
+            // if (x == pos_hands[0][0]){
+            // }
+            // else{
+            //     current_x = pos_hands[0][0]
+            //     current_y = pos_hands[0][1]
+            // }
+        }
+        break
+    }
+}
+
+
+function get_pos(current_x, current_y, temp_t, x, y, current_hand, current_throw){
+    var vx = null
+    current_throw.bounce_amount > 0 &&  (vx = 
+        calculate_speed_vx_with_tt(
+            calculate_total_time(current_throw.initial_velocity, y, current_throw.bounce_amount, current_throw.catch_ball), 
+            current_throw.change_hand, 
+            current_hand, 
+            x
+        )
+    )
+    
+    var fx = current_x - vx * temp_t
+    var fy = current_y - (current_throw.initial_velocity * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
+
+    return fx, fy
+}
