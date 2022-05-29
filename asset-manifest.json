@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/bolitas-con-rebotes/static/css/main.82c7c595.css",
-    "main.js": "/bolitas-con-rebotes/static/js/main.ca400d01.js",
+    "main.css": "/bolitas-con-rebotes/static/css/main.552691d9.css",
+    "main.js": "/bolitas-con-rebotes/static/js/main.170b06e2.js",
     "index.html": "/bolitas-con-rebotes/index.html",
-    "main.82c7c595.css.map": "/bolitas-con-rebotes/static/css/main.82c7c595.css.map",
-    "main.ca400d01.js.map": "/bolitas-con-rebotes/static/js/main.ca400d01.js.map"
+    "main.552691d9.css.map": "/bolitas-con-rebotes/static/css/main.552691d9.css.map",
+    "main.170b06e2.js.map": "/bolitas-con-rebotes/static/js/main.170b06e2.js.map"
   },
   "entrypoints": [
-    "static/css/main.82c7c595.css",
-    "static/js/main.ca400d01.js"
+    "static/css/main.552691d9.css",
+    "static/js/main.170b06e2.js"
   ]
 }
