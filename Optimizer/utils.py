@@ -14,6 +14,13 @@ def get_interval(i,j,length):
         
     return result
 
+def get_internal_interval(i, j, length):
+    result = []
+    index = (i + 1) % length
+    while index != j:
+        result.append(index)
+        index = (index + 1)%length
+    return result
 
 def get_positions(len, i, j, k=None, m=None):
     result = {
@@ -26,10 +33,10 @@ def get_positions(len, i, j, k=None, m=None):
     if j < i:
         result['j'] = j + len
         
-    if k != None and  k < j:
+    if k != None and  k < i:
         result['k'] = k + len
         
-    if m != None and m > k:
+    if m != None and m < i:
         result['m'] = m + len
         
     return result

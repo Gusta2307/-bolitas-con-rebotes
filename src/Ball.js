@@ -73,7 +73,7 @@ export default class Ball{
 
     apply_throw(width, height){
       
-      var temp_time = null
+      var temp_time = new Date()
       this.t == 0 && (temp_time = new Date())
       
       
@@ -85,17 +85,17 @@ export default class Ball{
         // this.list_of_throw[this.index_list].is_negative == 1 && (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time - 1.90403628) &&
         // (this.list_of_throw[this.index_list].is_negative = 0)
 
-        this.list_of_throw[this.index_list].initial_time < 0 && this.list_of_throw[this.index_list].is_negative == 0 && 
-          (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time + 1.90403628) && 
-            (this.list_of_throw[this.index_list].is_negative = 1) && (this.index_list = 0) && console.log("12345")
+        // this.list_of_throw[this.index_list].initial_time < 0 && this.list_of_throw[this.index_list].is_negative == 0 && 
+        //   (this.list_of_throw[this.index_list].initial_time = this.list_of_throw[this.index_list].initial_time + 1.90403628) && 
+        //     (this.list_of_throw[this.index_list].is_negative = 1) && (this.index_list = 0) && console.log("12345")
 
         this.is_move = false
+        this.list_of_throw[this.index_list].is_done = true
         
         //default
-        if (!this.list_of_throw[this.index_list].is_negative)
-          this.index_list += 1
+        // this.index_list += 1
         // for loop
-        // this.index_list = (this.index_list + 1)%this.list_of_throw.length
+        this.index_list = (this.index_list + 1)%this.list_of_throw.length
 
         // this.list_of_throw.shift()
         // console.log('TT', this.is_init, ((new Date() - this.all_time)/1000))
@@ -132,11 +132,6 @@ export default class Ball{
         // reset params
         return
       }
-      
-      if (this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0){
-        console.log("AASASASAS")
-        this.x0, this.y0, this.t = calculate_position(this.x, this.y, this.list_of_throw[this.index_list])
-      }
 
       this.vy == null && (this.vy = this.list_of_throw[this.index_list].initial_velocity)
 
@@ -146,12 +141,12 @@ export default class Ball{
       this.y + this.size >= height && this.t > 0.1  /*&& (this.list_of_throw[this.index_list].bounce_amount = this.list_of_throw[this.index_list].bounce_amount - 1) */
       && (this.vy = calculate_speed_vy(this.vy0, this.current_bounce)) && (this.current_bounce += 1) &&  (this.x0 = this.x) && (this.y0 = this.y) && this.audio.playAudio(this.global_time, this.id) && (this.vy0 = this.vy) && (this.t = 0) 
 
-      this.h_max == null && this.vy > 0 && (this.h_max = calculate_h_max(this.vy))
+      this.h_max == null && this.vy < 0 && (this.h_max = calculate_h_max(this.vy))
       
       //Calculo la velocidad con que cae la pelota
-      this.h_max != null && this.h_max > 0 && this.y - this.size <= Math.abs(this.h - this.h_max) && (this.vy0 = -calculate_speed_vy_hmax(Math.abs(window.innerHeight - (this.h - this.h_max)))) && (this.h_max = 0)
+      this.h_max != null && this.h_max > 0 && this.y - this.size <= Math.abs(this.h - this.h_max) && (this.vy0 = calculate_speed_vy_hmax(Math.abs(window.innerHeight - (this.h - this.h_max)))) && (this.h_max = 0)
       
-      this.vy0 == 0 && this.vy < 0 && (this.vy0 = this.vy) && (this.h_max = 0)
+      this.vy0 == 0 && this.vy > 0 && (this.vy0 = this.vy) && (this.h_max = 0)
       
       this.list_of_throw[this.index_list].bounce_amount > 0 && this.total_time == null && 
         (this.total_time = calculate_total_time(this.vy, this.h, this.list_of_throw[this.index_list].bounce_amount, this.list_of_throw[this.index_list].catch_ball))
@@ -162,21 +157,56 @@ export default class Ball{
       this.vx == null && (this.vx = calculate_speed_vx(this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x, this.vy))
       
       
-      // console.log(this.vy, this.vx)  
+      // console.log(this.vy, this.vx, this.x0, this.y0, this.t)  
 
 
       this.x = this.x0 - this.vx * this.t 
-      this.y = this.y0 - (this.vy * this.t - 1/2 * g_k * Math.pow(this.t, 2))
+      this.y = this.vy > 0? this.y0 + (this.vy * this.t - 1/2 * g_k * Math.pow(this.t, 2)):  this.y0 + (this.vy * this.t + 1/2 * g_k * Math.pow(this.t, 2))
+
+      
+
+
 
       this.time_aux == null && (this.time_aux = (new Date() - temp_time)/1000)
-
 
       this.t += this.out_time != null? (new Date() - this.out_time)/1000 : this.time_aux
 
       this.out_time = new Date()
     }
 
-    
+    // init_pos(){
+    //   if (this.t == 0 && this.list_of_throw[this.index_list].initial_time < 0){
+    //     var result_pos = calculate_position(this.x, this.y, this.index_list, this.list_of_throw)
+    //     this.x0 = result_pos[0]
+    //     this.y0 = result_pos[1]
+    //     this.t = result_pos[2]
+    //     this.vy = result_pos[3]
+    //     this.vx = result_pos[4]
+    //     this.current_bounce = result_pos[5]
+    //     this.current_hand = result_pos[6]
+    //     new_initial_time = result_pos[7]
+    //     this.index_list = result_pos[8]
+    //     this.vy0 = this.vy
+    //   }
+    // }
+
+    calculate_initial_pos(t0, tn){
+      var result_pos = calculate_position(this.x, this.y, this.index_list, this.list_of_throw, t0, tn)
+      this.x0 = result_pos[0]
+      this.y0 = result_pos[1]
+      this.t = result_pos[2]
+      this.t && (this.is_move = true)
+      this.t == 0 && (this.x = this.x0) && (this.y = this.y0)
+      this.vy = result_pos[3]
+      this.vx = result_pos[4]
+      this.current_bounce = result_pos[5]
+      this.current_hand = result_pos[6]
+      let new_initial_time = result_pos[7]
+      this.index_list = result_pos[8]
+      // new_initial_time > 0 && (this.list_of_throw[this.index_list].initial_time = new_initial_time)
+      this.vy0 = this.vy
+    }
+
     collisionDetect(balls) {
         for (let j = 0; j < balls.length; j++) {
             if (this !== balls[j]) {

@@ -4,7 +4,7 @@ export default class Ball_Throw{
     constructor(_initial_velocity, _change_hand, _bounce_amount, _catch_ball, _initial_time, _end_time){
         // let temp_t = 1/_initial_velocity
         // this.initial_velocity = (window.innerHeight/2)/temp_t
-
+        console.log("VY", _initial_velocity, k, _initial_velocity*k)
         this.initial_velocity = _initial_velocity*k
         this.change_hand = _change_hand // 0 si no cambia de mano, 1 si cambia
         this.bounce_amount = _bounce_amount
@@ -14,6 +14,8 @@ export default class Ball_Throw{
         this.total_time = _end_time
 
         this.is_negative = 0
+
+        this.is_done = false
         
         // console.log("BT", _initial_velocity, this.initial_velocity,  this.total_time)
     }

@@ -18,7 +18,8 @@ export default class App extends Component{
     // this.time = 0
     this.time_aux = 0
 
-    this.t3 = 0
+    this.tn = 0
+    this.t0 = 0
 
     this.animation_loop = true
   }
@@ -39,26 +40,24 @@ export default class App extends Component{
       "rgb(" + "200" + "," + "200" + "," + "1" + ")",
       30,
     ).draw();
-
-  //   var throws = [
-  //     [[-5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [-5.837291666666657, 1, 2, 0, 2.578245641860764, 0], [-5.83729166666666, 1, 2, 0, 4.935388499003614, 0]], 
-  
-  //     [[-5.837291666666659, 1, 2, 0, 0.863959927575044, 0], [-5.467519199250946, 1, 1, 0, 3.19799293431352, 0], [-5.467519199250946, 1, 1, 0, 6.62656436288495, 0]], 
-      
-  //     [[-5.467519199250946, 1, 1, 0, 0.19799293431351866, 0], [-5.837291666666713, 1, 2, 0, 4.506817070432187, 0]], 
-      
-  //     [[-5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [-5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [-5.83729166666666, 1, 2, 0, 4.292531356146474, 0], [-5.467519199250946, 1, 1, 0, 6.197992934313519, 0], [-5.467519199250946, 1, 1, 0, 7.0551357914563795, 0]]
-  // ]
-
-    // var throws = [[[-6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[-6.704793529466665, 1, 2, 0, 0.43334327204726003, 0]], [[-5.467519199250946, 1, 1, 0, 0.0016210557420896776, 0], [-5.467519199250946, 1, 1, 0, 1.3251584657420896, 0]]]
     
-    // var throws = [[[-5.467519199250946, 1, 1, 0, 0.7678795557420897, 0]], [[-5.819254723389721, 1, 2, 0, 0.18628056750102215, 0]], [[-5.467519199250946, 1, 1, 0, -0.11447872425791032, 0]]]
+    //Reggeton reinaldo
+    // var throws = [[[5.467519199250946, 1, 1, 0, 1.4837072200277996, 0], [5.467519199250946, 1, 1, 0, 2.5551357914563795, 0], [5.467519199250946, 1, 1, 0, 4.912278648599229, 0], [5.837291666666713, 1, 2, 0, 6.006817070432187, 0]], [[5.467519199250946, 1, 1, 0, 0.19799293431351866, 0]], [[5.467519199250946, 1, 1, 0, 0.8408500771706597, 0], [5.467519199250946, 1, 1, 0, 1.9122786485992298, 0], [5.837291666666657, 1, 2, 0, 3.221102784717904, 0], [5.467519199250946, 1, 1, 0, 5.34085007717066, 0], [5.467519199250946, 1, 1, 0, 6.197992934313519, 0]], [[5.467519199250946, 1, 1, 0, 1.0551357914563797, 0], [5.467519199250946, 1, 1, 0, 2.7694215057420895, 0], [5.467519199250946, 1, 1, 0, 3.6265643628849498, 0], [5.837291666666713, 1, 2, 0, 4.506817070432187, 0], [5.467519199250946, 1, 1, 0, 6.62656436288495, 0]]]
     
+    //Claves mio
+    // var throws = [[[5.467519199250946, 1, 1, 0, 0.5821199157420897, 0], [5.9457602904641655, 1, 2, 0, 1.7951602507617817, 0], [5.467519199250946, 1, 1, 0, 4.668831935742089, 0]], [[6.8312990965411124, 1, 2, 0, 2.202220010403647, 0], [6.451782449799169, 1, 2, 0, 6.322110446123968, 0]], [[5.467519199250946, 1, 1, 0, 3.949013345742089, 0], [5.467519199250946, 1, 1, 0, 5.040351215742089, 0], [5.692749210796667, 1, 2, 0, 6.773448064576631, 0]], [[5.819254723389722, 1, 2, 0, 0.023740887501022157, 0], [5.467519199250946, 1, 1, 0, 5.73694984574209, 0]]]
+
     // CLAVES FERNAN
-    this.t3 = 2.39165533
-    var throws = [[[-6.704793529466665, 1, 2, 0, 0.99062218204726 - this.t3, 0]], [[-6.57828796239222, 1, 2, 0, 1.3809500032500461 - this.t3, 0]], [[-5.467519199250946, 1, 1, 0, 1.6037979257420896 - this.t3, 0]]]
-    var is_loop = true
+    var throws = [[[6.57828796239222, 1, 2, 0, 1.3809500032500461, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[5.467519199250946, 1, 1, 0, 1.6037979257420896, 0]]]
+    this.tn = 2.39165533
+    this.t0 = 0.23219955
 
+    // REGUETON FERNAN
+    // var throws = [[[5.467519199250946, 1, 1, 0, 1.1858387357420896, 0], [5.467519199250946, 1, 1, 0, 2.39327638574209, 0], [6.1987713701316665, 1, 2, 0, 3.664686931356391, 0]], [[6.451782449799167, 1, 2, 0, 0.8189811961239685, 0], [5.467519199250946, 1, 1, 0, 3.1595348857420893, 0], [5.467519199250946, 1, 1, 0, 4.0883330657420895, 0], [5.467519199250946, 1, 1, 0, 5.0867911157420895, 0]], [[5.467519199250946, 1, 1, 0, 1.4876981457420897, 0], [5.467519199250946, 1, 1, 0, 2.6951357957420896, 0], [6.7047934749852764, 1, 2, 0, 4.403955520203333, 0]]]
+    // this.tn = 5.80498866
+
+    var is_loop = true
+    
 
     while (this.balls.length < throws.length){
       const size = 15 //this.random(10, 20);
@@ -77,6 +76,8 @@ export default class App extends Component{
         0, 
         this.load_throw(throws[this.balls.length])
       );
+
+      is_loop && ball.calculate_initial_pos(this.t0, this.tn)
 
       this.balls.push(ball);
     }
@@ -111,20 +112,18 @@ export default class App extends Component{
   loop_problem(){
     for (let i = 0; i < this.balls.length; i++){
       this.balls[i].draw()
-      var current_time = ((new Date() - this.time_aux)/1000)
-      
+      var current_time = ((new Date() - this.time_aux)/1000) + this.t0
+
       // console.log(this.balls[i].index_list)
-      // if (i == 2){
-      //   console.log(this.balls[i].list_of_throw.length > this.balls[i].index_list, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time)
-      // }
+      // console.log("IT, C", i, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time, current_time, this.balls[i].list_of_throw[this.balls[i].index_list].is_done)
 
-      if ((this.balls[i].list_of_throw.length > this.balls[i].index_list) && this.balls[i].index_list >= 0 && this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
-        // console.log(i, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time , current_time)
-
+      if ((this.balls[i].list_of_throw.length > this.balls[i].index_list) && 
+          this.balls[i].index_list >= 0 && 
+          // !this.balls[i].list_of_throw[this.balls[i].index_list].is_done &&
+          Math.abs(current_time - this.balls[i].list_of_throw[this.balls[i].index_list].initial_time) <= 0.1){
         this.balls[i].global_time = this.time_aux
         this.balls[i].is_move = true
         if (!this.balls[i].is_init){
-          // console.log("TSS", i, this.balls[i].list_of_throw[0].initial_time, current_time)
           this.balls[i].init_prop()
         }
         this.balls[i].apply_throw(this.width, this.height)
@@ -138,12 +137,21 @@ export default class App extends Component{
       }
     }
 
-    current_time > this.t3 && (this.time_aux = new Date()) && this.reset_index() && console.log("RESET")
+    current_time > this.tn && (this.time_aux = new Date()) && this.reset_index() && console.log("RESET")
   }
 
   reset_index(){
     for (let i = 0; i < this.balls.length; i++){
       this.balls[i].index_list = this.balls[i].index_list%this.balls[i].list_of_throw.length
+    }
+    return true
+  }
+
+  reset_throws(){
+    for (let i = 0; i < this.balls.length; i++){
+      for (let j = 0; j < this.balls[i].list_of_throw.length; j++){
+        this.balls[i].list_of_throw[j].is_done = false
+      }
     }
     return true
   }
