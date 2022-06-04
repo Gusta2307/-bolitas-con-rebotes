@@ -17,10 +17,9 @@ body {
 }
 
 #welcome, h1{
-  background: -webkit-linear-gradient(yellow,red);
+  background: -webkit-linear-gradient(rgb(88, 201, 191),rgb(8, 109, 75));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* color: tomato;   */
 }
 
 #canvas{

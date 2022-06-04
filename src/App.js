@@ -48,7 +48,7 @@ export default class App extends Component{
     // var throws = [[[5.467519199250946, 1, 1, 0, 0.5821199157420897, 0], [5.9457602904641655, 1, 2, 0, 1.7951602507617817, 0], [5.467519199250946, 1, 1, 0, 4.668831935742089, 0]], [[6.8312990965411124, 1, 2, 0, 2.202220010403647, 0], [6.451782449799169, 1, 2, 0, 6.322110446123968, 0]], [[5.467519199250946, 1, 1, 0, 3.949013345742089, 0], [5.467519199250946, 1, 1, 0, 5.040351215742089, 0], [5.692749210796667, 1, 2, 0, 6.773448064576631, 0]], [[5.819254723389722, 1, 2, 0, 0.023740887501022157, 0], [5.467519199250946, 1, 1, 0, 5.73694984574209, 0]]]
 
     // CLAVES FERNAN
-    var throws = [[[6.57828796239222, 1, 2, 0, 1.3809500032500461, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[5.467519199250946, 1, 1, 0, 1.6037979257420896, 0]]]
+    var throws = [[[6.704793529466665, 1, 2, 0, 0.43334327204726003, 0]], [[5.467519199250946, 1, 1, 0, 1.3251584657420896, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]]]
     this.tn = 2.39165533
     this.t0 = 0.23219955
 
@@ -62,7 +62,7 @@ export default class App extends Component{
     while (this.balls.length < throws.length){
       const size = 15 //this.random(10, 20);
 
-      const x = this.width*0.4 //this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
+      const x = this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
       const y = this.height/2 //this.random(0 + size, this.height - size);
       
       var red = this.random(0, 255);
@@ -73,7 +73,7 @@ export default class App extends Component{
         this.balls.length, this.ctx, x, y, 
         "rgb(" + red + "," + green + "," + blue + ")",
         size,
-        0, 
+        this.balls.length%2, 
         this.load_throw(throws[this.balls.length])
       );
 
@@ -82,14 +82,9 @@ export default class App extends Component{
       this.balls.push(ball);
     }
 
-    this.time_aux == 0 && (this.time_aux = new Date())
+    this.time_aux === 0 && (this.time_aux = new Date())
 
-    if (is_loop){
-      this.loop_problem()
-    }
-    else{
-      this.default_problem()
-    }
+    is_loop? this.loop_problem(): this.default_problem()
 
     requestAnimationFrame(this.loop)
   }
@@ -100,10 +95,6 @@ export default class App extends Component{
       let current_time = ((new Date() - this.time_aux)/1000)
       if (this.balls[i].list_of_throw.length > this.balls[i].index_list && this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
         this.balls[i].global_time = this.time_aux
-        if (!this.balls[i].is_init){
-          // console.log("TSS", i, this.balls[i].list_of_throw[0].initial_time, current_time)
-          this.balls[i].init_prop()
-        }
         this.balls[i].apply_throw(this.width, this.height)
       }
     }
@@ -114,24 +105,16 @@ export default class App extends Component{
       this.balls[i].draw()
       var current_time = ((new Date() - this.time_aux)/1000) + this.t0
 
-      // console.log(this.balls[i].index_list)
-      // console.log("IT, C", i, this.balls[i].list_of_throw[this.balls[i].index_list].initial_time, current_time, this.balls[i].list_of_throw[this.balls[i].index_list].is_done)
-
       if ((this.balls[i].list_of_throw.length > this.balls[i].index_list) && 
           this.balls[i].index_list >= 0 && 
-          // !this.balls[i].list_of_throw[this.balls[i].index_list].is_done &&
           Math.abs(current_time - this.balls[i].list_of_throw[this.balls[i].index_list].initial_time) <= 0.1){
         this.balls[i].global_time = this.time_aux
         this.balls[i].is_move = true
-        if (!this.balls[i].is_init){
-          this.balls[i].init_prop()
-        }
         this.balls[i].apply_throw(this.width, this.height)
       }
       else{
         if (this.balls[i].is_move){
           this.balls[i].global_time = this.time_aux
-          this.balls[i].draw()
           this.balls[i].apply_throw(this.width, this.height)
         }
       }
@@ -192,8 +175,8 @@ export default class App extends Component{
   render() {
     return (
       <>
-        <My_Audio></My_Audio>
         <div>
+        <My_Audio></My_Audio>
           <canvas ref="canvas" id='canvas' />
         </div>
       </>

@@ -14,8 +14,8 @@ export const pos_hands = {
 
 
 export function change_hand_done(x, y, current_hand, change_hand, t){
-    let pos_hand_x = change_hand == 1? pos_hands[(current_hand + 1) % 2][0] : pos_hands[current_hand][0]
-    let pos_hand_y = change_hand == 1? pos_hands[(current_hand + 1) % 2][1] : pos_hands[current_hand][1]
+    let pos_hand_x = change_hand === 1? pos_hands[(current_hand + 1) % 2][0] : pos_hands[current_hand][0]
+    let pos_hand_y = change_hand === 1? pos_hands[(current_hand + 1) % 2][1] : pos_hands[current_hand][1]
     if (pos_hand_x - 30 <= x && x <= pos_hand_x + 30 && pos_hand_y - 30 <= y && y <= pos_hand_y + 30)
         return true
     return false
@@ -46,7 +46,6 @@ export function calculate_speed_vx_with_tt(total_time, change_hand, current_hand
 export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
     let time = 0
     let current_h = h
-    let current_bounce = 0
     let vy1 = null
 
     if (vy0 < 0){
@@ -58,7 +57,7 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
     
     while(bounce_amount > 0){
         // CAIDA
-        if (vy0 > 0 && time == 0){ // LANZAMIENTO HACIA ABAJO
+        if (vy0 > 0 && time === 0){ // LANZAMIENTO HACIA ABAJO
             time += (Math.abs(vy0) - Math.sqrt(vy0*vy0 - 2*g_k*h))/(g_k)
             vy1 = vy0
         }
@@ -69,7 +68,7 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         vy1 = calculate_speed_vy(vy1)
         
 
-        if (bounce_amount == 1){
+        if (bounce_amount === 1){
             if (catch_ball){
                 current_h = Math.abs(((vy1*vy1)/(2*g_k)) - h)
                 time += Math.sqrt(2*g_k*current_h)/g_k
@@ -86,7 +85,6 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         current_h = calculate_h_max(vy1)
 
         bounce_amount -= 1
-        current_bounce += 1
     }
 
     // console.log("TIME", time)
@@ -173,12 +171,12 @@ export function calculate_position(x, y, index_list, current_throw, t0, tn){
 
         current_v = calculate_speed_vy(current_v, Math.abs(temp_bounce - current_throw[index_list].bounce_amount))
 
-        if (current_throw[index_list].bounce_amount == 1){
+        if (current_throw[index_list].bounce_amount === 1){
             let gpcb = get_pos_catch_ball(current_x, current_y, y, current_v, vx, current_h, temp_t, obj, temp_bounce, current_throw[index_list], current_hand, index_list)
             if (gpcb != null)
                 return gpcb
         }
-        if (current_throw[index_list].bounce_amount == 2){
+        if (current_throw[index_list].bounce_amount === 2){
             temp_t = Math.abs(current_v/g_k)
             if (Math.abs(temp_t - obj.total_wt) < 0.001|| temp_t > obj.total_wt)
                 return [current_x, current_y, obj.total_wt, current_v, vx, temp_bounce, current_hand, 0, index_list]
@@ -214,14 +212,8 @@ export function calculate_position(x, y, index_list, current_throw, t0, tn){
 
 
 function get_pos(current_x, current_y, vx, vy, temp_t, x, y, current_hand, current_throw){
-    let A = current_y + (vy * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
-    let AA = current_y + ((-vy) * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
-    let B = current_y - (vy * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
-    let BB = current_y - ((-vy) * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
-
     var fx = current_x - vx * temp_t
     var fy = current_y + (vy * temp_t - 1/2 * g_k * Math.pow(temp_t, 2))
-
 
     return [fx, fy]
 }
