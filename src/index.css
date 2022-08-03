@@ -9,10 +9,13 @@ html {
 body {
   overflow: hidden;
   height: inherit;
-  background-color: black;
+
+  
+
+  /* background-color: black; */
 }
 
-#welcome{
+/* #welcome{
   text-align: center;
 }
 
@@ -20,7 +23,7 @@ body {
   background: -webkit-linear-gradient(rgb(88, 201, 191),rgb(8, 109, 75));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
+} */
 
 #canvas{
   width: 100%;

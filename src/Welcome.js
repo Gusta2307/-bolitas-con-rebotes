@@ -1,24 +1,21 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
-import App from './App';
+import React from 'react';
+import styled from 'styled-components';
+import Navbar from './components/NavBar';
+import Intro from './components/Intro';
 
-export default class Welcome extends Component{
-    constructor(){
-        super();
-        this.title = "Welcome, click me!"
-    }
+export default function Welcome(){
 
-    go = () => {
-        ReactDOM.render((<App />), document.getElementById('root'));
-    }
+    const Container = styled.div`
+        height: 100vh;
+        background-color: #082A3A;
+    `;
 
-    render() {
-        return (
-            <>
-            <div onClick={this.go} id="welcome">
-                <h1>{this.title}</h1>
-            </div> 
-            </>
-        )
-    }
+
+
+    return (
+        <Container>
+            <Navbar />
+            <Intro />
+        </Container>
+    );
 }

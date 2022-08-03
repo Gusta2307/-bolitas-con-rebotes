@@ -148,7 +148,7 @@ class Optimizer:
         else:
             print(np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int'))
             print(np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times))))
-        
+            print(self.get_solution())
         return self.result
         
     def get_solution(self):
