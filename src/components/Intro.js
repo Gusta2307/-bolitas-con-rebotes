@@ -27,6 +27,7 @@ export default function Intro(){
         justify-content: center;
         align-items: center;
         
+        z-index: 100;
         
         // glass effect
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))
@@ -35,7 +36,6 @@ export default function Intro(){
         box-shadow: 0 8px 32px  0 rgba(0,0,0,0.37);
         border: 2px solid rgba(255, 255, 255, 0.18);
         border-radius: 20px;
-
     `
 
     const Title = styled.h1`
@@ -82,8 +82,8 @@ export default function Intro(){
         <Container>
             <Wrapper>
                 <Title>Bienvenido a BCR</Title>
-                <Subtitle>Buscamos que la musica sea mas divertida</Subtitle>
-                <Description>dfsghjkjgfddsdfghjkiewfjshdzhs iugfgs hsgdf hgs gas</Description>
+                <Subtitle>Subtitle</Subtitle>
+                <Description>Description</Description>
                 <Button onClick={() => ReactDOM.render((<App />), document.getElementById('root'))}>Play Demo</Button>
             </Wrapper>
         </Container>

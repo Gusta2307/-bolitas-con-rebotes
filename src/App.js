@@ -191,7 +191,7 @@ export default class App extends Component{
         <NavBar/>
         <div>
           <My_Audio></My_Audio>
-          <canvas ref="canvas" id='canvas' />
+          <canvas ref="canvas" id='canvas'/>
         </div>
       </>
     );

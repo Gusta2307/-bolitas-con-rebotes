@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import ReactDOM from 'react-dom'
+import Sequence from './Sequence'
+import AudioLoader from './AudioLoader'
 
 export default function NavBar(){
   const Components = styled.div`
@@ -14,6 +16,7 @@ export default function NavBar(){
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: -1;
   `
 
 
@@ -39,19 +42,21 @@ export default function NavBar(){
     margin-right: 30px;
     font-size: 20px;
     color: #8099E9;
+
+    cursor: Pointer;
   `
 
   return (
     <Components>
         <Wrapper>
             <Left> 
-              <Logo>BCR</Logo>
+              <Logo>Bolitas Con Rebote</Logo>
             </Left>
             <Right>
               <Menu>
-                <MenuItems>Crear Secuencia</MenuItems>
-                <MenuItems>Cargar audio</MenuItems>
-                <MenuItems>Descargar Gif</MenuItems>
+                <MenuItems onClick={() => ReactDOM.render((<Sequence />), document.getElementById('root'))}>Crear Secuencia</MenuItems>
+                <MenuItems onClick={() => ReactDOM.render((<AudioLoader />), document.getElementById('root'))}>Cargar audio</MenuItems>
+                {/* <MenuItems>Descargar Gif</MenuItems> */}
                 {/* <MenuItems>Algo 2</MenuItems> */} 
               </Menu>
             </Right>
