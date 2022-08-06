@@ -1,6 +1,0 @@
-fastapi
-gunicorn
-uvicorn
-pulp
-numpy
-librosa

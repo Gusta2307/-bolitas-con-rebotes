@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import NavBar from './NavBar'
+import App from '../App'
 
 export default function Sequence(){
-    const [inputValue, setInputValue] = useState('')
     const [selectedFile, setSelectedFile] = useState(null);
     const [isFilePicked, setIsFilePicked] = useState(false);
     const [checkBoxValue, setCheckBoxValue] = useState(false);
@@ -150,35 +151,50 @@ export default function Sequence(){
         cursor: pointer;
     `
 
-    const changeHandler = (event) => {
-		setSelectedFile(event.target.files[0]);
-		setIsFilePicked(true);
-
-        let data = new FormData();
-        data.append('file', selectedFile);
-        console.log(event.target.files[0]);
-        console.log(data);
-
-
-	};
-
     const onClickHandler = () => {
         let data = new FormData();
         data.append('file', selectedFile);
 
         console.log(checkBoxValue);
+        //http://127.0.0.1:8000
+        //https://optimizer-apl.herokuapp.com
+        // fetch('http://127.0.0.1:8000/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue), {
+        //     method: 'POST',
+        //     body: data,
+        //     mode: 'no-cors',
+        // }).then(res => {
+        //     console.log(res);
+        // })
 
-        fetch('https://7ue3mg.deta.dev/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue), {
-            method: 'POST',
-            body: data,
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Access-Control-Allow-Origin': '*',
+        // fetch('http://127.0.0.1:8000/welcome', {
+        //     method: 'GET',
+        //     mode: '',
+        // }).then(res => {
+        //     console.log(res);
+        // })
+
+        var xmlhttp = new XMLHttpRequest();
+        // xmlhttp.open("POST", "http://127.0.0.1:8000/welcome")
+        // xmlhttp.send()
+
+        xmlhttp.open("POST", 'https://optimizer-apl.herokuapp.com/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
+        xmlhttp.send(data);
+
+        
+        xmlhttp.onabort = function() {
+            console.log("aborted");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+                // redirect to app page with response
+                // var response = JSON.parse(this.responseText);
+                // var A = new App(null, response.distribution_balls, response.loop, response.balls);
+                // ReactDOM.render(A.render(), document.getElementById('root'));
+                ReactDOM.render(<App/>, document.getElementById('root'));
             }
-        }).then(response => {
-            console.log(response)
-        });
+        }
     }
 
 
@@ -192,7 +208,9 @@ export default function Sequence(){
                         <FormItem>
                             <div>
                                 <Label>Cantidad de pelotas: </Label>
-                                <InputBall type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} placeholder="" />
+                                <InputBall type="number" min="1" value={countBalls} onChange={(e) => {
+                                    setCountBalls(e.target.value)}
+                                    } placeholder="" />
                             </div>
                             <CheckBox>
                                 <InputCheckBox type="checkbox" value={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
@@ -201,8 +219,9 @@ export default function Sequence(){
                         </FormItem>
                         <FormItem>
                             <AudioBox>
-                                <InputAudio type="file" onInput={(e) => {
+                                <InputAudio type="file" accept='.mp3, .wav, .ogg' onInput={(e) => {
                                         // console.log(e);
+                                        // still focus
                                         setSelectedFile(e.target.files[0])
                                         setIsFilePicked(true)
                                     }} />
