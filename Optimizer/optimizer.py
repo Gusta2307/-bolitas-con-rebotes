@@ -141,14 +141,14 @@ class Optimizer:
     def solve(self) -> int:
         self.__get_problem()   
         self.result = self.prob.solve()
-        # np.set_printoptions(threshold=np.inf)
-        # if self.loop:            
-        #     print(np.array([self.X[i].varValue for i in range(self.balls*self.__original_length)]).reshape((self.balls, self.__original_length)).astype('int'))
-        #     print(np.array([self.Y[i].varValue for i in range(self.balls*self.__original_length*self.__original_length)]).reshape((self.balls, self.__original_length, self.__original_length)))
-        # else:
-        #     print(np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int'))
-        #     print(np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times))))
-        #     print(self.get_solution())
+        np.set_printoptions(threshold=np.inf)
+        if self.loop:            
+            print(np.array([self.X[i].varValue for i in range(self.balls*self.__original_length)]).reshape((self.balls, self.__original_length)).astype('int'))
+            print(np.array([self.Y[i].varValue for i in range(self.balls*self.__original_length*self.__original_length)]).reshape((self.balls, self.__original_length, self.__original_length)))
+        else:
+            print(np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int'))
+            print(np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times))))
+            print(self.get_solution())
         return self.result
         
     def get_solution(self):

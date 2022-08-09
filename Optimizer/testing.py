@@ -47,7 +47,9 @@ times = [0.53405896, 0.99845805, 1.41641723, 1.71827664, 2.18267574, 2.62385488,
 #Tan tan reinaldo
 # times = [0.428571428571429, 0.857142857142857, 1.07142857142857, 1.28571428571429, 1.71428571428571, 2.57142857142857, 3]
 
-op = Optimizer(sequence_times=times, balls=3, loop=False)
+times = [0.737,1.657]
+
+op = Optimizer(sequence_times=times, balls=2, loop=False)
 
 print(op.solve())
 

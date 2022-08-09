@@ -9,8 +9,8 @@ html {
 body {
   overflow: hidden;
   height: inherit;
-
-
+  
+  
   /* background-color: black; */
 }
 
@@ -32,3 +32,4 @@ body {
 .audio-element{
   visibility: hidden;
 }
+

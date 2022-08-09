@@ -1,12 +1,21 @@
 import React, {useState} from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+import Loading from './Loading'
 import NavBar from './NavBar'
 import MyAudio from '../Audio_'
+import App from '../App'
 
 export default function Sequence(){
     const [seqItemsList, activeSeqItem] = useState([0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0])
+    const [bpmValue, setBpmValue] = useState(120)
+    const [checkBoxValue, setCheckBoxValue] = useState(false);
+    const [countBalls, setCountBalls] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    const [ball, setBall] = useState(0)
+    const [times, setTimes] = useState([])
+
+    const [errorMSG, setErrorMSG] = useState(false)
 
     const Container = styled.div`
         height: 100vh;
@@ -31,8 +40,6 @@ export default function Sequence(){
         justify-content: center;
         align-items: center;
         
-        z-index: 100;
-        
         // glass effect
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))
         -webkit-backdrop-filter: blur(20px);
@@ -51,7 +58,6 @@ export default function Sequence(){
         font-weight: bold;
         aling-items: center;
         color: #FFFFFF;
-
     `
 
     const Form = styled.div`
@@ -70,9 +76,9 @@ export default function Sequence(){
     `
 
     const Input = styled.input`
-        width: 300px;
-        height: 40px;
-        border-radius: 20px;
+        width: ${props => props.width? props.width: " 4vw"};
+        height: 2vh;
+        border-radius: 10px;
         border: 2px solid rgba(255, 255, 255, 0.18);
         padding: 10px;
         margin-top: 10px;
@@ -80,6 +86,7 @@ export default function Sequence(){
         background-color: #FFFFFF;
         font-size: 20px;
         font-weight: bold;
+        margin-left: 1vw;
     `
     const InputCheckBox = styled.input`
         height: 100%;
@@ -90,14 +97,25 @@ export default function Sequence(){
         display: flex;
         flex-direction: row;
         align-items: center;
+        margin-right: 2vw;
     `
 
     const Label = styled.label`
         width: 100%;
         height: 100%;
-        font-size: 20px;
+        font-size: 2rem;
         font-weight: bold;
         color: #FFFFFF;
+    `
+
+    const LabelERROR = styled.label`
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #FF0000;
+
+        display: ${props => props.showMsg? 'block' : 'none'}
     `
 
     const Seq = styled.div`
@@ -148,31 +166,76 @@ export default function Sequence(){
     }
 
     const PlaySounds = () => {
-        const time = new Date()
-        var tempo = 140
-        var last = time
-        var bounces = []
-        for(let i = 0; i < seqItemsList.length;){
-            if (new Date() - last >= tempo){
-                if(seqItemsList[i] === 1){
+        var _sampleRate = 44100;
+        var _minuteInSeconds = 60;
+        var _beatsPerMinute =  bpmValue;
+        var _totalSteps = seqItemsList.length;
+        var _currentStep = 0;
+        var _stepDelay;
+        var _isPlaying;
+
+        var initialTime;
+        var bounce = []
+
+        var calculateBPM = function() {
+
+            return Math.round(((_sampleRate * _minuteInSeconds) / (_beatsPerMinute * _totalSteps)) / _totalSteps);      
+        }
+
+        setTimes([])
+
+        const playAudio = function() {
+            if(_currentStep < _totalSteps) {
+                if(seqItemsList[_currentStep] === 1) {
+                    setTimes(times => [...times,(new Date() - initialTime)/1000])
                     const sound = new Audio('./clave.wav')
                     sound.play()
-                    bounces.push((new Date() - time)/1000)
                 }
-                i++
-                last = new Date()
+                _currentStep++;
+            }else if(_currentStep >= _totalSteps){
+                console.log(times)
+                _currentStep = 0;
+                clearInterval(_isPlaying);
             }
         }
-        console.log(bounces)
-    }
 
-    const CountBalls = (e) => {
-        // console.log(e.target.value)
-        setBall(Number(e.target.value))
+        initialTime = new Date();
+        _isPlaying = setInterval(function() {
+
+            playAudio()
+
+          }, calculateBPM());
     }
 
     const Create = () => {
-        console.log(ball)
+
+        // obtener secuencia de tiempos
+        if(times.length > 0) {
+            var xmlhttp = new XMLHttpRequest();
+            setLoading(true)
+            xmlhttp.open("POST", 'http://127.0.0.1:8000?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
+            xmlhttp.send();
+
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log(this.responseText);
+                    // redirect to app page with response
+                    setLoading(false);
+                    var response = JSON.parse(this.responseText);
+                    if(response.prob_sol === 1){
+                        setErrorMSG(false)
+                        ReactDOM.render(<App loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                    }
+                    else{
+                        setErrorMSG(true)
+                    }
+                }
+            }
+        }
+        else{
+            setErrorMSG(true)
+        }
     }
 
     // const sound = new Audio('./clave.wav')
@@ -181,16 +244,24 @@ export default function Sequence(){
     return (
         <Container>
             <NavBar/>
+            <Loading loading={loading}/>
             <Wrapper>
                 <Box>
                     <Title>Crear Secuencia de Audio</Title>
                     <Form>
                         <FormItem>
-                            <Input type="number" min="1" placeholder="Cantidad de pelotas" />
+                            <FormItem>
+                                <Label>Cantidad de pelotas:</Label>
+                                <Input type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} placeholder="Cantidad de pelotas" />
+                            </FormItem>
                             <CheckBox>
-                                <InputCheckBox type="checkbox" id="lopp" />
+                                <InputCheckBox type="checkbox" id="lopp" value={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
                                 <Label>Secuencia ciclica?</Label>
                             </CheckBox>
+                            <FormItem>
+                                <Label>BPM:</Label>
+                                <Input width={"5vw"} type="number" min="1" value={bpmValue} onChange={(e) => setBpmValue(e.target.value)} placeholder="BPM" />
+                            </FormItem>
                         </FormItem>
                         <FormItem>
                             <Seq>
@@ -224,7 +295,7 @@ export default function Sequence(){
                         <FormItem>
                             <Button onClick={Create}>Crear</Button>
                         </FormItem>
-
+                        <LabelERROR showMsg={errorMSG}>No se pudo crear la secuencia.</LabelERROR>
                     </Form>
                 </Box>
             </Wrapper>

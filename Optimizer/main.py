@@ -8,21 +8,25 @@ import librosa
 app = FastAPI()
 
 @app.post("/")
-def solution(times, balls:int, loop=False):
+def solution(times, balls:int, loop:bool):
+    print("TTTTTTTTTTTTTT", times, balls, loop  )
     times = list(map(float, str(times).replace('[','').replace(']', '').replace(',', ' ').split()))
 
+    print(times)
+
     op = Optimizer(times, balls, loop)
-    op.solve()
+    prob_sol = op.solve()
     sol = op.get_solution()
 
     result = {
+        'prob_sol': prob_sol,
         'times': times,
         'balls': balls,
         'loop': loop,
         'distribution_balls': sol
     }
 
-    return Response(
+    return JSONResponse(
         status_code=200,
         content=result,
         headers={

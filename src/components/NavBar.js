@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import ReactDOM from 'react-dom'
 import Sequence from './Sequence'
 import AudioLoader from './AudioLoader'
+import Gallery from './Gallery'
 
 export default function NavBar(){
   const Components = styled.div`
     background-color: #082A3A;
     border-bottom: 2px solid GRAY;
-  `
-  
-
-  const Wrapper = styled.div`
+    `
+    
+    
+    const Wrapper = styled.div`
+    z-index: 999999999999999999999999;
       padding: 0px 10px;
       display: flex;
       justify-content: space-between;
@@ -26,6 +28,8 @@ export default function NavBar(){
   `
 
   const Left = styled.div`
+    display: flex;
+
     margin-left: 20px;
   `
 
@@ -56,7 +60,7 @@ export default function NavBar(){
               <Menu>
                 <MenuItems onClick={() => ReactDOM.render((<Sequence />), document.getElementById('root'))}>Crear Secuencia</MenuItems>
                 <MenuItems onClick={() => ReactDOM.render((<AudioLoader />), document.getElementById('root'))}>Cargar audio</MenuItems>
-                {/* <MenuItems>Descargar Gif</MenuItems> */}
+                <MenuItems onClick={() => ReactDOM.render((<Gallery />), document.getElementById('root'))}>Galeria</MenuItems>
                 {/* <MenuItems>Algo 2</MenuItems> */} 
               </Menu>
             </Right>

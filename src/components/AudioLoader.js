@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import NavBar from './NavBar'
+import Loading from './Loading'
 import App from '../App'
 
 export default function Sequence(){
@@ -9,6 +10,7 @@ export default function Sequence(){
     const [isFilePicked, setIsFilePicked] = useState(false);
     const [checkBoxValue, setCheckBoxValue] = useState(false);
     const [countBalls, setCountBalls] = useState(1);
+    const [loading, setLoading] = useState(false);
 
 
     const Container = styled.div`
@@ -70,6 +72,7 @@ export default function Sequence(){
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 1vh;
     `
 
     const InputBall = styled.input`
@@ -90,10 +93,15 @@ export default function Sequence(){
     `
 
     const InputAudio = styled.input`
-        // opacity: 0;
-        // width: 0.1px;
-        // height: 0.1px;
-        // position: absolute;
+        display: inline-block;
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 50px;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
     `
 
     const CheckBox = styled.div`
@@ -111,32 +119,27 @@ export default function Sequence(){
     `
 
     const  LabelAudio = styled.label`
+        position: relative;
+        z-index: 0;
+        display: inline-block;
         width: 100%;
-        height: 100%;
-        font-size: 20px;
+        cursor: pointer;
+        color: #000;
+        padding: 10px 0;
+        text-transform:uppercase;
+        font-size:15px;
         font-weight: bold;
-        color: #FFFFFF;
-    `
-
+        // margin-left: 10px;
+        `
+        
     const AudioBox = styled.div`
-
-
-        &:label {
-            display: block;
-            position: relative;
-            width: 200px;
-            height: 50px;
-            border-radius: 25px;
-            background: linear-gradient(40deg, #ff6ec4, #7873f5);
-            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform .2s ease-out;
-        }
+        background: #75fd92;
+        position: relative;
+        // width: 150px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        margin-right: 1vw;
     `
 
     const Button = styled.button`
@@ -172,27 +175,19 @@ export default function Sequence(){
         // }).then(res => {
         //     console.log(res);
         // })
-
+        setLoading(true);
         var xmlhttp = new XMLHttpRequest();
-        // xmlhttp.open("POST", "http://127.0.0.1:8000/welcome")
-        // xmlhttp.send()
 
-        xmlhttp.open("POST", 'https://optimizer-apl.herokuapp.com/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
+        xmlhttp.open("POST", 'http://127.0.0.1:8000/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
         xmlhttp.send(data);
-
-        
-        xmlhttp.onabort = function() {
-            console.log("aborted");
-        }
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
                 console.log(this.responseText);
                 // redirect to app page with response
-                // var response = JSON.parse(this.responseText);
-                // var A = new App(null, response.distribution_balls, response.loop, response.balls);
-                // ReactDOM.render(A.render(), document.getElementById('root'));
-                ReactDOM.render(<App/>, document.getElementById('root'));
+                setLoading(false);
+                var response = JSON.parse(this.responseText);
+                ReactDOM.render(<App loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
             }
         }
     }
@@ -201,6 +196,7 @@ export default function Sequence(){
     return (
         <Container>
             <NavBar/>
+            <Loading loading={loading}/>
             <Wrapper>
                 <Box>
                     <Title>Cargar Secuencia de Audio</Title>
@@ -219,16 +215,16 @@ export default function Sequence(){
                         </FormItem>
                         <FormItem>
                             <AudioBox>
-                                <InputAudio type="file" accept='.mp3, .wav, .ogg' onInput={(e) => {
+                                <InputAudio type="file" accept='.mp3, .wav, .ogg' placeholder='Hola' onInput={(e) => {
                                         // console.log(e);
                                         // still focus
                                         setSelectedFile(e.target.files[0])
                                         setIsFilePicked(true)
                                     }} />
-                                <Label id='label'>Elija el archivo</Label>
+                                <LabelAudio >Elija el archivo</LabelAudio>
                             </AudioBox>
-                            {isFilePicked ? (
-                                <div>
+                            {isFilePicked ? ( <div><Label>{selectedFile.name}</Label></div> ) : null}
+                                {/* <div>
                                     <p>Filename: {selectedFile.name}</p>
                                     <p>Filetype: {selectedFile.type}</p>
                                     <p>Size in bytes: {selectedFile.size}</p>
@@ -237,14 +233,11 @@ export default function Sequence(){
                                         {selectedFile.lastModifiedDate.toLocaleDateString()}
                                     </p>
                                 </div>
-                            ) : (
-                                <p>Select a file to show details</p>
-                            )}
+                            ) :<></>} */}
                         </FormItem>
                         <FormItem>
                             <Button onClick={onClickHandler}>Crear</Button>
                         </FormItem>
-
                     </Form>
                 </Box>
             </Wrapper>
