@@ -1,0 +1,7 @@
+fastapi
+gunicorn
+uvicorn
+pulp
+numpy
+librosa
+python-multipart
