@@ -13,6 +13,7 @@ export default function Sequence(){
     const [countBalls, setCountBalls] = useState(1);
     const [loading, setLoading] = useState(false);
 
+    const [errorMSG, setErrorMSG] = useState(false)
 
     const Container = styled.div`
         height: 100vh;
@@ -119,6 +120,17 @@ export default function Sequence(){
         color: #FFFFFF;
     `
 
+    
+    const LabelERROR = styled.label`
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #FF0000;
+
+        display: ${props => props.showMsg? 'block' : 'none'}
+    `
+
     const  LabelAudio = styled.label`
         position: relative;
         z-index: 0;
@@ -188,7 +200,13 @@ export default function Sequence(){
                 // redirect to app page with response
                 setLoading(false);
                 var response = JSON.parse(this.responseText);
-                ReactDOM.render(<App loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                if(response.prob_sol === 1){
+                    ReactDOM.render(<App loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                }
+                else{
+                    setErrorMSG(true)
+                }
+
             }
         }
     }
@@ -239,6 +257,7 @@ export default function Sequence(){
                         <FormItem>
                             <Button onClick={onClickHandler}>Crear</Button>
                         </FormItem>
+                        <LabelERROR showMsg={errorMSG}>No se pudo crear la secuencia.</LabelERROR>
                     </Form>
                 </Box>
             </Wrapper>
