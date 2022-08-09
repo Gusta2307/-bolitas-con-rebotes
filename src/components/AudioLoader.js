@@ -159,7 +159,7 @@ export default function Sequence(){
         let data = new FormData();
         data.append('file', selectedFile);
 
-        console.log(checkBoxValue);
+        console.log(checkBoxValue, data);
         //http://127.0.0.1:8000
         //https://optimizer-apl.herokuapp.com
         // fetch('http://127.0.0.1:8000/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue), {
