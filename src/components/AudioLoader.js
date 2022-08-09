@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import NavBar from './NavBar'
 import Loading from './Loading'
 import App from '../App'
+import {urlAPI} from './Config'
 
 export default function Sequence(){
     const [selectedFile, setSelectedFile] = useState(null);
@@ -178,7 +179,7 @@ export default function Sequence(){
         setLoading(true);
         var xmlhttp = new XMLHttpRequest();
 
-        xmlhttp.open("POST", 'http://127.0.0.1:8000/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
+        xmlhttp.open("POST", urlAPI+'sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
         xmlhttp.send(data);
 
         xmlhttp.onreadystatechange = function() {

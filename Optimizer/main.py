@@ -9,10 +9,7 @@ app = FastAPI()
 
 @app.post("/")
 def solution(times, balls:int, loop:bool):
-    print("TTTTTTTTTTTTTT", times, balls, loop  )
     times = list(map(float, str(times).replace('[','').replace(']', '').replace(',', ' ').split()))
-
-    print(times)
 
     op = Optimizer(times, balls, loop)
     prob_sol = op.solve()
@@ -34,11 +31,8 @@ def solution(times, balls:int, loop:bool):
         }
     )
 
-# ! Si se sube un audio como obtengo el audio?? :/
 @app.post("/sound")
 def solution_with_sound(balls:int, loop:bool, file: UploadFile = File(...)):
-    print(balls, loop, file.filename)
-
     # write file to disk
     with open(file.filename, 'wb') as f:
         f.write(file.file.read())

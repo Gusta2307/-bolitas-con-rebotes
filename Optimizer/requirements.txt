@@ -3,5 +3,5 @@ gunicorn
 uvicorn
 pulp
 numpy
-librosa
+librosa==0.9.1
 python-multipart

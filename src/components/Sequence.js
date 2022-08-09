@@ -5,6 +5,7 @@ import Loading from './Loading'
 import NavBar from './NavBar'
 import MyAudio from '../Audio_'
 import App from '../App'
+import {urlAPI} from './Config'
 
 export default function Sequence(){
     const [seqItemsList, activeSeqItem] = useState([0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0])
@@ -213,7 +214,7 @@ export default function Sequence(){
         if(times.length > 0) {
             var xmlhttp = new XMLHttpRequest();
             setLoading(true)
-            xmlhttp.open("POST", 'http://127.0.0.1:8000?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
+            xmlhttp.open("POST", urlAPI+'?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
             xmlhttp.send();
 
 
