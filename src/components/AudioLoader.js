@@ -209,6 +209,12 @@ export default function Sequence(){
 
             }
         }
+
+        xmlhttp.onerror = function(){
+            setLoading(false);
+            setErrorMSG(true)
+        }
+
     }
 
 
@@ -223,9 +229,7 @@ export default function Sequence(){
                         <FormItem>
                             <div>
                                 <Label>Cantidad de pelotas: </Label>
-                                <InputBall type="number" min="1" value={countBalls} onChange={(e) => {
-                                    setCountBalls(e.target.value)}
-                                    } placeholder="" />
+                                <InputBall type="number" min="1" value={countBalls} onInput={(e) => {setCountBalls(e.target.value)}}/>
                             </div>
                             <CheckBox>
                                 <InputCheckBox type="checkbox" value={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />

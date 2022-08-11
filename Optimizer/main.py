@@ -7,7 +7,11 @@ import librosa
 
 app = FastAPI()
 
-@app.post("/")
+@app.get("/")
+def welcome():
+    return {"message": "Welcome to the Optimizer API"}
+
+@app.post("/sequence")
 def solution(times, balls:int, loop:bool):
     times = list(map(float, str(times).replace('[','').replace(']', '').replace(',', ' ').split()))
 

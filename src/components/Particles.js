@@ -1,18 +1,13 @@
-import styled from 'styled-components'
 
-
-export default function Particles() {
+export const Particles = () => {
     const colors = ["#3CC157", "#2AA7FF", "#1B1B1B", "#FCBC0F", "#F85F36"];
     const numBalls = 50;
 
-    const Container = styled.div`
-        height: 100vh
-        z-index: -1;
-    `
+    const random = (min, max) => {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
 
-    
     var balls = []
-    
     for (let i = 0; i < numBalls; i++) {
         let ball = document.createElement("div");
         ball.classList.add("ball");
@@ -20,12 +15,13 @@ export default function Particles() {
         ball.style.left = `${Math.floor(Math.random() * 100)}vw`;
         ball.style.top = `${Math.floor(Math.random() * 100)}vh`;
         ball.style.transform = `scale(${Math.random()})`;
-        ball.style.width = `${Math.random()}em`;
+        ball.style.width = `${random(1, 5)}em`;
         ball.style.height = ball.style.width;
+        ball.style.position = "absolute"
+        ball.style.borderRadius = "100%"
+        ball.style.opacity = "0.7"
         
-        // balls.push(ball);
-        Container.appendChild(ball)
-        // document.body.append(ball);
+        balls.push(ball);
     }
 
     // Keyframes
@@ -34,7 +30,7 @@ export default function Particles() {
         x: Math.random() * (i % 2 === 0 ? -11 : 11),
         y: Math.random() * 12
         };
-        let anim = el.animate(
+        el.animate(
         [
             { transform: "translate(0, 0)" },
             { transform: `translate(${to.x}rem, ${to.y}rem)` }
@@ -48,10 +44,5 @@ export default function Particles() {
         }
         );
     });
-
-
-
-    return (
-        <Container></Container>
-    )
+    return balls
 }

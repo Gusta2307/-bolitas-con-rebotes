@@ -1,9 +1,11 @@
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import React from 'react'
 import styled from 'styled-components'
 import ReactDOM from 'react-dom'
 import Sequence from './Sequence'
 import AudioLoader from './AudioLoader'
 import Gallery from './Gallery'
+import {Particles} from './Particles'
 
 export default function NavBar(){
   const Components = styled.div`
@@ -58,10 +60,21 @@ export default function NavBar(){
             </Left>
             <Right>
               <Menu>
-                <MenuItems onClick={() => ReactDOM.render((<Sequence />), document.getElementById('root'))}>Crear Secuencia</MenuItems>
-                <MenuItems onClick={() => ReactDOM.render((<AudioLoader />), document.getElementById('root'))}>Cargar audio</MenuItems>
-                <MenuItems onClick={() => ReactDOM.render((<Gallery />), document.getElementById('root'))}>Galeria</MenuItems>
-                {/* <MenuItems>Algo 2</MenuItems> */} 
+                <MenuItems onClick={() => ReactDOM.render((<Sequence />), document.getElementById('root'), () => {
+                      Particles().forEach((el) => {
+                          document.getElementById('root').firstChild.appendChild(el)
+                      })
+                  })}>Crear Secuencia</MenuItems>
+                <MenuItems onClick={() => ReactDOM.render((<AudioLoader />), document.getElementById('root'), () =>{
+                    Particles().forEach((el) => {
+                      document.getElementById('root').firstChild.appendChild(el)
+                  })
+                })}>Cargar audio</MenuItems>
+                <MenuItems onClick={() => ReactDOM.render((<Gallery />), document.getElementById('root'), () => {
+                    Particles().forEach((el) => {
+                      document.getElementById('root').firstChild.appendChild(el)
+                  })
+                })}>Galeria</MenuItems>
               </Menu>
             </Right>
         </Wrapper>

@@ -6,6 +6,8 @@ import NavBar from './NavBar'
 import MyAudio from '../Audio_'
 import App from '../App'
 import {urlAPI} from './Config'
+import {Particles} from './Particles'
+
 
 export default function Sequence(){
     const [seqItemsList, activeSeqItem] = useState([0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0])
@@ -214,7 +216,7 @@ export default function Sequence(){
         if(times.length > 0) {
             var xmlhttp = new XMLHttpRequest();
             setLoading(true)
-            xmlhttp.open("POST", urlAPI+'?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
+            xmlhttp.open("POST", urlAPI+'sequence?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
             xmlhttp.send();
 
 
@@ -233,6 +235,11 @@ export default function Sequence(){
                     }
                 }
             }
+
+            xmlhttp.onerror = function() {
+                setLoading(false)
+                setErrorMSG(true)
+            }
         }
         else{
             setErrorMSG(true)
@@ -241,6 +248,16 @@ export default function Sequence(){
 
     // const sound = new Audio('./clave.wav')
     // sound.play()
+
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // append child
+        Particles().forEach((el) => {
+            document.getElementById('root').firstChild.appendChild(el)
+        })
+    })
+
+
 
     return (
         <Container>
