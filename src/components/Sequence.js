@@ -246,10 +246,6 @@ export default function Sequence(){
         }
     }
 
-    // const sound = new Audio('./clave.wav')
-    // sound.play()
-
-
     document.addEventListener("DOMContentLoaded", (event) => {
         // append child
         Particles().forEach((el) => {

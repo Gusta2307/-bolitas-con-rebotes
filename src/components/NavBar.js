@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import Sequence from './Sequence'
 import AudioLoader from './AudioLoader'
 import Gallery from './Gallery'
+import Welcome from '../Welcome'
 import {Particles} from './Particles'
 
 export default function NavBar(){
@@ -31,7 +32,7 @@ export default function NavBar(){
 
   const Left = styled.div`
     display: flex;
-
+    cursor: pointer;
     margin-left: 20px;
   `
 
@@ -55,7 +56,7 @@ export default function NavBar(){
   return (
     <Components>
         <Wrapper>
-            <Left> 
+            <Left onClick={() => ReactDOM.render((<Welcome />), document.getElementById('root'))}> 
               <Logo>Bolitas Con Rebote</Logo>
             </Left>
             <Right>

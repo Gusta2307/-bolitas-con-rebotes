@@ -3,8 +3,7 @@ import Ball from "./Ball"
 import Ball_Throw from './Ball_throw';
 import My_Audio from './Audio_';
 import NavBar from './components/NavBar';
-// import {startRecording, stopRecording} from './components/GifWritten';
-// import Juggler from './components/Juggler'
+import Juggler from './components/Juggler'
 import Canvas_Menu from './components/Canvas_Menu';
 
 export default class App extends Component{
@@ -13,6 +12,7 @@ export default class App extends Component{
 
     this.state = {
       video: null,
+      balls: [],
     }
     
     this.chunks = []
@@ -23,7 +23,7 @@ export default class App extends Component{
     this.width = null;
     this.height = null
     
-    this.balls = []
+    // this.balls = []
     
     // this.time = 0
     this.time_aux = 0
@@ -35,32 +35,31 @@ export default class App extends Component{
     this.is_loop = props.loop? props.loop: false
     
     this.finish = false
-    // this.duration = 3
   }
 
 
   loop = () => {
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     this.ctx.fillRect(0, 0, this.width, this.height);
-    // Juggler(this.canvas, this.ctx)
+    Juggler(this.canvas, this.ctx)
 
-    const ball1 = new Ball(
-      -1,this.ctx, this.width*0.4, this.height/2,
-      "rgb(" + "100" + "," + "23" + "," + "1" + ")",
-      30,
-    ).draw();
+    // const ball1 = new Ball(
+    //   -1,this.ctx, this.width*0.4, this.height/2,
+    //   "rgb(" + "100" + "," + "23" + "," + "1" + ")",
+    //   30,
+    // ).draw();
 
-    const ball2 = new Ball(
-      -1,this.ctx, this.width*0.6, this.height/2,
-      "rgb(" + "200" + "," + "200" + "," + "1" + ")",
-      30,
-    ).draw();
+    // const ball2 = new Ball(
+    //   -1,this.ctx, this.width*0.6, this.height/2,
+    //   "rgb(" + "200" + "," + "200" + "," + "1" + ")",
+    //   30,
+    // ).draw();
 
 
-    while (this.balls.length < this.throws.length){
+    while (this.state.balls.length < this.throws.length){
       const size = 15 //this.random(10, 20);
 
-      const x = this.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
+      const x = this.state.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
       const y = this.height/2 //this.random(0 + size, this.height - size);
       
       var red = this.random(0, 255);
@@ -68,16 +67,16 @@ export default class App extends Component{
       var blue = this.random(0, 255);
 
       const ball = new Ball(
-        this.balls.length, this.ctx, x, y, 
+        this.state.balls.length, this.ctx, x, y, 
         "rgb(" + red + "," + green + "," + blue + ")",
         size,
-        this.balls.length%2, 
-        this.load_throw(this.throws[this.balls.length])
+        this.state.balls.length%2, 
+        this.load_throw(this.throws[this.state.balls.length])
       );
 
       this.is_loop && ball.calculate_initial_pos(this.t0, this.tn)
 
-      this.balls.push(ball);
+      this.state.balls.push(ball);
     }
 
     this.time_aux === 0 && (this.time_aux = new Date())
@@ -90,11 +89,19 @@ export default class App extends Component{
     const chunks = [];
     const stream = this.refs.canvas.captureStream(); // grab our canvas MediaStream
     const options = {
-      audioBitsPerSecond : 128000,
-      videoBitsPerSecond : 2500000,
-      mimeType : 'video/webm'
+      mimeType : 'video/webm; codecs=vp9,opus'
     }
   
+    // get the audio track:
+    let ctx = new AudioContext();
+    let dest = ctx.createMediaStreamDestination();
+    let sourceNode = ctx.createMediaElementSource(document.getElementById('audio-element'));
+    sourceNode.connect(dest);
+    sourceNode.connect(ctx.destination);
+    let audioTrack = dest.stream.getAudioTracks()[0];
+    // add it to your canvas stream:
+    stream.addTrack(audioTrack);
+
     const rec = new MediaRecorder(stream, options); // init the recorder 
   
     // every time the recorder has new data, we will store it in our array
@@ -102,29 +109,31 @@ export default class App extends Component{
     // only when the recorder stops, we construct a complete Blob from all the chunks
     
     rec.start();
+
     const check_finish = setInterval(()=>{
-      
       if(this.finish){
-        rec.stop();
+        setTimeout(() => {
+          rec.stop();
+        }, 1000);
       }
     }, 500);
 
     rec.onstop = e => {
-      this.setState({video: URL.createObjectURL(new Blob(chunks,  {type: 'video/webm'}))})
+      this.setState({video: URL.createObjectURL(new Blob(chunks,  {type: 'video/webm'})), balls: this.state.balls})
       clearInterval(check_finish)
     }
   }
 
   default_problem(){
     let is_done = true
-    for (let i = 0; i < this.balls.length; i++){
-      this.balls[i].draw()
+    for (let i = 0; i < this.state.balls.length; i++){
+      this.state.balls[i].draw()
       let current_time = ((new Date() - this.time_aux)/1000)
-      if (this.balls[i].list_of_throw.length > this.balls[i].index_list){
+      if (this.state.balls[i].list_of_throw.length > this.state.balls[i].index_list){
         is_done = false
-        if(this.balls[i].list_of_throw[this.balls[i].index_list].initial_time <= current_time){
-          this.balls[i].global_time = this.time_aux
-          this.balls[i].apply_throw(this.width, this.height)
+        if(this.state.balls[i].list_of_throw[this.state.balls[i].index_list].initial_time <= current_time){
+          this.state.balls[i].global_time = this.time_aux
+          this.state.balls[i].apply_throw(this.width, this.height)
         }
       } 
     }
@@ -132,39 +141,39 @@ export default class App extends Component{
   }
 
   loop_problem(){
-    for (let i = 0; i < this.balls.length; i++){
-      this.balls[i].draw()
+    for (let i = 0; i < this.state.balls.length; i++){
+      this.state.balls[i].draw()
       var current_time = ((new Date() - this.time_aux)/1000) + this.t0
 
-      if ((this.balls[i].list_of_throw.length > this.balls[i].index_list) && 
-          this.balls[i].index_list >= 0 && 
-          Math.abs(current_time - this.balls[i].list_of_throw[this.balls[i].index_list].initial_time) <= 0.1){
-        this.balls[i].global_time = this.time_aux
-        this.balls[i].is_move = true
-        this.balls[i].apply_throw(this.width, this.height)
+      if ((this.state.balls[i].list_of_throw.length > this.state.balls[i].index_list) && 
+          this.state.balls[i].index_list >= 0 && 
+          Math.abs(current_time - this.state.balls[i].list_of_throw[this.state.balls[i].index_list].initial_time) <= 0.1){
+        this.state.balls[i].global_time = this.time_aux
+        this.state.balls[i].is_move = true
+        this.state.balls[i].apply_throw(this.width, this.height)
       }
       else{
-        if (this.balls[i].is_move){
-          this.balls[i].global_time = this.time_aux
-          this.balls[i].apply_throw(this.width, this.height)
+        if (this.state.balls[i].is_move){
+          this.state.balls[i].global_time = this.time_aux
+          this.state.balls[i].apply_throw(this.width, this.height)
         }
       }
     }
 
-    current_time > this.tn && (this.time_aux = new Date()) && this.reset_index() && console.log("RESET")
+    current_time > this.tn && (this.time_aux = new Date()) && this.reset_index() && (this.finish = true) && console.log("RESET")
   }
 
   reset_index(){
-    for (let i = 0; i < this.balls.length; i++){
-      this.balls[i].index_list = this.balls[i].index_list%this.balls[i].list_of_throw.length
+    for (let i = 0; i < this.state.balls.length; i++){
+      this.balls[i].index_list = this.state.balls[i].index_list%this.state.balls[i].list_of_throw.length
     }
     return true
   }
 
   reset_throws(){
-    for (let i = 0; i < this.balls.length; i++){
-      for (let j = 0; j < this.balls[i].list_of_throw.length; j++){
-        this.balls[i].list_of_throw[j].is_done = false
+    for (let i = 0; i < this.state.balls.length; i++){
+      for (let j = 0; j < this.state.balls[i].list_of_throw.length; j++){
+        this.state.balls[i].list_of_throw[j].is_done = false
       }
     }
     return true
@@ -203,12 +212,18 @@ export default class App extends Component{
     return result_list
   }
 
-  render(pe) {
+  reset_animation = () => {
+    this.setState({video: this.state.video, balls: []})
+    this.time_aux = 0
+    this.startRecording()
+  }
+
+  render() {
     return (
       <>
         <NavBar/>
         <div style={{backgroundColor:"#000"}}>
-          <Canvas_Menu video={this.state.video} loop={this.loop} throws={this.throws}></Canvas_Menu>
+          <Canvas_Menu video={this.state.video} onReset={this.reset_animation} loop={this.loop} throws={this.throws}></Canvas_Menu>
           <My_Audio></My_Audio>
           <canvas ref="canvas" id='canvas'/>
         </div>

@@ -4,11 +4,6 @@ import App from '../App'
 
 
 export default function Canvas_Menu(props) {
-
-    console.log(props.video)
-    setTimeout(console.log("VIDEO", props.video), 11*1000)
-
-
     const Container = styled.div`
         // width: auto;
         // height: auto;
@@ -48,16 +43,6 @@ export default function Canvas_Menu(props) {
         cursor: ${props => props.video != null? 'pointer' : 'not-allowed'};
     `
 
-    const resetHandler = () => {
-        // refresh page
-        window.location.reload()
-        ReactDOM.render(<App loop={props.loop} throws={props.throws} />, document.getElementById('root'))
-    }
-
-    // const SetterVideo = (chuck) => {
-    //     setVideo(new Blob(chunks, {type: 'video/webm'}));
-    // }
-
     const donwloadHandler = () => {
         // Download video
         if (props.video != null) {
@@ -68,11 +53,15 @@ export default function Canvas_Menu(props) {
         }
     }
     
+    const resetHandler = () => {
+        props.onReset()
+    }
+
     return (
         <Container>
             <Wrapper>
                 <Items>
-                    <Label onClick={resetHandler}>Reset</Label>
+                    <Label onClick={resetHandler} >Reset</Label>
                 </Items>
                 <Items>
                     <LabelDownload download video={props.video} href={props.video} onClick={donwloadHandler}>Download</LabelDownload>

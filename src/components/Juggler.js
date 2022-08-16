@@ -8,55 +8,55 @@ export default function Juggler(canvas, ctx){
         // head
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.arc(canvas.width/2, vh(25), vw(2), 0, 2 * Math.PI);
+        ctx.arc(canvas.width/2, vh(28), vw(2), 0, 2 * Math.PI);
         ctx.fill();
 
         // body
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.moveTo(canvas.width/2 - vw(5), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 + vw(5), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 + vw(2), canvas.height/2 + vw(2));
-        ctx.lineTo(canvas.width/2 - vw(2), canvas.height/2 + vw(2));
+        ctx.moveTo(canvas.width/2 - vw(5), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 + vw(5), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 + vw(2.5), canvas.height/2 + vw(5));
+        ctx.lineTo(canvas.width/2 - vw(2.5), canvas.height/2 + vw(5));
         ctx.fill();
         ctx.closePath();
 
         // left arm
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.moveTo(canvas.width/2 - vw(5), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 - vw(5) + vw(0.2), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 - vw(7) + vw(0.2), canvas.height/2);
-        ctx.lineTo(canvas.width/2 - vw(7), canvas.height/2);
+        ctx.moveTo(canvas.width/2 - vw(5), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 - vw(5) + vw(0.2), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 - vw(7) + vw(0.2), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 - vw(7), canvas.height/2 + vh(3));
         ctx.fill();
         ctx.closePath();
 
         // right arm
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.moveTo(canvas.width/2 + vw(5), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 + vw(5) - vw(0.2), canvas.height/2 - vh(18));
-        ctx.lineTo(canvas.width/2 + vw(7) - vw(0.2), canvas.height/2);
-        ctx.lineTo(canvas.width/2 + vw(7), canvas.height/2);
+        ctx.moveTo(canvas.width/2 + vw(5), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 + vw(5) - vw(0.2), canvas.height/2 - vh(15));
+        ctx.lineTo(canvas.width/2 + vw(7) - vw(0.2), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 + vw(7), canvas.height/2 + vh(3));
         ctx.fill();
         ctx.closePath();
 
         // left hand
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.moveTo(canvas.width/2 - vw(7), canvas.height/2);
-        ctx.lineTo(canvas.width/2 - vw(7) + vw(0.2), canvas.height/2);
-        ctx.lineTo(canvas.width/2 - vw(10) + vw(0.2), canvas.height/2 - vh(2));
-        ctx.lineTo(canvas.width/2 - vw(10), canvas.height/2 - vh(2));
+        ctx.moveTo(canvas.width/2 - vw(7), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 - vw(7) + vw(0.2), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 - vw(10) + vw(0.2), canvas.height/2);
+        ctx.lineTo(canvas.width/2 - vw(10), canvas.height/2);
         ctx.fill();
 
         // right hand
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';
-        ctx.moveTo(canvas.width/2 + vw(7), canvas.height/2);
-        ctx.lineTo(canvas.width/2 + vw(7) - vw(0.2), canvas.height/2);
-        ctx.lineTo(canvas.width/2 + vw(10) - vw(0.2), canvas.height/2 - vh(2));
-        ctx.lineTo(canvas.width/2 + vw(10), canvas.height/2 - vh(2));
+        ctx.moveTo(canvas.width/2 + vw(7), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 + vw(7) - vw(0.2), canvas.height/2 + vh(3));
+        ctx.lineTo(canvas.width/2 + vw(10) - vw(0.2), canvas.height/2);
+        ctx.lineTo(canvas.width/2 + vw(10), canvas.height/2);
         ctx.fill();
     }
 

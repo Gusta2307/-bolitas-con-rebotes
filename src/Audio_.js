@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import {audioBall} from './components/Config';
 
 export default class My_Audio extends Component{
     constructor(){
         super();
-        this.file = './clave.wav'
+        this.file = './clave-mejorada.wav'
     }
 
     render(){
@@ -18,7 +19,7 @@ export default class My_Audio extends Component{
 
     playAudio(global_time, id) {
         console.log(id, "BOUNCE", (new Date() - global_time)/1000)
-        new Audio(this.file).play()
+        document.getElementById("audio-element").play()
         return true
       }
 }

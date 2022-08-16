@@ -7,11 +7,19 @@ const e = 0.9
 
 
 export const pos_hands = {
-    0: [window.innerWidth*0.4, window.innerHeight/2],
-    1: [window.innerWidth*0.6, window.innerHeight/2]
+    0: [vw(40), vh(50)],
+    1: [vw(60), vh(50)]
 };
 
-
+export function vh (v) {
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    return (v * h) / 100;
+  }
+  
+export function vw(v) {
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    return (v * w) / 100;
+}
 
 export function change_hand_done(x, y, current_hand, change_hand, t){
     let pos_hand_x = change_hand === 1? pos_hands[(current_hand + 1) % 2][0] : pos_hands[current_hand][0]
