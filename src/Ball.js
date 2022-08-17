@@ -1,7 +1,7 @@
 import My_Audio from "./Audio_";
 import {calculate_position,g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, change_hand_done} from "./utils";
 export default class Ball{
-    constructor(id, ctx, x, y, color, size, _initial_hand, _list_of_throw) {
+    constructor(id, ctx, x, y, color, size, _initial_hand, _list_of_throw, is_loop) {
         this.id = id
 
         this.ctx = ctx;
@@ -36,6 +36,7 @@ export default class Ball{
         this.current_bounce = 0
 
         this.is_move = false
+        this.is_loop = is_loop
     }
 
     draw() {
@@ -57,10 +58,13 @@ export default class Ball{
         this.is_move = false
         this.list_of_throw[this.index_list].is_done = true
 
-        //default
-        this.index_list += 1
-        // for loop
-        // this.index_list = (this.index_list + 1)%this.list_of_throw.length
+        // if (!this.is_loop){
+        //   //default
+        //   this.index_list += 1
+        // } else{
+          // for loop
+        this.index_list = (this.index_list + 1)%this.list_of_throw.length
+        // }
 
         if (!this.list_of_throw.length){
           return

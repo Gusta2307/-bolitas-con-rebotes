@@ -210,7 +210,7 @@ export default function Gallery(props){
                                         <Text>Pelotas: {item.balls}</Text>
                                         <Text>Secuencia ciclica: {item.loop}</Text>
                                         <Text>Audio: <PlayButton disabled={disable} path={item.pathAudio} ></PlayButton></Text>
-                                        <DemoButton onClick={() => ReactDOM.render((<App loop={item.loop === "NO"?false:true} throws={item.times}/>), document.getElementById('root'))}>Play Demo</DemoButton>
+                                        <DemoButton onClick={() => ReactDOM.render((<App loop={item.loop === "NO"?false:true} throws={item.throws} times={item.times}/>), document.getElementById('root'))}>Play Demo</DemoButton>
                                     </BoxSeq>
                                 )
                             })

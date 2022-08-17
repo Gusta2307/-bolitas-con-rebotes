@@ -201,7 +201,7 @@ export default function Sequence(){
                 setLoading(false);
                 var response = JSON.parse(this.responseText);
                 if(response.prob_sol === 1){
-                    ReactDOM.render(<App loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                    ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
                 }
                 else{
                     setErrorMSG(true)
@@ -232,7 +232,7 @@ export default function Sequence(){
                                 <InputBall type="number" min="1" value={countBalls} onInput={(e) => {setCountBalls(e.target.value)}}/>
                             </div>
                             <CheckBox>
-                                <InputCheckBox type="checkbox" value={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
+                                <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
                                 <Label>Secuencia ciclica?</Label>
                             </CheckBox>
                         </FormItem>
