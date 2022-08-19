@@ -84,7 +84,7 @@ export default function Intro(){
                 <Title>Bienvenido a BCR</Title>
                 <Subtitle>Subtitle</Subtitle>
                 <Description>Description</Description>
-                <Button onClick={() => ReactDOM.render((<App />), document.getElementById('root'))}>Play Demo</Button>
+                <Button onClick={() => ReactDOM.render((<App loop={true} />), document.getElementById('root'))}>Play Demo</Button>
             </Wrapper>
         </Container>
     )

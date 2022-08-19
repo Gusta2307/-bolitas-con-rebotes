@@ -58,13 +58,13 @@ export default class Ball{
         this.is_move = false
         this.list_of_throw[this.index_list].is_done = true
 
-        // if (!this.is_loop){
-        //   //default
-        //   this.index_list += 1
-        // } else{
+        if (!this.is_loop){
+          //default
+          this.index_list += 1
+        } else{
           // for loop
-        this.index_list = (this.index_list + 1)%this.list_of_throw.length
-        // }
+          this.index_list = (this.index_list + 1)%this.list_of_throw.length
+        }
 
         if (!this.list_of_throw.length){
           return
