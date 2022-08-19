@@ -172,6 +172,8 @@ export default function Gallery(props){
         const PlayAudio = () =>{
             console.log("AAAAAAAAAAA", props.path)
             // Play audio
+            // var music =  require(String('./Sound/'+props.path))
+            // console.log(music)
             const audio = new Audio(props.path)
             audio.play()
         }

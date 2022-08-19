@@ -6,7 +6,7 @@ import NavBar from './NavBar'
 import App from '../App'
 import {urlAPI} from './Config'
 import {Particles} from './Particles'
-
+import sonud_ball from '../Sound/clave_mejorada.wav'
 
 export default function Sequence(){
     const [seqItemsList, activeSeqItem] = useState([0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0])
@@ -188,7 +188,7 @@ export default function Sequence(){
             if(_currentStep < _totalSteps) {
                 if(seqItemsList[_currentStep] === 1) {
                     setTimes(times => [...times,(new Date() - initialTime)/1000])
-                    const sound = new Audio('./clave.wav')
+                    const sound = new Audio(sonud_ball)
                     sound.play()
                 }
                 _currentStep++;
