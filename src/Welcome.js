@@ -11,10 +11,6 @@ export default function Welcome(){
         background-color: #082A3A;
     `;
 
-    const colors = ["#3CC157", "#2AA7FF", "#1B1B1B", "#FCBC0F", "#F85F36"];
-    const numBalls = 50;
-
-
     document.addEventListener("DOMContentLoaded", (event) => {
         // append child
         Particles().forEach((el) => {

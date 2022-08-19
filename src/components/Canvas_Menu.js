@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import ReactDOM from 'react-dom'
-import App from '../App'
+
 
 
 export default function Canvas_Menu(props) {

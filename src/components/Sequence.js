@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import Loading from './Loading'
 import NavBar from './NavBar'
-import MyAudio from '../Audio_'
 import App from '../App'
 import {urlAPI} from './Config'
 import {Particles} from './Particles'
@@ -174,11 +173,9 @@ export default function Sequence(){
         var _beatsPerMinute =  bpmValue;
         var _totalSteps = seqItemsList.length;
         var _currentStep = 0;
-        var _stepDelay;
         var _isPlaying;
 
         var initialTime;
-        var bounce = []
 
         var calculateBPM = function() {
 

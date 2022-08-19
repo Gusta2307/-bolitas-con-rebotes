@@ -1,4 +1,3 @@
-import {BrowserRouter as Router, Route} from 'react-router-dom'
 import React from 'react'
 import styled from 'styled-components'
 import ReactDOM from 'react-dom'

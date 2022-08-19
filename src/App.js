@@ -226,8 +226,8 @@ export default class App extends Component{
       <>
         <NavBar/>
         <div style={{backgroundColor:"#000"}}>
-          <Canvas_Menu video={this.state.video} onReset={this.reset_animation} loop={this.loop} throws={this.throws}></Canvas_Menu>
-          <My_Audio></My_Audio>
+          <Canvas_Menu video={this.state.video} onReset={this.reset_animation} loop={this.loop} throws={this.throws}/>
+          <My_Audio/>
           <canvas ref="canvas" id='canvas'/>
         </div>
       </>
