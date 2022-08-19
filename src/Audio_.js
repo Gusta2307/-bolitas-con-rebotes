@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {audioBall} from './components/Config';
 
 export default class My_Audio extends Component{
     constructor(){

@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import NavBar from "./NavBar"
 import Gallery_JSON from "./Gallery_JSON"
-import {useState} from "react"
 import ReactDOM from "react-dom"
 import App from "../App"
 
@@ -150,13 +149,6 @@ export default function Gallery(props){
         border-radius: 10px;
         margin-top: 2vh;
     `
-
-    const PlayAudio = () =>{
-        console.log("AAAAAAAAAAA", props.path)
-        // Play audio
-        const audio = new Audio(props.path)
-        audio.play()
-    }
 
     function PlayButton(props){
         const PlayButton = styled.button`
