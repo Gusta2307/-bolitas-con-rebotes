@@ -4,6 +4,12 @@ import Navbar from './components/NavBar';
 import Intro from './components/Intro';
 import {Particles} from './components/Particles';
 
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import Gallery from './components/Gallery';
+import Sequence from './components/Sequence';
+import AudioLoader from './components/AudioLoader';
+
+
 export default function Welcome(){
 
     const Container = styled.div`

@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import App from '../App';
 import ReactDOM from 'react-dom'
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 export default function Intro(){
+    const navigate = useNavigate()
 
     const Container = styled.div`
         height: calc(100vh - 50px);
@@ -77,15 +78,15 @@ export default function Intro(){
         }
     `
 
-
     return (
         <Container>
             <Wrapper>
                 <Title>Bienvenido a BCR</Title>
                 <Subtitle>Subtitle</Subtitle>
                 <Description>Description</Description>
-                <Button onClick={() => ReactDOM.render((<App loop={true} />), document.getElementById('root'))}>Play Demo</Button>
+                <Button onClick={() => navigate('/canvas', {state: {is_loop:true, throws:null, times:null}})}>Play Demo</Button>
             </Wrapper>
+            <Outlet />
         </Container>
     )
 }

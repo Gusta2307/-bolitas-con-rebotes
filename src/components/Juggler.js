@@ -4,7 +4,6 @@ export default function Juggler(canvas, ctx){
 
     const body = () => {
 
-        console.log(canvas.height/2)
         // head
         ctx.beginPath();
         ctx.fillStyle = 'rgb(128,128,128)';

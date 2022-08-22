@@ -7,8 +7,11 @@ import App from '../App'
 import {urlAPI} from './Config'
 import {Particles} from './Particles'
 import sonud_ball from '../Sound/clave_mejorada.wav'
+import { useNavigate } from "react-router-dom";
 
 export default function Sequence(){
+    const navigate = useNavigate();
+
     const [seqItemsList, activeSeqItem] = useState([0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0])
     const [bpmValue, setBpmValue] = useState(120)
     const [checkBoxValue, setCheckBoxValue] = useState(false);
@@ -193,7 +196,6 @@ export default function Sequence(){
                 }
                 _currentStep++;
             }else if(_currentStep >= _totalSteps){
-                console.log(times)
                 _currentStep = 0;
                 clearInterval(_isPlaying);
             }
@@ -219,13 +221,16 @@ export default function Sequence(){
 
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    console.log(this.responseText);
                     // redirect to app page with response
                     setLoading(false);
                     var response = JSON.parse(this.responseText);
                     if(response.prob_sol === 1){
                         setErrorMSG(false)
-                        ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                        navigate('/canvas', {state: {
+                            is_loop:response.loop, 
+                            throws:response.distribution_balls, 
+                            times:response.times}})
+                        // ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
                     }
                     else{
                         setErrorMSG(true)

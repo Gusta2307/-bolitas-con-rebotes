@@ -3,9 +3,13 @@ import NavBar from "./NavBar"
 import Gallery_JSON from "./Gallery_JSON"
 import ReactDOM from "react-dom"
 import App from "../App"
+import { useNavigate } from "react-router-dom"
+import {Particles} from './Particles'
 
 
 export default function Gallery(props){
+    const navigate = useNavigate();
+
     const Container = styled.div`
         height: 100vh;
         background-color: #082A3A;
@@ -84,7 +88,7 @@ export default function Gallery(props){
             border-radius: 20px;
         }
     `
-    
+
     const TitleBox = styled.div`
         display: absolute;
         justify-content: center;
@@ -170,7 +174,6 @@ export default function Gallery(props){
         `
 
         const PlayAudio = () =>{
-            console.log("AAAAAAAAAAA", props.path)
             // Play audio
             // var music =  require(String('./Sound/'+props.path))
             // console.log(music)
@@ -184,6 +187,14 @@ export default function Gallery(props){
             </PlayButton>
         )
     }
+
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // append child
+        Particles().forEach((el) => {
+            document.getElementById('root').firstChild.appendChild(el)
+        })
+    })
 
     return (
         <Container>
@@ -204,7 +215,12 @@ export default function Gallery(props){
                                         <Text>Pelotas: {item.balls}</Text>
                                         <Text>Secuencia ciclica: {item.loop}</Text>
                                         <Text>Audio: <PlayButton disabled={disable} path={item.pathAudio} ></PlayButton></Text>
-                                        <DemoButton onClick={() => ReactDOM.render((<App loop={item.loop === "NO"?false:true} throws={item.throws} times={item.times}/>), document.getElementById('root'))}>Play Demo</DemoButton>
+                                        <DemoButton onClick={() => 
+                                            navigate('/canvas', {state: {
+                                                is_loop:item.loop === "NO"?false:true, 
+                                                throws:item.throws, 
+                                                times:item.times}})
+                                        }>Play Demo</DemoButton>
                                     </BoxSeq>
                                 )
                             })

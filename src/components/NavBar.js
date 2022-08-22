@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet, Link } from "react-router-dom";
 import styled from 'styled-components'
 import ReactDOM from 'react-dom'
 import Sequence from './Sequence'
@@ -11,16 +12,16 @@ export default function NavBar(){
   const Components = styled.div`
     background-color: #082A3A;
     border-bottom: 2px solid GRAY;
-    `
+  `
     
     
-    const Wrapper = styled.div`
-    z-index: 999999999999999999999999;
-      padding: 0px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: -1;
+  const Wrapper = styled.div`
+    z-index: 99999999;
+    padding: 0px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: -1;
   `
 
 
@@ -48,35 +49,31 @@ export default function NavBar(){
     margin-right: 30px;
     font-size: 20px;
     color: #8099E9;
-
     cursor: Pointer;
   `
 
   return (
     <Components>
         <Wrapper>
-            <Left onClick={() => ReactDOM.render((<Welcome />), document.getElementById('root'))}> 
-              <Logo>Bolitas Con Rebote</Logo>
-            </Left>
+            <Link to="/bolitas-con-rebotes/" style={{textDecoration: "none",}}>
+              <Left> 
+                <Logo>Bolitas Con Rebote</Logo>
+              </Left>
+            </Link>
             <Right>
               <Menu>
-                <MenuItems onClick={() => ReactDOM.render((<Sequence />), document.getElementById('root'), () => {
-                      Particles().forEach((el) => {
-                          document.getElementById('root').firstChild.appendChild(el)
-                      })
-                  })}>Crear Secuencia</MenuItems>
-                <MenuItems onClick={() => ReactDOM.render((<AudioLoader />), document.getElementById('root'), () =>{
-                    Particles().forEach((el) => {
-                      document.getElementById('root').firstChild.appendChild(el)
-                  })
-                })}>Cargar audio</MenuItems>
-                <MenuItems onClick={() => ReactDOM.render((<Gallery />), document.getElementById('root'), () => {
-                    Particles().forEach((el) => {
-                      document.getElementById('root').firstChild.appendChild(el)
-                  })
-                })}>Galeria</MenuItems>
+                <Link to="/sequence" style={{textDecoration: "none",}}>
+                  <MenuItems>Crear Secuencia</MenuItems>
+                </Link>
+                <Link to="/audio_loader" style={{textDecoration: "none",}}>
+                  <MenuItems>Cargar audio</MenuItems>
+                </Link >
+                <Link to="/gallery" style={{textDecoration: "none",}}>
+                  <MenuItems>Galeria</MenuItems>
+                </Link>
               </Menu>
             </Right>
+            <Outlet />
         </Wrapper>
     </Components>
   )

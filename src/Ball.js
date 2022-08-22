@@ -1,5 +1,5 @@
 import My_Audio from "./Audio_";
-import {calculate_position,g_k, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, change_hand_done} from "./utils";
+import {calculate_position,g_k, vh, pos_hands, calculate_total_time, calculate_speed_vy_hmax, calculate_h_max, calculate_speed_vx_with_tt, calculate_speed_vy, calculate_speed_vx, change_hand_done} from "./utils";
 export default class Ball{
     constructor(id, ctx, x, y, color, size, _initial_hand, _list_of_throw, is_loop) {
         this.id = id
@@ -54,7 +54,8 @@ export default class Ball{
       if (!this.list_of_throw.length)
         return
 
-      if (this.list_of_throw[this.index_list].bounce_amount === this.current_bounce && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t)){
+      if (this.list_of_throw[this.index_list].bounce_amount === this.current_bounce && change_hand_done(this.x, this.y, this.current_hand, this.list_of_throw[this.index_list].change_hand, this.t) ||
+      this.list_of_throw[this.index_list].bounce_amount < this.current_bounce){
         this.is_move = false
         this.list_of_throw[this.index_list].is_done = true
 
@@ -94,6 +95,7 @@ export default class Ball{
 
         return
       }
+
 
       this.vy == null && (this.vy = this.list_of_throw[this.index_list].initial_velocity)
 

@@ -1,6 +1,6 @@
 
 export const g = 9.80665
-export const k = (window.innerHeight/2)
+export const k = ((document.getElementById('canvas')?.height || window.innerHeight)/2)
 export const g_k = g*k
 
 const e = 0.9
@@ -13,19 +13,25 @@ export const pos_hands = {
 
 export function vh (v) {
     var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // var h = document.getElementById('canvas')?.height || window.innerHeight 
     return (v * h) / 100;
-  }
-  
+}
+
 export function vw(v) {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    // var w = document.getElementById('canvas')?.width || window.innerWidth 
     return (v * w) / 100;
 }
 
 export function change_hand_done(x, y, current_hand, change_hand, t){
     let pos_hand_x = change_hand === 1? pos_hands[(current_hand + 1) % 2][0] : pos_hands[current_hand][0]
     let pos_hand_y = change_hand === 1? pos_hands[(current_hand + 1) % 2][1] : pos_hands[current_hand][1]
-    if (pos_hand_x - 30 <= x && x <= pos_hand_x + 30 && pos_hand_y - 30 <= y && y <= pos_hand_y + 30)
+    if (pos_hand_x - vw(2) <= x && x <= pos_hand_x + vw(2) && pos_hand_y - vw(2) <= y && y <= pos_hand_y + vw(2))
         return true
+
+    if(((current_hand + 1) % 2 === 0 && x < pos_hand_x) || ((current_hand + 1) % 2 === 1 && x > pos_hand_x) || x < 0){
+        return true
+    }
     return false
 };
 

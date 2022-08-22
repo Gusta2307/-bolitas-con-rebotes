@@ -5,8 +5,12 @@ import NavBar from './NavBar'
 import Loading from './Loading'
 import App from '../App'
 import {urlAPI} from './Config'
+import {Particles} from './Particles';
+import {useNavigate} from 'react-router-dom';
 
-export default function Sequence(){
+export default function AudioLoader(){
+    const navigate = useNavigate();
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [isFilePicked, setIsFilePicked] = useState(false);
     const [checkBoxValue, setCheckBoxValue] = useState(false);
@@ -196,12 +200,16 @@ export default function Sequence(){
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                console.log(this.responseText);
                 // redirect to app page with response
                 setLoading(false);
                 var response = JSON.parse(this.responseText);
                 if(response.prob_sol === 1){
-                    ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
+                    navigate('/canvas', {state: {
+                        is_loop:response.loop === "NO"?false:true, 
+                        throws:response.distribution_balls, 
+                        times:response.times}})
+
+                    // ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
                 }
                 else{
                     setErrorMSG(true)
@@ -217,6 +225,13 @@ export default function Sequence(){
 
     }
 
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // append child
+        Particles().forEach((el) => {
+            document.getElementById('root').firstChild.appendChild(el)
+        })
+    })
 
     return (
         <Container>

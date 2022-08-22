@@ -23,8 +23,7 @@ export default class My_Audio extends Component{
     }
 
     playAudio(global_time, id) {
-        console.log(id, "BOUNCE", (new Date() - global_time)/1000)
-        console.log(document.getElementById("audio-element"))
+        // console.log(id, "BOUNCE", (new Date() - global_time)/1000)
         document.getElementById("audio-element").play()
         // new Audio(require(this.file)).play()
         return true

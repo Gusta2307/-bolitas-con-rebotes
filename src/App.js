@@ -5,6 +5,12 @@ import My_Audio from './Audio_';
 import NavBar from './components/NavBar';
 import Juggler from './components/Juggler'
 import Canvas_Menu from './components/Canvas_Menu';
+import {Outlet} from "react-router-dom"
+import {vw, vh} from './utils'
+
+import {useLocation} from 'react-router-dom';
+
+
 
 export default class App extends Component{
   constructor(props){
@@ -28,11 +34,11 @@ export default class App extends Component{
     // this.time = 0
     this.time_aux = 0
     
-    this.t0 = props.times? props.times[0] : 0.23219955
-    this.tn = props.times? props.times[props.times.length - 1] : 2.39165533
+    this.t0 = props.times !== null? props.times[0] : 0.23219955
+    this.tn = props.times !== null? props.times[props.times.length - 1] : 2.39165533
     
-    this.throws = props.throws? props.throws: [[[6.57828796239222, 1, 2, 0, 1.3809500032500461, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[5.467519199250946, 1, 1, 0, 1.6037979257420896, 0]]]// [[[5.467519199250946, 1, 1, 0, 0.6982196957420896, 0], [5.692749210796666, 1, 2, 0, 1.7347179045766312, 0], [5.467519199250946, 1, 1, 0, 4.111553025742089, 0], [5.467519199250946, 1, 1, 0, 5.110011075742089, 0], [5.467519199250946, 1, 1, 0, 6.45676844574209, 0], [5.467519199250946, 1, 1, 0, 8.337584775742089, 0]], [[5.467519199250946, 1, 1, 0, 0.3963602857420897, 0]], [[5.467519199250946, 1, 1, 0, 2.1610768357420893, 0], [5.467519199250946, 1, 1, 0, 3.06665506574209, 0], [5.467519199250946, 1, 1, 0, 5.992369355742089, 0], [5.467519199250946, 1, 1, 0, 7.45522649574209, 0], [5.467519199250946, 1, 1, 0, 8.778763905742089, 0]], [[5.467519199250946, 1, 1, 0, 1.2787185557420897, 0], [5.467519199250946, 1, 1, 0, 3.6471539357420895, 0], [5.467519199250946, 1, 1, 0, 4.52951220574209, 0], [5.467519199250946, 1, 1, 0, 5.41187048574209, 0], [5.467519199250946, 1, 1, 0, 6.89794758574209, 0], [5.467519199250946, 1, 1, 0, 7.757085905742089, 0], [5.467519199250946, 1, 1, 0, 9.21994304574209, 0]]]
-    this.is_loop = props.loop? props.loop: false
+    this.throws = props.throws !== null? props.throws: [[[6.57828796239222, 1, 2, 0, 1.3809500032500461, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[5.467519199250946, 1, 1, 0, 1.6037979257420896, 0]]]// [[[5.467519199250946, 1, 1, 0, 0.6982196957420896, 0], [5.692749210796666, 1, 2, 0, 1.7347179045766312, 0], [5.467519199250946, 1, 1, 0, 4.111553025742089, 0], [5.467519199250946, 1, 1, 0, 5.110011075742089, 0], [5.467519199250946, 1, 1, 0, 6.45676844574209, 0], [5.467519199250946, 1, 1, 0, 8.337584775742089, 0]], [[5.467519199250946, 1, 1, 0, 0.3963602857420897, 0]], [[5.467519199250946, 1, 1, 0, 2.1610768357420893, 0], [5.467519199250946, 1, 1, 0, 3.06665506574209, 0], [5.467519199250946, 1, 1, 0, 5.992369355742089, 0], [5.467519199250946, 1, 1, 0, 7.45522649574209, 0], [5.467519199250946, 1, 1, 0, 8.778763905742089, 0]], [[5.467519199250946, 1, 1, 0, 1.2787185557420897, 0], [5.467519199250946, 1, 1, 0, 3.6471539357420895, 0], [5.467519199250946, 1, 1, 0, 4.52951220574209, 0], [5.467519199250946, 1, 1, 0, 5.41187048574209, 0], [5.467519199250946, 1, 1, 0, 6.89794758574209, 0], [5.467519199250946, 1, 1, 0, 7.757085905742089, 0], [5.467519199250946, 1, 1, 0, 9.21994304574209, 0]]]
+    this.is_loop = props.loop !== null? props.loop: true
     
     // console.log("LOOOOPPP", props.loop, props.times[0], props.times[props.times.length - 1])
 
@@ -42,7 +48,7 @@ export default class App extends Component{
 
   loop = () => {
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fillRect(0, 0, vw(100), vh(100));
     Juggler(this.canvas, this.ctx)
 
     // const ball1 = new Ball(
@@ -61,8 +67,8 @@ export default class App extends Component{
     while (this.state.balls.length < this.throws.length){
       const size = 15 //this.random(10, 20);
 
-      const x = this.state.balls.length%2? this.width*0.6: this.width*0.4 //this.random(0 + size, this.width - size);
-      const y = this.height/2 //this.random(0 + size, this.height - size);
+      const x = this.state.balls.length%2? vw(60): vw(40) //this.random(0 + size, this.width - size);
+      const y = vh(50) //this.random(0 + size, this.height - size);
       
       var red = this.random(0, 255);
       var green = this.random(0, 255);
@@ -92,6 +98,7 @@ export default class App extends Component{
     const chunks = [];
     const stream = this.refs.canvas.captureStream(); // grab our canvas MediaStream
     const options = {
+      videoBitsPerSecond : 2500000,
       mimeType : 'video/webm; codecs=vp9,opus'
     }
   
@@ -187,16 +194,18 @@ export default class App extends Component{
   }
 
   componentDidMount() {
-    //set up the canvas
-    this.canvas = this.refs.canvas;
-    this.ctx = this.canvas.getContext("2d");
-    this.width = this.canvas.width = window.innerWidth;
-    this.height = this.canvas.height = window.innerHeight;
-
-    this.startRecording()
-    //start the animation
-    
-    this.loop();
+    setTimeout(()=>{
+      //set up the canvas
+      this.canvas = this.refs.canvas;
+      this.ctx = this.canvas.getContext("2d");
+      this.width = this.canvas.width = window.innerWidth;
+      this.height = this.canvas.height = window.innerHeight;
+  
+      this.startRecording()
+      //start the animation
+      
+      this.loop();
+    },1000) //wait a seconds
   }
 
 
@@ -216,7 +225,11 @@ export default class App extends Component{
   }
 
   reset_animation = () => {
-    this.setState({video: this.state.video, balls: []})
+    //reload page
+    
+    // window.location.reload();
+
+    this.setState({video: null, balls: []})
     this.time_aux = 0
     this.startRecording()
   }
@@ -229,6 +242,7 @@ export default class App extends Component{
           <Canvas_Menu video={this.state.video} onReset={this.reset_animation} loop={this.loop} throws={this.throws}/>
           <My_Audio/>
           <canvas ref="canvas" id='canvas'/>
+          <Outlet/>
         </div>
       </>
     );
