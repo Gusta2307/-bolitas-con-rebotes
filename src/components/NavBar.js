@@ -21,7 +21,6 @@ export default function NavBar(){
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: -1;
   `
 
 

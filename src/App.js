@@ -8,41 +8,41 @@ import Canvas_Menu from './components/Canvas_Menu';
 import {Outlet} from "react-router-dom"
 import {vw, vh} from './utils'
 
-import {useLocation} from 'react-router-dom';
-
-
-
 export default class App extends Component{
   constructor(props){
     super(props);
-
+    console.log(props)
     this.state = {
       video: null,
       balls: [],
     }
     
+    this.name = props.name !== undefined? props.name: "Sin definir"
+    this.count_balls = props.balls
+
     this.chunks = []
     this.rec = null
-    this.canvas = null;
+    this.canvas = null
     this.ctx = null;
     
-    this.width = null;
+    this.width = null
     this.height = null
     
-    // this.balls = []
-    
-    // this.time = 0
     this.time_aux = 0
     
-    this.t0 = props.times !== null? props.times[0] : 0.23219955
-    this.tn = props.times !== null? props.times[props.times.length - 1] : 2.39165533
+    this.t0 = props.times !== null? props.times[0]: null
+    this.tn = props.times !== null? props.times[props.times.length - 1] : null
     
-    this.throws = props.throws !== null? props.throws: [[[6.57828796239222, 1, 2, 0, 1.3809500032500461, 0]], [[6.704793529466665, 1, 2, 0, 0.99062218204726, 0]], [[5.467519199250946, 1, 1, 0, 1.6037979257420896, 0]]]// [[[5.467519199250946, 1, 1, 0, 0.6982196957420896, 0], [5.692749210796666, 1, 2, 0, 1.7347179045766312, 0], [5.467519199250946, 1, 1, 0, 4.111553025742089, 0], [5.467519199250946, 1, 1, 0, 5.110011075742089, 0], [5.467519199250946, 1, 1, 0, 6.45676844574209, 0], [5.467519199250946, 1, 1, 0, 8.337584775742089, 0]], [[5.467519199250946, 1, 1, 0, 0.3963602857420897, 0]], [[5.467519199250946, 1, 1, 0, 2.1610768357420893, 0], [5.467519199250946, 1, 1, 0, 3.06665506574209, 0], [5.467519199250946, 1, 1, 0, 5.992369355742089, 0], [5.467519199250946, 1, 1, 0, 7.45522649574209, 0], [5.467519199250946, 1, 1, 0, 8.778763905742089, 0]], [[5.467519199250946, 1, 1, 0, 1.2787185557420897, 0], [5.467519199250946, 1, 1, 0, 3.6471539357420895, 0], [5.467519199250946, 1, 1, 0, 4.52951220574209, 0], [5.467519199250946, 1, 1, 0, 5.41187048574209, 0], [5.467519199250946, 1, 1, 0, 6.89794758574209, 0], [5.467519199250946, 1, 1, 0, 7.757085905742089, 0], [5.467519199250946, 1, 1, 0, 9.21994304574209, 0]]]
-    this.is_loop = props.loop !== null? props.loop: true
+    this.throws = props.throws
+    this.is_loop = props.loop === "SI"? true: false
     
-    // console.log("LOOOOPPP", props.loop, props.times[0], props.times[props.times.length - 1])
 
     this.finish = false
+
+
+    this.ctx_rec = null
+    this.dest = null
+    this.sourceNode = null
   }
 
 
@@ -51,21 +51,8 @@ export default class App extends Component{
     this.ctx.fillRect(0, 0, vw(100), vh(100));
     Juggler(this.canvas, this.ctx)
 
-    // const ball1 = new Ball(
-    //   -1,this.ctx, this.width*0.4, this.height/2,
-    //   "rgb(" + "100" + "," + "23" + "," + "1" + ")",
-    //   30,
-    // ).draw();
-
-    // const ball2 = new Ball(
-    //   -1,this.ctx, this.width*0.6, this.height/2,
-    //   "rgb(" + "200" + "," + "200" + "," + "1" + ")",
-    //   30,
-    // ).draw();
-
-
     while (this.state.balls.length < this.throws.length){
-      const size = 15 //this.random(10, 20);
+      const size = vw(1)
 
       const x = this.state.balls.length%2? vw(60): vw(40) //this.random(0 + size, this.width - size);
       const y = vh(50) //this.random(0 + size, this.height - size);
@@ -103,12 +90,14 @@ export default class App extends Component{
     }
   
     // get the audio track:
-    let ctx = new AudioContext();
-    let dest = ctx.createMediaStreamDestination();
-    let sourceNode = ctx.createMediaElementSource(document.getElementById('audio-element'));
-    sourceNode.connect(dest);
-    sourceNode.connect(ctx.destination);
-    let audioTrack = dest.stream.getAudioTracks()[0];
+    if (this.ctx_rec === null){
+      this.ctx_rec = new AudioContext();
+      this.dest = this.ctx_rec.createMediaStreamDestination();
+      this.sourceNode = this.ctx_rec.createMediaElementSource(document.getElementById('audio-element'));
+      this.sourceNode.connect(this.dest);
+      this.sourceNode.connect(this.ctx_rec.destination);
+    }
+    let audioTrack = this.dest.stream.getAudioTracks()[0];
     // add it to your canvas stream:
     stream.addTrack(audioTrack);
 
@@ -129,7 +118,7 @@ export default class App extends Component{
     }, 500);
 
     rec.onstop = e => {
-      this.setState({video: URL.createObjectURL(new Blob(chunks,  {type: 'video/webm'})), balls: this.state.balls})
+      this.setState({video: URL.createObjectURL(new Blob(chunks,  {type: 'video/webm', name: this.name})), balls: this.state.balls})
       clearInterval(check_finish)
     }
   }
@@ -228,7 +217,7 @@ export default class App extends Component{
     //reload page
     
     // window.location.reload();
-
+    this.finish = false
     this.setState({video: null, balls: []})
     this.time_aux = 0
     this.startRecording()
@@ -239,7 +228,7 @@ export default class App extends Component{
       <>
         <NavBar/>
         <div style={{backgroundColor:"#000"}}>
-          <Canvas_Menu video={this.state.video} onReset={this.reset_animation} loop={this.loop} throws={this.throws}/>
+          <Canvas_Menu name={this.name} balls={this.count_balls} video={this.state.video} onReset={this.reset_animation} loop={this.is_loop} throws={this.throws}/>
           <My_Audio/>
           <canvas ref="canvas" id='canvas'/>
           <Outlet/>

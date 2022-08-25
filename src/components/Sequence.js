@@ -17,6 +17,7 @@ export default function Sequence(){
     const [checkBoxValue, setCheckBoxValue] = useState(false);
     const [countBalls, setCountBalls] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [name, setName] = useState(null)
 
     const [times, setTimes] = useState([])
 
@@ -106,8 +107,8 @@ export default function Sequence(){
     `
 
     const Label = styled.label`
-        width: 100%;
-        height: 100%;
+        // width: 100%;
+        // height: 100%;
         font-size: 2rem;
         font-weight: bold;
         color: #FFFFFF;
@@ -227,7 +228,9 @@ export default function Sequence(){
                     if(response.prob_sol === 1){
                         setErrorMSG(false)
                         navigate('/canvas', {state: {
-                            is_loop:response.loop, 
+                            is_loop:response.loop?"SI":"NO", 
+                            balls:response.balls,
+                            name: name,
                             throws:response.distribution_balls, 
                             times:response.times}})
                         // ReactDOM.render(<App times={response.times} loop={response.loop} throws={response.distribution_balls}/>, document.getElementById('root'));
@@ -266,9 +269,13 @@ export default function Sequence(){
                     <Title>Crear Secuencia de Audio</Title>
                     <Form>
                         <FormItem>
+                            <Label>Nombre de la secuencia:</Label>
+                            <Input style={{width: '18vw'}} type="text" placeholder="Nombre de la secuencia" value={name} onChange={(e) => {setName(e.target.value)}}/>
+                        </FormItem>
+                        <FormItem>
                             <FormItem>
                                 <Label>Cantidad de pelotas:</Label>
-                                <Input type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} placeholder="Cantidad de pelotas" />
+                                <Input type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} />
                             </FormItem>
                             <CheckBox>
                                 <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />

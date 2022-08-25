@@ -203,9 +203,12 @@ export default function AudioLoader(){
                 // redirect to app page with response
                 setLoading(false);
                 var response = JSON.parse(this.responseText);
+                console.log(response)
                 if(response.prob_sol === 1){
                     navigate('/canvas', {state: {
-                        is_loop:response.loop === "NO"?false:true, 
+                        is_loop:response.loop?"SI":"NO", 
+                        balls:response.balls,
+                        name: selectedFile.name,
                         throws:response.distribution_balls, 
                         times:response.times}})
 

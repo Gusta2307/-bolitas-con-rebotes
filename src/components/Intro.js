@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom'
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import GJSON from './Gallery_JSON';
+import {random} from '../utils'
 
 export default function Intro(){
     const navigate = useNavigate()
@@ -84,7 +86,14 @@ export default function Intro(){
                 <Title>Bienvenido a BCR</Title>
                 <Subtitle>Subtitle</Subtitle>
                 <Description>Description</Description>
-                <Button onClick={() => navigate('/canvas', {state: {is_loop:true, throws:null, times:null}})}>Play Demo</Button>
+                <Button onClick={() => {
+                    const gjson = GJSON()
+                    const el = gjson[new Date() % gjson.length]
+                    console.log(el)
+                    navigate('/canvas', {state: {is_loop:el.loop, throws:el.throws, times:el.times, balls:el.balls, name:el.name}})
+                    
+                    
+                }}>Play Demo</Button>
             </Wrapper>
             <Outlet />
         </Container>

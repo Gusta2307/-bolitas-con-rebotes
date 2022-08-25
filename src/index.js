@@ -12,7 +12,7 @@ import AudioLoader from './components/AudioLoader';
 ReactDOM.render(
   <BrowserRouter>
       <Routes>
-          <Route path="/bolitas-con-rebotes" element={<Welcome/>}/>
+          <Route path="/bolitas-con-rebotes" element={<Welcome/>} />
           <Route path="sequence" element={<Sequence />} />
           <Route path="audio_loader" element={<AudioLoader />} />
           <Route path="gallery" element={<Gallery />} />
