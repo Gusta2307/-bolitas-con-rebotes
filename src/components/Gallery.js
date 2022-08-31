@@ -1,10 +1,18 @@
 import styled from "styled-components"
 import NavBar from "./NavBar"
 import Gallery_JSON from "./Gallery_JSON"
-import ReactDOM from "react-dom"
-import App from "../App"
 import { useNavigate } from "react-router-dom"
-import {Particles} from './Particles'
+import Particles from './Particles'
+
+const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
+    return (
+        <Particles 
+            key={k} 
+            _key={k} 
+            x={ Math.random() * (k % 2 === 0 ? -11 : 11)}
+            y={ Math.random() * 12} 
+        />)
+})
 
 
 export default function Gallery(props){
@@ -189,15 +197,13 @@ export default function Gallery(props){
     }
 
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        // append child
-        Particles().forEach((el) => {
-            document.getElementById('root').firstChild.appendChild(el)
-        })
-    })
-
     return (
         <Container>
+            {
+                P.map((el) => {
+                    return el
+                })
+            }
             <NavBar/>
             <Wrapper>
                 <Box>
@@ -205,19 +211,20 @@ export default function Gallery(props){
                         <Title>Galeria</Title>
                     </TitleBox>
                     <BoxItems>
-                        {/*create element dynamically*/}
                         {
                             Gallery_JSON().map((item, index, array) => {
                                 var disable = item.pathAudio === "" ? true : false
                                 return (
-                                    <BoxSeq>
+                                    <BoxSeq key={index}>
                                         <SubTitle>{item.name}</SubTitle>
                                         <Text>Pelotas: {item.balls}</Text>
                                         <Text>Secuencia ciclica: {item.loop}</Text>
                                         <Text>Audio: <PlayButton disabled={disable} path={item.pathAudio} ></PlayButton></Text>
                                         <DemoButton onClick={() => 
                                             navigate('/canvas', {state: {
-                                                is_loop:item.loop === "NO"?false:true, 
+                                                is_loop:item.loop, 
+                                                balls:item.balls,
+                                                name:item.name,
                                                 throws:item.throws, 
                                                 times:item.times}})
                                         }>Play Demo</DemoButton>

@@ -168,13 +168,19 @@ class Optimizer:
         for b in range(self.balls):
             for i in range(len(self.times)):
                 if self.X[b*len(self.times) + i].varValue == 1:
-                    list_throw_balls[b].append(P_aux(self.times[i], h, throw_ball=throw_type, current_time=list_total_times_balls[b]))
-                    list_total_times_balls[b] += list_throw_balls[b][-1][-1]
+                    _t = [self.times[i]]
+                    _sol = P_aux(self.times[i], h, throw_ball=throw_type, current_time=list_total_times_balls[b])
+                    _sol.append(_t)
+                    list_throw_balls[b].append(_sol)
+                    list_total_times_balls[b] += list_throw_balls[b][-1][-2]
 
                 for j in range(i+1,len(self.times)):
                     if self.Y[b*len(self.times)**2 + i*len(self.times) + j].varValue == 1:
-                        list_throw_balls[b].append(Q_aux(self.times[i], self.times[j], h, throw_type, current_time=list_total_times_balls[b]))
-                        list_total_times_balls[b] += list_throw_balls[b][-1][-1]
+                        _t = [self.times[i], self.times[j]]
+                        _sol = Q_aux(self.times[i], self.times[j], h, throw_type, current_time=list_total_times_balls[b])
+                        _sol.append(_t)
+                        list_throw_balls[b].append(_sol)
+                        list_total_times_balls[b] += list_throw_balls[b][-1][-2]
 
             list_throw_balls[b].sort(key=lambda x: x[4])
             
@@ -187,14 +193,19 @@ class Optimizer:
         for b in range(self.balls):
             for i in range(self.__original_length):
                 if self.X[b*self.__original_length + i].varValue == 1:
-                    list_throw_balls[b].append(P_aux(self.times[i], h, throw_ball=throw_type, current_time=list_total_times_balls[b]))
-                    list_total_times_balls[b] += list_throw_balls[b][-1][-1]
+                    _t = [self.times[i]]
+                    _sol = P_aux(self.times[i], h, throw_ball=throw_type, current_time=list_total_times_balls[b])
+                    _sol.append(_t)
+                    list_throw_balls[b].append(_sol)
+                    list_total_times_balls[b] += list_throw_balls[b][-1][-2]
 
                 for j in range(self.__original_length):
                         if self.Y[b*self.__original_length**2 + i*self.__original_length + j].varValue == 1:
+                            _t = [self.times[i], self.times[j]]
+                            _t.sort()
                             position = get_positions(len=self.__original_length, i=i, j=j)
-                            list_throw_balls[b].append(Q_aux(self.times[position['i']], self.times[position['j']], h, throw_type, current_time=list_total_times_balls[b]))
-                            list_total_times_balls[b] += list_throw_balls[b][-1][-1]
+                            list_throw_balls[b].append(Q_aux(self.times[position['i']], self.times[position['j']], h, throw_type, current_time=list_total_times_balls[b]).append(_t))
+                            list_total_times_balls[b] += list_throw_balls[b][-1][-2]
 
             list_throw_balls[b].sort(key=lambda x: x[4])
 

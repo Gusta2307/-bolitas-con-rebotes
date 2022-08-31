@@ -7,13 +7,19 @@ def P_aux(ti, h, throw_ball, current_time):
     v0 = (math.sqrt(2*g*h*(1-math.pow(e, 2)))/e)  if throw_ball else (math.sqrt(2*g*h)/math.pow(e, 2))
     tk = ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    return [-v0 if throw_type else v0, 1, 1, 0, tk, 0]
+    vy = (-v0 if v0 > 0 else v0)*e
+    tf = abs((vy + math.sqrt(vy*vy - 2*g*h))/(g))
+    print(tf, v0, e, g, h)
+    return [-v0 if throw_type else v0, 1, 1, 0, tk, ti+tf]
 
 def Q_aux(ti, tj, h, throw_ball, current_time):
     v0 =math.sqrt(((g*g)*(tj - ti)**2)/(4*(e*e)) - 2*g *h) if throw_ball else ((g*(tj - ti))/(2*e))    
     tk =  ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    return [-v0 if throw_type else v0, 1, 2, 0, tk, 0]
+    vy = (-v0 if v0 > 0 else v0)*(e**2)
+    tf = abs((vy + math.sqrt(vy*vy - 2*g*h))/(g))
+
+    return [-v0 if throw_type else v0, 1, 2, 0, tk, tj+tf]
 
 # endregion
 

@@ -36,7 +36,6 @@ export function change_hand_done(x, y, current_hand, change_hand, t){
 };
 
 export function calculate_speed_vy(vy){
-    // const u = Math.sqrt(2*g*h)
     vy = vy > 0? -vy: vy
     return e*vy
 };
@@ -80,7 +79,6 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         }        
         
         vy1 = calculate_speed_vy(vy1)
-        
 
         if (bounce_amount === 1){
             if (catch_ball){
@@ -101,7 +99,6 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
         bounce_amount -= 1
     }
 
-    // console.log("TIME", time)
     return time
 };
 

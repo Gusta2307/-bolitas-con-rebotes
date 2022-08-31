@@ -5,8 +5,23 @@ import NavBar from './NavBar'
 import Loading from './Loading'
 import App from '../App'
 import {urlAPI} from './Config'
-import {Particles} from './Particles';
+import Particles from './Particles';
 import {useNavigate} from 'react-router-dom';
+
+const Container = styled.div`
+    height: 100vh;
+    background-color: #082A3A;
+`
+
+const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
+    return (
+        <Particles 
+            key={k} 
+            _key={k} 
+            x={ Math.random() * (k % 2 === 0 ? -11 : 11)}
+            y={ Math.random() * 12} 
+        />)
+})
 
 export default function AudioLoader(){
     const navigate = useNavigate();
@@ -19,10 +34,10 @@ export default function AudioLoader(){
 
     const [errorMSG, setErrorMSG] = useState(false)
 
-    const Container = styled.div`
-        height: 100vh;
-        background-color: #082A3A;
-    `
+    // const Container = styled.div`
+    //     height: 100vh;
+    //     background-color: #082A3A;
+    // `
 
     const Wrapper = styled.div`
         height: calc(100vh - 50px);
@@ -175,7 +190,6 @@ export default function AudioLoader(){
         let data = new FormData();
         data.append('file', selectedFile);
 
-        console.log(checkBoxValue, data);
         //http://127.0.0.1:8000
         //https://optimizer-apl.herokuapp.com
         // fetch('http://127.0.0.1:8000/sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue), {
@@ -229,15 +243,13 @@ export default function AudioLoader(){
     }
 
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        // append child
-        Particles().forEach((el) => {
-            document.getElementById('root').firstChild.appendChild(el)
-        })
-    })
-
     return (
         <Container>
+            {
+                P.map((el) => {
+                    return el
+                })
+            }
             <NavBar/>
             <Loading loading={loading}/>
             <Wrapper>
@@ -247,10 +259,10 @@ export default function AudioLoader(){
                         <FormItem>
                             <div>
                                 <Label>Cantidad de pelotas: </Label>
-                                <InputBall type="number" min="1" value={countBalls} onInput={(e) => {setCountBalls(e.target.value)}}/>
+                                <InputBall type="number" id='ball_count' min="1" max="10" value={countBalls} onInput={(e) => {setCountBalls(e.target.value)}}/>
                             </div>
                             <CheckBox>
-                                <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
+                                <InputCheckBox type="checkbox" id='checkbox' checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
                                 <Label>Secuencia ciclica?</Label>
                             </CheckBox>
                         </FormItem>

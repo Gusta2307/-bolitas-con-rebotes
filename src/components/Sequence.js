@@ -1,13 +1,26 @@
 import React, {useState} from 'react'
-import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import Loading from './Loading'
 import NavBar from './NavBar'
-import App from '../App'
 import {urlAPI} from './Config'
-import {Particles} from './Particles'
+import Particles from './Particles'
 import sonud_ball from '../Sound/clave_mejorada.wav'
 import { useNavigate } from "react-router-dom";
+
+const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
+    return (
+        <Particles 
+            key={k} 
+            _key={k} 
+            x={ Math.random() * (k % 2 === 0 ? -11 : 11)}
+            y={ Math.random() * 12} 
+        />)
+})
+
+const Container = styled.div`
+    height: 100vh;
+    background-color: #082A3A;
+`
 
 export default function Sequence(){
     const navigate = useNavigate();
@@ -23,10 +36,7 @@ export default function Sequence(){
 
     const [errorMSG, setErrorMSG] = useState(false)
 
-    const Container = styled.div`
-        height: 100vh;
-        background-color: #082A3A;
-    `
+
 
     const Wrapper = styled.div`
         height: calc(100vh - 50px);
@@ -251,17 +261,14 @@ export default function Sequence(){
         }
     }
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        // append child
-        Particles().forEach((el) => {
-            document.getElementById('root').firstChild.appendChild(el)
-        })
-    })
-
-
 
     return (
         <Container>
+            {
+                P.map((el) => {
+                    return el
+                })
+            }
             <NavBar/>
             <Loading loading={loading}/>
             <Wrapper>
