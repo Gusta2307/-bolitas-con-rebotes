@@ -90,9 +90,7 @@ export default function Intro(){
                     const gjson = GJSON()
                     const el = gjson[new Date() % gjson.length]
                     console.log(el)
-                    navigate('/canvas', {state: {is_loop:el.loop, throws:el.throws, times:el.times, balls:el.balls, name:el.name}})
-                    
-                    
+                    navigate('/bolitas-con-rebotes/canvas', {state: {is_loop:el.loop, sol_active: 0, throws:el.throws, times:el.times, balls:el.balls, solutions:el.solutions, name:el.name}})
                 }}>Play Demo</Button>
             </Wrapper>
             <Outlet />

@@ -16,7 +16,10 @@ export default class App extends Component{
       video: null,
       balls: [],
     }
-    
+    console.log("MMMMMMMMMM")
+    this.sol_act = props.sol_active
+    this.solutions = props.solutions?props.solutions:[]
+    console.log("PAPAP", this.solutions)
     this.name = props.name !== undefined? props.name: "Sin definir"
     this.count_balls = props.balls
 
@@ -30,6 +33,7 @@ export default class App extends Component{
     
     this.time_aux = 0
     
+    this.times = props.times
     this.t0 = props.times !== null? props.times[0]: null
     this.tn = props.times !== null? props.times[props.times.length - 1] : null
     
@@ -197,6 +201,25 @@ export default class App extends Component{
     },1000) //wait a seconds
   }
 
+  componentDidUpdate(prevProps, prevState){
+    console.log("HELLO")
+    console.log(prevProps)
+    console.log(this.props)
+    
+    if (prevProps !== this.props){
+
+      cancelAnimationFrame(this.loop)
+      
+      
+      this.sol_act = this.props.sol_active
+      this.throws = this.props.throws
+
+      setTimeout(()=>{
+        this.reset_animation()      
+        this.loop();
+      },1000) 
+    }
+  }
 
   load_throw(throws_list){
     var result_list = []
@@ -228,7 +251,7 @@ export default class App extends Component{
       <>
         <NavBar/>
         <div style={{backgroundColor:"#000"}}>
-          <Canvas_Menu name={this.name} balls={this.count_balls} video={this.state.video} onReset={this.reset_animation} loop={this.is_loop} throws={this.throws}/>
+          <Canvas_Menu name={this.name} sol_act={this.sol_act} times={this.times} balls={this.count_balls} solutions={this.solutions} video={this.state.video} onReset={this.reset_animation} loop={this.is_loop} throws={this.throws}/>
           <My_Audio/>
           <canvas ref="canvas" id='canvas'/>
           <Outlet/>

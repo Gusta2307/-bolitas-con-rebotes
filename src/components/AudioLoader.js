@@ -219,7 +219,7 @@ export default function AudioLoader(){
                 var response = JSON.parse(this.responseText);
                 console.log(response)
                 if(response.prob_sol === 1){
-                    navigate('/canvas', {state: {
+                    navigate('/bolitas-con-rebotes/canvas', {state: {
                         is_loop:response.loop?"SI":"NO", 
                         balls:response.balls,
                         name: selectedFile.name,

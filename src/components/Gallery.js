@@ -4,18 +4,18 @@ import Gallery_JSON from "./Gallery_JSON"
 import { useNavigate } from "react-router-dom"
 import Particles from './Particles'
 
-const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
+const P = Array.from({ length: 60 }, (v, k) => k).map((v, k) => {
     return (
-        <Particles 
-            key={k} 
-            _key={k} 
-            x={ Math.random() * (k % 2 === 0 ? -11 : 11)}
-            y={ Math.random() * 12} 
+        <Particles
+            key={k}
+            _key={k}
+            x={Math.random() * (k % 2 === 0 ? -11 : 11)}
+            y={Math.random() * 12}
         />)
 })
 
 
-export default function Gallery(props){
+export default function Gallery(props) {
     const navigate = useNavigate();
 
     const Container = styled.div`
@@ -53,7 +53,7 @@ export default function Gallery(props){
 
         // margin-right: 1vw;
     `
-    
+
     const BoxSeq = styled.div`
         padding: 20px 20px;
         width: fit-content;
@@ -162,7 +162,7 @@ export default function Gallery(props){
         margin-top: 2vh;
     `
 
-    function PlayButton(props){
+    function PlayButton(props) {
         const PlayButton = styled.button`
             font-weight: bold;
             color: #FFF;
@@ -181,7 +181,7 @@ export default function Gallery(props){
             }
         `
 
-        const PlayAudio = () =>{
+        const PlayAudio = () => {
             // Play audio
             // var music =  require(String('./Sound/'+props.path))
             // console.log(music)
@@ -189,7 +189,7 @@ export default function Gallery(props){
             audio.play()
         }
 
-        return(
+        return (
             <PlayButton disabled={props.disabled} onClick={PlayAudio}>
                 Play
             </PlayButton>
@@ -204,7 +204,7 @@ export default function Gallery(props){
                     return el
                 })
             }
-            <NavBar/>
+            <NavBar />
             <Wrapper>
                 <Box>
                     <TitleBox>
@@ -220,13 +220,18 @@ export default function Gallery(props){
                                         <Text>Pelotas: {item.balls}</Text>
                                         <Text>Secuencia ciclica: {item.loop}</Text>
                                         <Text>Audio: <PlayButton disabled={disable} path={item.pathAudio} ></PlayButton></Text>
-                                        <DemoButton onClick={() => 
-                                            navigate('/canvas', {state: {
-                                                is_loop:item.loop, 
-                                                balls:item.balls,
-                                                name:item.name,
-                                                throws:item.throws, 
-                                                times:item.times}})
+                                        <DemoButton onClick={() =>
+                                            navigate('/bolitas-con-rebotes/canvas', {
+                                                state: {
+                                                    is_loop: item.loop,
+                                                    balls: item.balls,
+                                                    name: item.name,
+                                                    sol_active: 0,
+                                                    throws: item.throws,
+                                                    times: item.times,
+                                                    solutions: item.solutions
+                                                }
+                                            })
                                         }>Play Demo</DemoButton>
                                     </BoxSeq>
                                 )

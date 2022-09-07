@@ -13,10 +13,10 @@ ReactDOM.render(
   <BrowserRouter>
       <Routes>
           <Route path="/bolitas-con-rebotes" element={<Welcome/>} />
-          <Route path="sequence" element={<Sequence />} />
-          <Route path="audio_loader" element={<AudioLoader />} />
-          <Route path="gallery" element={<Gallery />} />
-          <Route path="canvas" element={<App_P  />} />
+          <Route path="/bolitas-con-rebotes/sequence" element={<Sequence />} />
+          <Route path="/bolitas-con-rebotes/audio_loader" element={<AudioLoader />} />
+          <Route path="/bolitas-con-rebotes/gallery" element={<Gallery />} />
+          <Route path="/bolitas-con-rebotes/canvas" element={<App_P  />} />
       </Routes>
   </BrowserRouter>,
   document.getElementById('root')

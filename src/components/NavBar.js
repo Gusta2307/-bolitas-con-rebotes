@@ -61,13 +61,13 @@ export default function NavBar(){
             </Link>
             <Right>
               <Menu>
-                <Link to="/sequence" style={{textDecoration: "none",}}>
+                <Link to="/bolitas-con-rebotes/sequence" style={{textDecoration: "none",}}>
                   <MenuItems>Crear Secuencia</MenuItems>
                 </Link>
-                <Link to="/audio_loader" style={{textDecoration: "none",}}>
+                <Link to="/bolitas-con-rebotes/audio_loader" style={{textDecoration: "none",}}>
                   <MenuItems>Cargar audio</MenuItems>
                 </Link >
-                <Link to="/gallery" style={{textDecoration: "none",}}>
+                <Link to="/bolitas-con-rebotes/gallery" style={{textDecoration: "none",}}>
                   <MenuItems>Galeria</MenuItems>
                 </Link>
               </Menu>

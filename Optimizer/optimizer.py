@@ -1,5 +1,7 @@
+from tkinter import Variable
 import pulp as pl
 import numpy as np
+import math, itertools
 from functions import (
     P, Q, S, SS, R, RR,
     P_aux, Q_aux
@@ -141,14 +143,13 @@ class Optimizer:
     def solve(self) -> int:
         self.__get_problem()   
         self.result = self.prob.solve()
-        np.set_printoptions(threshold=np.inf)
-        if self.loop:            
-            print(np.array([self.X[i].varValue for i in range(self.balls*self.__original_length)]).reshape((self.balls, self.__original_length)).astype('int'))
-            print(np.array([self.Y[i].varValue for i in range(self.balls*self.__original_length*self.__original_length)]).reshape((self.balls, self.__original_length, self.__original_length)))
-        else:
-            print(np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int'))
-            print(np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times))))
-            print(self.get_solution())
+        # np.set_printoptions(threshold=np.inf)
+        # if self.loop:            
+        #     print(np.array([self.X[i].varValue for i in range(self.balls*self.__original_length)]).reshape((self.balls, self.__original_length)).astype('int'))
+        #     print(np.array([self.Y[i].varValue for i in range(self.balls*self.__original_length*self.__original_length)]).reshape((self.balls, self.__original_length, self.__original_length)))
+        # else:
+        #     print(np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int'))
+        #     print(np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times))))
         return self.result
         
     def get_solution(self):
@@ -204,7 +205,9 @@ class Optimizer:
                             _t = [self.times[i], self.times[j]]
                             _t.sort()
                             position = get_positions(len=self.__original_length, i=i, j=j)
-                            list_throw_balls[b].append(Q_aux(self.times[position['i']], self.times[position['j']], h, throw_type, current_time=list_total_times_balls[b]).append(_t))
+                            _sol = Q_aux(self.times[position['i']], self.times[position['j']], h, throw_type, current_time=list_total_times_balls[b])
+                            _sol.append(_t)
+                            list_throw_balls[b].append(_sol)
                             list_total_times_balls[b] += list_throw_balls[b][-1][-2]
 
             list_throw_balls[b].sort(key=lambda x: x[4])
@@ -245,18 +248,122 @@ class Optimizer:
         import time
         t = time.time()
         self.__get_problem()
-        while self.prob.solve() == 1:
+        while self.prob.solve() == 1 and len(solutions) < 10:
             temp_sol = self.__get_variables(self.__original_length if self.loop else len(self.times))
-            
+            print("Variables", temp_sol)
             if self.loop:            
                 X = np.array([self.X[i].varValue for i in range(self.balls*self.__original_length)]).reshape((self.balls, self.__original_length)).astype('int')
                 Y = np.array([self.Y[i].varValue for i in range(self.balls*self.__original_length*self.__original_length)]).reshape((self.balls, self.__original_length, self.__original_length))
             else:
                 X = np.array([self.X[i].varValue for i in range(self.balls*len(self.times))]).reshape((self.balls, len(self.times))).astype('int')
-                Y = np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times))]).reshape((self.balls, len(self.times), len(self.times)))
+                Y = np.array([self.Y[i].varValue for i in range(self.balls*len(self.times)*len(self.times) )]).reshape((self.balls, len(self.times), len(self.times)))
 
-            solutions.append([temp_sol, (X, Y), self.__get_loop_solutions() if self.loop else self.__get_default_solutions()])
+
+            # if len(solutions) == 0:
+            #     solutions.append([temp_sol, (X, Y), self.__get_loop_solutions() if self.loop else self.__get_default_solutions()])
+
+            # if len(solutions) > 1 and self.__checkPermutation(solutions, temp_sol):
+            #     solutions.append([temp_sol, (X, Y), self.__get_loop_solutions() if self.loop else self.__get_default_solutions()])
             
-            self.prob += pl.LpConstraint(sum(temp_sol) - (len(temp_sol) - 1), sense=pl.LpConstraintLE)
+            solutions.append([temp_sol, (X, Y), self.__get_loop_solutions() if self.loop else self.__get_default_solutions()])
+
+            self.get_all_permutation_solution(temp_sol)
+            # _solutions = self.get_all_permutation_solution(temp_sol)
+            # print('#'*100)
+            # for s in _solutions:
+            #     print(s)
+            #     self.prob += pl.LpConstraint(sum(s) - (len(s) - 1), sense=pl.LpConstraintLE)
+            # print('#'*100)
         print(time.time() - t)
         return solutions
+
+
+    def get_all_permutation_solution(self, solution):
+        permutation = itertools.permutations(range(self.balls), self.balls)
+        _sol = []
+        l = len(self.times) if not self.loop else self.__original_length
+
+        for p in permutation:
+            temp_sol = []
+            for v in range(len(solution)):
+                v_type, v_index = solution[v].name.split('_')
+                b, ti, tj = self.get_throw(v_type, int(v_index))
+                temp_sol.append(self.X[p[b]*l + ti] if v_type == "X" else self.Y[p[b]*l**2 + ti*l + tj])
+            self.prob += pl.LpConstraint(sum(temp_sol) - (len(temp_sol) - 1), sense=pl.LpConstraintLE)
+            # _sol.append(temp_sol)
+        # return _sol
+
+        # seqs = self.__create_sequence(len(solution), self.balls)
+        # sol = []
+        # for s in seqs:
+        #     is_fac, _sol = self.__is_factible(solution, s)
+        #     if is_fac:
+        #         sol.append(_sol)
+        # return sol
+
+    def __is_factible(self, solution, seq):
+        new_sol = self.__get_sol_by_seq(solution, seq)
+        return False, new_sol
+
+    def __get_sol_by_seq(self, solution, seq):
+        sol = []
+        for v in range(len(solution)):
+            v_type, v_index = solution[v].name.split('_')
+            _, ti, tj = self.get_throw(v_type, int(v_index))
+            sol.append(
+                self.X[seq[v]*(len(self.times) if self.loop else self.__original_length) + ti] 
+                if v_type == "X" 
+                else self.Y[seq[v]*(len(self.times) if self.loop else self.__original_length)**2 + ti*(len(self.times) if self.loop else self.__original_length) + tj]
+            )
+        return sol
+
+    def __create_sequence(self, n, m):
+        if n == 1:
+            return [[i] for i in range(m)]
+        else:
+            seq =  (n-1, m)
+            new_seq = []
+            for i in range(len(seq)):
+                for j in range(m):
+                    new_seq.append(seq[i] + [j])
+            return new_seq
+    
+    # def __removePermutation(self, solutions:list):
+    #     for i in range(len(solutions)):
+    #         j = i + 1
+    #         while j < len(solutions):
+    #             if len(solutions[j]) == len(solutions[i]):
+    #                 for s in solutions[i]:
+    #                     v_type, v_index = s.name.split('_')
+    #                     b, ti, tj = self.get_throw(v_type, int(v_index))
+    #                     check = False
+    #                     for s1 in solutions[j]:
+    #                         v_type1, v_index1 = s1.name.split('_')
+    #                         if v_type == v_type1:
+    #                             b1, ti1, tj1 =  self.get_throw(v_type1, int(v_index1))
+
+    #                             if ti == ti1 and tj == tj1:
+    #                                 check = True
+    #                                 break
+    #                     if not check:
+    #                         j += 1
+    #                         break
+    #                 solutions.pop(j)
+    #             else:
+    #                 j += 1
+    #     return solutions
+
+
+    
+    def get_throw(self, v_type, v_index):
+        if v_type == "X":
+            return math.floor(v_index/(len(self.times) if not self.loop else self.__original_length)), v_index % (len(self.times) if not self.loop else self.__original_length), None
+
+        elif v_type == "Y":
+            return math.floor(v_index/(len(self.times) if not self.loop else self.__original_length)**2),\
+                    math.floor(v_index/(len(self.times) if not self.loop else self.__original_length))%(len(self.times) if not self.loop else self.__original_length),\
+                    v_index%(len(self.times) if not self.loop else self.__original_length)
+        
+        return NotImplementedError()
+
+

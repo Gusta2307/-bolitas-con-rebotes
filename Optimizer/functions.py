@@ -9,7 +9,7 @@ def P_aux(ti, h, throw_ball, current_time):
 
     vy = (-v0 if v0 > 0 else v0)*e
     tf = abs((vy + math.sqrt(vy*vy - 2*g*h))/(g))
-    print(tf, v0, e, g, h)
+    
     return [-v0 if throw_type else v0, 1, 1, 0, tk, ti+tf]
 
 def Q_aux(ti, tj, h, throw_ball, current_time):

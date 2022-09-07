@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 import {vw} from '../utils'
-
+import { useNavigate } from "react-router-dom"
+import {useLocation} from 'react-router-dom';
 
 
 export default function Canvas_Menu(props) {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const Container = styled.div`
         // position: absolute;
     `
@@ -27,6 +31,33 @@ export default function Canvas_Menu(props) {
         float: left;
     `
 
+    const Center = styled.div`
+        max-height: 20vh;
+        max-weight: 40vw;
+        display: flex;
+        flex-direction: row;
+        // flex-wrap: wrap;
+        padding: 1vh
+    `
+
+    const BoxSolution = styled.div`
+        width: 2.5rem;
+        height: 2.5rem;
+
+        margin-left: 0.5rem;
+
+        background-color: ${(props) => props.active? 'rgb(167,154,65)' : 'rgb(198, 48, 238)'}; 
+
+        cursor: ${(props) => props.active? 'not-allowed' : 'pointer'}; 
+
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        border-radius: 10px;
+
+        font-weight: bold;
+        color: #FFF;
+        font-size: 20px;
+        text-align: center;
+    `
 
     const Right = styled.div`
         display: flex;
@@ -83,6 +114,36 @@ export default function Canvas_Menu(props) {
                     <Text>Cantidad de pelotas: {props.balls}</Text>
                     <Text>Secuencia Cíclica: {props.loop?"SI":"NO"}</Text>
                 </Left>
+                <Center>
+                    {
+                        // console.log(props.solutions)
+                        props.solutions.map((el, index) =>{
+                            return (<BoxSolution
+                            active={index === props.sol_act? true:false}
+                            key={index}
+                            onClick={() =>{
+                                    navigate('/bolitas-con-rebotes/canvas', {
+                                        state: {
+                                            is_loop: props.loop?"SI":"NO",
+                                            balls: props.balls,
+                                            name: props.name,
+                                            sol_active: index,
+                                            throws: props.solutions[index],
+                                            times: props.times,
+                                            solutions: props.solutions
+                                        }
+                                    })
+                                    // reload page
+                                    // window.location.reload();
+                                    
+                                }
+                            }
+                            >
+                                {index+1}
+                            </BoxSolution>)
+                        })
+                    }
+                </Center>
                 <Right>
                     <Items>
                         <Label onClick={resetHandler} >Reset</Label>

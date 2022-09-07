@@ -237,7 +237,7 @@ export default function Sequence(){
                     var response = JSON.parse(this.responseText);
                     if(response.prob_sol === 1){
                         setErrorMSG(false)
-                        navigate('/canvas', {state: {
+                        navigate('/bolitas-con-rebotes/canvas', {state: {
                             is_loop:response.loop?"SI":"NO", 
                             balls:response.balls,
                             name: name,

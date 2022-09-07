@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import sonud_ball from './Sound/clave_mejorada.wav'
+import sonud_ball from './Sound/ball_sound.wav'
 
 export default class My_Audio extends Component{
     constructor(){
         super();
-        this.file = './clave-mejorada.wav'
+        this.file = './ball_sound.wav'
         this.audio = new Audio(this.file)
     }
 
