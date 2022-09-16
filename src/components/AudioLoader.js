@@ -7,6 +7,7 @@ import App from '../App'
 import {urlAPI} from './Config'
 import Particles from './Particles';
 import {useNavigate} from 'react-router-dom';
+import Switch from './Switch'
 
 const Container = styled.div`
     height: 100vh;
@@ -26,11 +27,12 @@ const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
 export default function AudioLoader(){
     const navigate = useNavigate();
 
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [isFilePicked, setIsFilePicked] = useState(false);
-    const [checkBoxValue, setCheckBoxValue] = useState(false);
-    const [countBalls, setCountBalls] = useState(1);
-    const [loading, setLoading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [isFilePicked, setIsFilePicked] = useState(false)
+    const [checkBoxValue, setCheckBoxValue] = useState(false)
+    const [countBalls, setCountBalls] = useState(1)
+    const [loading, setLoading] = useState(false)
+    const [throwType, setThrowType] = useState(false)
 
     const [errorMSG, setErrorMSG] = useState(false)
 
@@ -80,6 +82,12 @@ export default function AudioLoader(){
 
     `
 
+    const BoxBox = styled.div`
+        display: flex;
+        flex-direction: column;
+        padding: 0.5vw;
+    `
+
     const Form = styled.div`data
         :only-child {
             display: flex;
@@ -98,7 +106,6 @@ export default function AudioLoader(){
 
     const InputBall = styled.input`
         width: 50px;
-        // height: 40px;
         border-radius: 10px;
         border: 2px solid rgba(255, 255, 255, 0.18);
         padding: 10px;
@@ -107,6 +114,7 @@ export default function AudioLoader(){
         background-color: #FFFFFF;
         font-size: 20px;
         font-weight: bold;
+        margin-left: 1vh;
     `
     const InputCheckBox = styled.input`
         height: 100%;
@@ -132,14 +140,11 @@ export default function AudioLoader(){
     `
 
     const Label = styled.label`
-        width: 100%;
-        height: 100%;
         font-size: 20px;
         font-weight: bold;
         color: #FFFFFF;
     `
 
-    
     const LabelERROR = styled.label`
         width: 100%;
         height: 100%;
@@ -209,7 +214,7 @@ export default function AudioLoader(){
         setLoading(true);
         var xmlhttp = new XMLHttpRequest();
 
-        xmlhttp.open("POST", urlAPI+'sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue))
+        xmlhttp.open("POST", urlAPI+'sound?balls='+countBalls+'&loop='+JSON.stringify(checkBoxValue)+'&throwType='+JSON.stringify(Number(throwType)))
         xmlhttp.send(data);
 
         xmlhttp.onreadystatechange = function() {
@@ -256,16 +261,21 @@ export default function AudioLoader(){
                 <Box>
                     <Title>Cargar Secuencia de Audio</Title>
                     <Form>
-                        <FormItem>
-                            <div>
+                        <BoxBox>
+                            <CheckBox>
                                 <Label>Cantidad de pelotas: </Label>
                                 <InputBall type="number" id='ball_count' min="1" max="10" value={countBalls} onInput={(e) => {setCountBalls(e.target.value)}}/>
-                            </div>
-                            <CheckBox>
-                                <InputCheckBox type="checkbox" id='checkbox' checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
-                                <Label>Secuencia ciclica?</Label>
                             </CheckBox>
-                        </FormItem>
+                            <CheckBox>
+                                {/* <InputCheckBox type="checkbox" id='checkbox' checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} /> */}
+                                <Switch type="checkbox" value={checkBoxValue} setter={setCheckBoxValue}></Switch>
+                                <Label>Secuencia ciclica</Label>
+                            </CheckBox>
+                            <FormItem>
+                                <Switch value={throwType} setter={setThrowType}></Switch>
+                                <Label>Lanzamiento hacia arriba</Label>
+                            </FormItem>
+                        </BoxBox>
                         <FormItem>
                             <AudioBox>
                                 <InputAudio type="file" accept='.mp3, .wav, .ogg' placeholder='Hola' onInput={(e) => {

@@ -6,6 +6,7 @@ import {urlAPI} from './Config'
 import Particles from './Particles'
 import sonud_ball from '../Sound/clave_mejorada.wav'
 import { useNavigate } from "react-router-dom";
+import Switch from './Switch'
 
 const P = Array.from({length: 60}, (v, k) => k).map((v, k) => {
     return (
@@ -30,6 +31,7 @@ export default function Sequence(){
     const [checkBoxValue, setCheckBoxValue] = useState(false);
     const [countBalls, setCountBalls] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [throwType, setThrowType] = useState(false)
     const [name, setName] = useState(null)
 
     const [times, setTimes] = useState([])
@@ -89,6 +91,17 @@ export default function Sequence(){
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-bottom: 1.5vh;
+    `
+
+    const BoxBox = styled.div`
+        display: flex;
+    `
+
+    const BoxFormItem = styled.div`
+        display: flex;
+        flex-direction: column;
+        padding: 0.5vw;
     `
 
     const Input = styled.input`
@@ -113,7 +126,7 @@ export default function Sequence(){
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin-right: 2vw;
+        margin-left: 2vw;
     `
 
     const Label = styled.label`
@@ -226,7 +239,8 @@ export default function Sequence(){
         if(times.length > 0) {
             var xmlhttp = new XMLHttpRequest();
             setLoading(true)
-            xmlhttp.open("POST", urlAPI+'sequence?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue)))
+            //+'&throwType='+JSON.stringify(Number(throwType))
+            xmlhttp.open("POST", urlAPI+'sequence?times='+JSON.stringify(times)+'&balls='+countBalls+'&loop='+JSON.stringify(Number(checkBoxValue))+'&throwType='+JSON.stringify(Number(throwType)))
             xmlhttp.send();
 
 
@@ -235,6 +249,7 @@ export default function Sequence(){
                     // redirect to app page with response
                     setLoading(false);
                     var response = JSON.parse(this.responseText);
+                    console.log("Response", response)
                     if(response.prob_sol === 1){
                         setErrorMSG(false)
                         navigate('/bolitas-con-rebotes/canvas', {state: {
@@ -279,20 +294,31 @@ export default function Sequence(){
                             <Label>Nombre de la secuencia:</Label>
                             <Input style={{width: '18vw'}} type="text" placeholder="Nombre de la secuencia" value={name} onChange={(e) => {setName(e.target.value)}}/>
                         </FormItem>
-                        <FormItem>
-                            <FormItem>
-                                <Label>Cantidad de pelotas:</Label>
-                                <Input type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} />
-                            </FormItem>
-                            <CheckBox>
-                                <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} />
-                                <Label>Secuencia ciclica?</Label>
-                            </CheckBox>
-                            <FormItem>
-                                <Label>BPM:</Label>
-                                <Input width={"5vw"} type="number" min="1" value={bpmValue} onChange={(e) => setBpmValue(e.target.value)} placeholder="BPM" />
-                            </FormItem>
-                        </FormItem>
+                        <BoxBox>
+                            <BoxFormItem>
+                                <FormItem>
+                                    <Label>Cantidad de pelotas:</Label>
+                                    <Input type="number" min="1" value={countBalls} onChange={(e) => setCountBalls(e.target.value)} />
+                                </FormItem>
+                                <FormItem>
+                                    <Label>BPM:</Label>
+                                    <Input width={"5vw"} type="number" min="1" value={bpmValue} onChange={(e) => setBpmValue(e.target.value)} placeholder="BPM" />
+                                </FormItem>
+                                
+                            </BoxFormItem>
+                            <BoxFormItem>
+                                <CheckBox>
+                                    {/* <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} /> */}
+                                    <Switch value={checkBoxValue} setter={setCheckBoxValue}></Switch>
+                                    <Label>Secuencia ciclica</Label>
+                                </CheckBox>
+                                <CheckBox>
+                                    {/* <InputCheckBox type="checkbox" checked={throwType} onChange={(e) => {setThrowType(e.target.checked)}} /> */}
+                                    <Switch value={throwType} setter={setThrowType}></Switch>
+                                    <Label>Lanzamiento hacia arriba</Label>
+                                </CheckBox>
+                            </BoxFormItem>
+                        </BoxBox>
                         <FormItem>
                             <Seq>
                                 <SeqItem id='0' onClick={() => TactiveSeqItem(0)}/>

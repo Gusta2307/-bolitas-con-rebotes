@@ -46,6 +46,7 @@ export function calculate_h(h){
 
 export function calculate_speed_vx(change_hand, current_hand, x, vy){
     let xf = change_hand? pos_hands[(current_hand + 1) % 2][0] : x
+    console.log("VVVVVVVVVVVV", vy)
     let t = Math.abs((2*vy)/g_k)
     return (x - xf)/t
 };
@@ -86,7 +87,8 @@ export function calculate_total_time(vy0, h, bounce_amount, catch_ball){
                 time += Math.sqrt(2*g_k*current_h)/g_k
             }
             else{
-                time += Math.abs((vy1 + Math.sqrt(vy1*vy1 - 2*g_k*h))/(g_k))
+                console.log(vy1*vy1 - 2*g_k*h)
+                time += Math.abs((vy1 + Math.sqrt(Math.abs(vy1*vy1 - 2*g_k*h)))/(g_k))
                 break;
             }
         }

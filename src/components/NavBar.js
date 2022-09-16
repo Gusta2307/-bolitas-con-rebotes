@@ -12,6 +12,8 @@ export default function NavBar(){
   const Components = styled.div`
     background-color: #082A3A;
     border-bottom: 2px solid GRAY;
+    position: relative;
+    width: 100vw;
   `
     
     

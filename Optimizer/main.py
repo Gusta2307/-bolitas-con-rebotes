@@ -12,13 +12,13 @@ def welcome():
     return {"message": "Welcome to the Optimizer API"}
 
 @app.post("/sequence")
-def solution(times, balls:int, loop:bool):
+def solution(times, balls:int, loop:bool, throwType:bool):
     times = list(map(float, str(times).replace('[','').replace(']', '').replace(',', ' ').split()))
 
-    op = Optimizer(copy.deepcopy(times), balls, loop)
+    op = Optimizer(copy.deepcopy(times), balls, loop, int(throwType))
     prob_sol = op.solve()
     sol = op.get_solution()
-
+    print(sol)
     result = {
         'prob_sol': prob_sol,
         'times': times,
@@ -36,7 +36,7 @@ def solution(times, balls:int, loop:bool):
     )
 
 @app.post("/sound")
-def solution_with_sound(balls:int, loop:bool, file: UploadFile = File(...)):
+def solution_with_sound(balls:int, loop:bool, throwType:bool, file: UploadFile = File(...)):
     # write file to disk
     with open(file.filename, 'wb') as f:
         f.write(file.file.read())
@@ -46,7 +46,7 @@ def solution_with_sound(balls:int, loop:bool, file: UploadFile = File(...)):
     onset_frames = librosa.onset.onset_detect(y, sr=sr, wait=1, pre_avg=1, post_avg=1, pre_max=1, post_max=1)
     onset_times = list(librosa.frames_to_time(onset_frames))
 
-    op = Optimizer(copy.deepcopy(onset_times), balls, loop)
+    op = Optimizer(copy.deepcopy(onset_times), balls, loop, int(throwType))
     prob_sol = op.solve()
     sol = op.get_solution()
 

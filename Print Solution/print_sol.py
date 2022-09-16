@@ -1,9 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+font = {'size'   : 15}
+
+plt.rc('font', **font)
+
+
 def print_sol(sol, max, name):
     colors = ['-b', '-g', '-r', '-c', '-m', '-y', '-k', '-w']
-    fig = plt.figure(figsize=(8, 6))
+    x_axis = [0]
+    # plt.figure(figsize=(8, 6))
     for i in range(len(sol)):
         x = [0]
         y = [i+1]
@@ -13,22 +19,25 @@ def print_sol(sol, max, name):
             y.append(i+1)
             
             x.append(ti[0])
+            x_axis.append(ti[0])
             y.append(0)
 
             if len(ti) > 1:
                 plt.plot(x, y, colors[i])
 
                 x1 = np.linspace(ti[0], ti[1], (i+1)*30)
-                y1 = -7*(i+1)*(x1 - ti[0])*(x1 - ti[1])
+                y1 = -8*(i+1)*(x1 - ti[0])*(x1 - ti[1])
                 plt.plot(x1, y1, colors[i])
 
                 x = [ti[1]]
+                x_axis.append(ti[1])
                 y = [0]
             
             x.append(tf)
             y.append(i+1)
         x.append(max)
         y.append(i+1)
+
         plt.plot(x, y, colors[i], label='Pelota %d' % (i+1))
 
     plt.title(name)
@@ -36,7 +45,7 @@ def print_sol(sol, max, name):
     plt.ylabel("Pelotas")
     plt.xlim(0,max)
     plt.ylim(0, len(sol) + 1)
-    plt.xticks(range(max))
+    plt.xticks(x_axis, x_axis)
     plt.yticks(range(len(sol) + 1))
     plt.legend(loc='upper right')
     plt.show()
@@ -50,24 +59,24 @@ def print_sol(sol, max, name):
 
 
 # Rpij
-# sol = [[[0,0,0,0, 0.8, 1.2, [1]], [0,0,0,0, 1.8, 2.2, [2]]]]
-# max = 3
-# name = "Rpij"
+sol = [[[0,0,0,0, 0.8, 1.2, [1]], [0,0,0,0, 1.8, 2.2, [2]]]]
+max = 3
+name = "Rpij"
 
-# Rpijk
-# sol = [[[0,0,0,0, 0.8, 1.2, [1]], [0,0,0,0, 1.8, 3, [2, 2.8]]]]
-# max = 4
-# name = "Rpijk"
+# Gpijk
+sol = [[[0,0,0,0, 0.8, 1.2, [1]], [0,0,0,0, 1.8, 3, [2, 2.8]]]]
+max = 4
+name = "Gpijk"
 
 # Spijk
-# sol = [[[0,0,0,0, 0.8, 2, [1, 1.8]], [0,0,0,0, 2.8, 3.2, [3]]]]
-# max = 4
-# name = "Spijk"
+sol = [[[0,0,0,0, 0.8, 2, [1, 1.8]], [0,0,0,0, 2.8, 3.2, [3]]]]
+max = 4
+name = "Spijk"
 
-# Spijkm
+# Fpijkm
 # sol = [[[0,0,0,0, 0.8, 2, [1, 1.8]], [0,0,0,0, 2.8, 4, [3, 3.8]]]]
 # max = 5
-# name = "Spijkm"
+# name = "Fpijkm"
 
 # Qpij
 sol = [[[0,0,0,0, 0.8, 2, [1, 1.8]]]]

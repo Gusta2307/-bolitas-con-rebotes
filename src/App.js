@@ -5,7 +5,6 @@ import My_Audio from './Audio_';
 import NavBar from './components/NavBar';
 import Juggler from './components/Juggler'
 import Canvas_Menu from './components/Canvas_Menu';
-import {Outlet} from "react-router-dom"
 import {vw, vh} from './utils'
 
 export default class App extends Component{
@@ -254,7 +253,6 @@ export default class App extends Component{
           <Canvas_Menu name={this.name} sol_act={this.sol_act} times={this.times} balls={this.count_balls} solutions={this.solutions} video={this.state.video} onReset={this.reset_animation} loop={this.is_loop} throws={this.throws}/>
           <My_Audio/>
           <canvas ref="canvas" id='canvas'/>
-          <Outlet/>
         </div>
       </>
     );

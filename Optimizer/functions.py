@@ -7,28 +7,40 @@ def P_aux(ti, h, throw_ball, current_time):
     v0 = (math.sqrt(2*g*h*(1-math.pow(e, 2)))/e)  if throw_ball else (math.sqrt(2*g*h)/math.pow(e, 2))
     tk = ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    vy = (-v0 if v0 > 0 else v0)*e
-    tf = abs((vy + math.sqrt(vy*vy - 2*g*h))/(g))
+    vy = 0
+    if throw_ball:
+        current_h = h + ((v0*v0)/(2*g))
+        vy = math.sqrt(2*g*current_h)*e
+    else:
+        vy = (-v0 if v0 > 0 else v0)*e
     
-    return [-v0 if throw_type else v0, 1, 1, 0, tk, ti+tf]
+    print(vy*vy,  2*g*h)
+    tf = abs((vy + math.sqrt(abs(vy*vy - 2*g*h)))/(g))
+    
+    return [-v0 if throw_ball else v0, 1, 1, 0, tk, ti+tf]
 
 def Q_aux(ti, tj, h, throw_ball, current_time):
     v0 =math.sqrt(((g*g)*(tj - ti)**2)/(4*(e*e)) - 2*g *h) if throw_ball else ((g*(tj - ti))/(2*e))    
     tk =  ti - (((v0 + math.sqrt(2*g*(h + (v0**2/(2*g)))))/g) if throw_ball else ((v0 - math.sqrt(v0**2 - 2*g*h))/g))
 
-    vy = (-v0 if v0 > 0 else v0)*(e**2)
-    tf = abs((vy + math.sqrt(vy*vy - 2*g*h))/(g))
 
-    return [-v0 if throw_type else v0, 1, 2, 0, tk, tj+tf]
+    vy = 0
+    if throw_ball:
+        current_h = h + ((v0*v0)/(2*g))
+        vy = math.sqrt(2*g*current_h)*(e**2)
+    else:
+        vy = (-v0 if v0 > 0 else v0)*(e**2)
+    
+    print(vy*vy,  2*g*h)
+    tf = abs((vy + math.sqrt(abs(vy*vy - 2*g*h)))/(g))
+
+    return [-v0 if throw_ball else v0, 1, 2, 0, tk, tj+tf]
 
 # endregion
-
 
 # region Funciones
 
 # posiblidad de lanzar una pelota y rebote en el instante de tiempo ti
-
-
 def P(ti, h, throw_ball, v0=None, current_time=0):  # throw_ball = 1 (lanzamiento hacia arriba)
     if v0 is None:
         v0 = (math.sqrt(2*g*h*(1-e**2))/e) if throw_ball else (math.sqrt(2*g*h)/e**2)
@@ -120,7 +132,5 @@ def RR(ti, tj, tk, h, throw_ball):
         except:
             return False
     return False
-
-
 
 # endregion

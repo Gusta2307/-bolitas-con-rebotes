@@ -113,7 +113,6 @@ export default class Ball{
       this.list_of_throw[this.index_list].bounce_amount > 0 && this.total_time == null &&
         (this.total_time = calculate_total_time(this.vy, this.h, this.list_of_throw[this.index_list].bounce_amount, this.list_of_throw[this.index_list].catch_ball))
 
-
       this.total_time != null && this.vx == null && (this.vx = calculate_speed_vx_with_tt(this.total_time, this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x))
 
       this.vx == null && (this.vx = calculate_speed_vx(this.list_of_throw[this.index_list].change_hand, this.current_hand, this.x, this.vy))
