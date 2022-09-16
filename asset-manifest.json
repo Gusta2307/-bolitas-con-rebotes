@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/bolitas-con-rebotes/static/css/main.d3e7b3b5.css",
-    "main.js": "/bolitas-con-rebotes/static/js/main.f08f3699.js",
+    "main.js": "/bolitas-con-rebotes/static/js/main.57f30988.js",
     "static/media/Danzon.mp3": "/bolitas-con-rebotes/static/media/Danzon.3807741a9842c93b5b3c.mp3",
     "static/media/Clave2_3.mp3": "/bolitas-con-rebotes/static/media/Clave2_3.bf72f7a4ee1ae7998074.mp3",
     "static/media/Bossa.mp3": "/bolitas-con-rebotes/static/media/Bossa.0a3f24be7950c0b13f14.mp3",
@@ -11,10 +11,10 @@
     "static/media/clave_mejorada.wav": "/bolitas-con-rebotes/static/media/clave_mejorada.497335540c9b55e4177e.wav",
     "index.html": "/bolitas-con-rebotes/index.html",
     "main.d3e7b3b5.css.map": "/bolitas-con-rebotes/static/css/main.d3e7b3b5.css.map",
-    "main.f08f3699.js.map": "/bolitas-con-rebotes/static/js/main.f08f3699.js.map"
+    "main.57f30988.js.map": "/bolitas-con-rebotes/static/js/main.57f30988.js.map"
   },
   "entrypoints": [
     "static/css/main.d3e7b3b5.css",
-    "static/js/main.f08f3699.js"
+    "static/js/main.57f30988.js"
   ]
 }
