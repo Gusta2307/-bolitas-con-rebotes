@@ -50,8 +50,8 @@ export default function Canvas_Menu(props) {
     `
 
     const BoxSolution = styled.div`
-        width: 2rem;
-        height: 2rem;
+        width: 2vw;
+        height: 2vw;
 
         margin-right: 0.5rem;
         margin-bottom: 0.5rem;
@@ -61,7 +61,7 @@ export default function Canvas_Menu(props) {
         cursor: ${(props) => props.active? 'not-allowed' : 'pointer'};
 
         border: 2px solid rgba(255, 255, 255, 0.18);
-        border-radius: 10px;
+        border-radius: 5px;
         display: flex;
         justify-content: center;   
         align-items: center;
@@ -79,12 +79,12 @@ export default function Canvas_Menu(props) {
         margin-right: 1vw;
         padding: .5vw;
         border: 2px solid rgb(128, 128, 128);
-        border-radius: 15px;
+        border-radius: 1.5vw;
         cursor: pointer;
     `
 
     const Label = styled.label`
-        font-size: 20px;
+        font-size: 1.8vw;
         cursor: pointer;
         font-weight: bold;
         color: #FFF;
@@ -95,6 +95,10 @@ export default function Canvas_Menu(props) {
         font-weight: bold;
         color: #FFF;
         margin-bottom: 1vh;
+
+        @media (max-width: 768px) {
+            font-size: 1.5vw;
+        }
     `
 
     const LabelDownload = styled(Label)`

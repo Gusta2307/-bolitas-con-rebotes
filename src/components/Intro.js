@@ -20,7 +20,7 @@ export default function Intro(){
     `
 
     const Wrapper = styled.div`
-        padding: 20px 20px;
+        padding: 20px;
 
         width: fit-content;
         height: fit-content;
@@ -39,31 +39,47 @@ export default function Intro(){
         box-shadow: 0 8px 32px  0 rgba(0,0,0,0.37);
         border: 2px solid rgba(255, 255, 255, 0.18);
         border-radius: 20px;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+        }
     `
 
     const Title = styled.h1`
-        font-size: 50px;
+        font-size: 3rem;
         font-weight: bold;
         aling-items: center;
+
+        @media (max-width: 768px) {
+            font-size: 1.5rem;
+        }
     `
 
     const Subtitle = styled.h2`
-        font-size: 30px;
+        font-size: 2rem;
         font-weight: bold;
         margin-top: 10px;
         aling-items: center;
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+        }
     `
 
     const Description = styled.p`
-        font-size: 20px;
+        font-size: 1.2rem;
         margin-top: 10px;
         aling-items: center;
+
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+        }
     `
 
     const Button = styled.button`
         background-color: #1F6CAB;
         color: #FFFFFF;
-        font-size: 20px;
+        font-size: 1rem;
         font-weight: bold;
         padding: 10px;
         border: none;
@@ -77,6 +93,11 @@ export default function Intro(){
         &:hover {
             background-color: #00E6F6;
             color: #082a3a;
+        }
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+            padding: 5px;
         }
     `
 

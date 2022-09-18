@@ -71,14 +71,39 @@ export default function AudioLoader(){
 
 
         z-index: 1000;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+        }
     `
 
 
     const Title = styled.h1`
-        font-size: 50px;
+        font-size: 2.5rem;
         font-weight: bold;
         aling-items: center;
         color: #FFFFFF;
+        margin-bottom: 0;
+        &:after {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: gray;
+            width: 100%;
+            content: "";
+            display: block !important;
+            border-bottom: 2px solid #CCC;
+            // padding-top: .5rem;
+        }
+
+        @media (max-width: 768px) {
+            margin-top: 0;
+            font-size: 1.2rem;
+
+            &:after{
+                margin-top: 0.5rem;
+                margin-bottom: 0.8rem;
+            }
+        }
 
     `
 
@@ -105,16 +130,21 @@ export default function AudioLoader(){
     `
 
     const InputBall = styled.input`
-        width: 50px;
+        width: 3vw;
         border-radius: 10px;
         border: 2px solid rgba(255, 255, 255, 0.18);
         padding: 10px;
-        margin-top: 10px;
         color: #000000;
         background-color: #FFFFFF;
         font-size: 20px;
         font-weight: bold;
         margin-left: 1vh;
+
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+            padding: 5px;
+            border-radius: 5px;
+        }
     `
     const InputCheckBox = styled.input`
         height: 100%;
@@ -131,18 +161,30 @@ export default function AudioLoader(){
         left: 0;
         opacity: 0;
         cursor: pointer;
+
+        @media (max-width: 768px) {
+            width: 80%;
+            font-size: 0.8rem;
+            padding: 5px;
+            border-radius: 5px;
+        }
     `
 
     const CheckBox = styled.div`
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
     `
 
     const Label = styled.label`
         font-size: 20px;
         font-weight: bold;
         color: #FFFFFF;
+
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+        }
     `
 
     const LabelERROR = styled.label`
@@ -166,8 +208,12 @@ export default function AudioLoader(){
         text-transform:uppercase;
         font-size:15px;
         font-weight: bold;
-        // margin-left: 10px;
-        `
+
+        @media (max-width: 768px) {
+            padding: 5px 0;
+            font-size: 0.5rem;
+        }
+    `
         
     const AudioBox = styled.div`
         background: #75fd92;
@@ -177,6 +223,11 @@ export default function AudioLoader(){
         padding: 10px;
         border-radius: 10px;
         margin-right: 1vw;
+
+        @media (max-width: 768px) {
+            padding: 5px;
+            border-radius: 5px;
+        }
     `
 
     const Button = styled.button`
@@ -189,6 +240,11 @@ export default function AudioLoader(){
         border-radius: 10px;
         margin-top: 10px;
         cursor: pointer;
+
+        @media (max-width: 768px) {
+            font-size: 0.5rem;
+            border-radius: 5px;
+        }
     `
 
     const onClickHandler = () => {

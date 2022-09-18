@@ -11,6 +11,11 @@ export default function Switch(props) {
         width: 60px;
         height: 34px;
         margin: 1vw 1vw 1vw 0vw;
+
+        @media (max-width: 768px) {
+            width: 37px;
+            height: 22px;
+        }
     `
 
     const Input = styled.input`
@@ -31,6 +36,14 @@ export default function Switch(props) {
         :checked + span { 
             // lawngreen
             background-color: lightgreen;
+        }
+
+        @media (max-width: 768px) {
+            :checked + span:before {
+                -webkit-transform: translateX(14px);
+                -ms-transform: translateX(14px);
+                transform: translateX(14px);
+            }
         }
     `
 
@@ -58,6 +71,14 @@ export default function Switch(props) {
             transition: .4s;
             border-radius: 50%;
         }
+
+        @media (max-width: 768px) {
+            :before {
+                height: 15px;
+                width: 15px;
+            }
+        }
+
     `
 
     return (

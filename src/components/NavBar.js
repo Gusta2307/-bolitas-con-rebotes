@@ -23,10 +23,19 @@ export default function NavBar(){
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    \\media queries
+
+    @media (max-width: 768px) {
+      padding: 0px 5px;
+    }
   `
 
 
   const Logo = styled.h1`
+    font-size: 1.5rem;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
     font-weight: bold;
     color: #FFFFFF;
   `
@@ -44,13 +53,23 @@ export default function NavBar(){
   const Menu = styled.ul`
     display: flex;
     list-style: none;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+    }
   `
 
   const MenuItems = styled.li`
     margin-right: 30px;
-    font-size: 20px;
+    font-size: 1rem;
     color: #8099E9;
     cursor: Pointer;
+
+    @media (max-width: 768px) {
+      margin-right: 0;
+      margin-bottom: 1vh;
+    }
   `
 
   return (

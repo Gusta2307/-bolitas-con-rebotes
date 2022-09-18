@@ -68,8 +68,8 @@ export default function Particles(props) {
 
     const _Particles = styled.div`
         background: ${colors[Math.floor(Math.random() * colors.length)]};
-        left: ${Math.floor(Math.random() * 100)}vw;
-        top: ${Math.floor(Math.random() * 100)}vh;
+        left: ${Math.floor(Math.random() * 80)}vw;
+        top: ${Math.floor(Math.random() * 80)}vh;
         transform: scale(${Math.random()});
         width: ${props => props.size}em;
         height: ${props => props.size}em;

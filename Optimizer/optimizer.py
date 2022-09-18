@@ -44,7 +44,7 @@ class Optimizer:
     def default_preconditions(self) -> None:
         for b in range(self.balls):
             for i in range(len(self.times)):
-                self.prob += pl.LpConstraint(self.X[b*len(self.times) + i] - P(self.times[i], h, self.throw_type), sense=pl.LpConstraintLE)
+                # self.prob += pl.LpConstraint(self.X[b*len(self.times) + i] - P(self.times[i], h, self.throw_type), sense=pl.LpConstraintLE)
                 for j in range(i + 1, len(self.times)):
                     self.prob += pl.LpConstraint(self.X[b*len(self.times) + i] + self.X[b*len(self.times) + j] - 1 - R(self.times[i], self.times[j], h, self.throw_type), sense=pl.LpConstraintLE, name=f"X{b}{i} X{b}{j} <= 1 R{b}{i}{j}")
 

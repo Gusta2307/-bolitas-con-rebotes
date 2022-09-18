@@ -68,14 +68,39 @@ export default function Sequence(){
 
 
         z-index: 1000;
+
+        @media (max-width: 768px) {
+            padding: 10px 10px;
+        }
     `
 
 
     const Title = styled.h1`
-        font-size: 50px;
+        font-size: 2.5rem;
         font-weight: bold;
         aling-items: center;
         color: #FFFFFF;
+        margin-bottom: 0;
+        &:after {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: gray;
+            width: 100%;
+            content: "";
+            display: block !important;
+            border-bottom: 2px solid #CCC;
+            // padding-top: .5rem;
+        }
+
+        @media (max-width: 768px) {
+            margin-top: 0;
+            font-size: 1.5rem;
+
+            &:after{
+                margin-top: 0.5rem;
+                margin-bottom: 0.8rem;
+            }
+        }
     `
 
     const Form = styled.div`
@@ -96,6 +121,14 @@ export default function Sequence(){
 
     const BoxBox = styled.div`
         display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        //media queries
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
     `
 
     const BoxFormItem = styled.div`
@@ -105,17 +138,23 @@ export default function Sequence(){
     `
 
     const Input = styled.input`
-        width: ${props => props.width? props.width: " 4vw"};
-        height: 2vh;
+        width: ${props => props.width? props.width: " 3vw"};
+        height: 1vh;
         border-radius: 10px;
         border: 2px solid rgba(255, 255, 255, 0.18);
         padding: 10px;
-        margin-top: 10px;
+        // margin-top: 10px;
         color: #000000;
         background-color: #FFFFFF;
-        font-size: 20px;
+        font-size: 1rem;
         font-weight: bold;
         margin-left: 1vw;
+
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+            padding: 5px;
+            border-radius: 5px;
+        }
     `
     const InputCheckBox = styled.input`
         height: 100%;
@@ -132,9 +171,13 @@ export default function Sequence(){
     const Label = styled.label`
         // width: 100%;
         // height: 100%;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: bold;
         color: #FFFFFF;
+
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+        }
     `
 
     const LabelERROR = styled.label`
@@ -148,8 +191,8 @@ export default function Sequence(){
     `
 
     const Seq = styled.div`
-        height: 100%;
-        width: 100%;
+        // height: 100%;
+        // width: 100%;
         background-color: #FFFFFF;
         display: flex;
         flex-direction: row;
@@ -157,12 +200,14 @@ export default function Sequence(){
         justify-content: center;
         margin-top: 10px;
         margin-right: 10px;
+
+        border-radius: 3px;
     `
 
     const SeqItem = styled.div`
         background-color: ${(props) => seqItemsList[props.id]? '#0AFCA0' : '#0F6CA0'};
-        height: 2em;
-        width: 2em;
+        height: 2vw;
+        width: 2vw;
         display: flex;
         flex-direction: row;
         margin: 2px;
@@ -179,13 +224,17 @@ export default function Sequence(){
     const Button = styled.button`
         background-color: #1F6CAB;
         color: #FFFFFF;
-        font-size: 20px;
+        font-size: 1rem;
         font-weight: bold;
         padding: 10px;
         border: none;
         border-radius: 10px;
         margin-top: 10px;
         cursor: pointer;
+
+        @media (max-width: 768px) {
+            font-size: 0.5rem;
+        }
     `
 
     const TactiveSeqItem = (index) => {
@@ -292,7 +341,7 @@ export default function Sequence(){
                     <Form>
                         <FormItem>
                             <Label>Nombre de la secuencia:</Label>
-                            <Input style={{width: '18vw'}} type="text" placeholder="Nombre de la secuencia" value={name} onChange={(e) => {setName(e.target.value)}}/>
+                            <Input style={{width: '15vw'}} type="text" placeholder="Nombre de la secuencia" value={name} onChange={(e) => {setName(e.target.value)}}/>
                         </FormItem>
                         <BoxBox>
                             <BoxFormItem>
@@ -310,7 +359,7 @@ export default function Sequence(){
                                 <CheckBox>
                                     {/* <InputCheckBox type="checkbox" checked={checkBoxValue} onChange={(e) => {setCheckBoxValue(e.target.checked)}} /> */}
                                     <Switch value={checkBoxValue} setter={setCheckBoxValue}></Switch>
-                                    <Label>Secuencia ciclica</Label>
+                                    <Label>Secuencia cíclica</Label>
                                 </CheckBox>
                                 <CheckBox>
                                     {/* <InputCheckBox type="checkbox" checked={throwType} onChange={(e) => {setThrowType(e.target.checked)}} /> */}

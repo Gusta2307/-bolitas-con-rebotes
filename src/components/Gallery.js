@@ -52,6 +52,11 @@ export default function Gallery(props) {
         border-radius: 20px;
 
         // margin-right: 1vw;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+            border-radius: 10px;
+        }
     `
 
     const BoxSeq = styled.div`
@@ -76,6 +81,11 @@ export default function Gallery(props) {
 
         margin-right: 1vw;
         margin-bottom: 1vw;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+            border-radius: 10px;
+        }
     `
 
     const BoxItems = styled.div`
@@ -100,9 +110,6 @@ export default function Gallery(props) {
     const TitleBox = styled.div`
         display: absolute;
         justify-content: center;
-        justify-self: center;
-        align-content: center;
-        align-self: center;
         
         &:after {
             width: 100%;
@@ -120,6 +127,11 @@ export default function Gallery(props) {
         aling-items: center;
         color: #FFFFFF;
         margin: 2vh;
+
+        @media (max-width: 768px) {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
     `
 
     const SubTitle = styled.h2`
@@ -141,6 +153,11 @@ export default function Gallery(props) {
             // margin-bottom: 1vh;
             padding-top: .5rem;
         }
+
+        @media (max-width: 768px) {
+            margin-top: 0;
+            font-size: 1rem;
+        }
     `
 
     const Text = styled.h3`
@@ -149,6 +166,10 @@ export default function Gallery(props) {
         aling-items: center;
         color: #FFFFFF;
         margin-bottom: 0px;
+
+        @media (max-width: 768px) {
+            font-size: 0.7rem;
+        }
     `
 
     const DemoButton = styled.button`
@@ -160,6 +181,12 @@ export default function Gallery(props) {
         border: none;
         border-radius: 10px;
         margin-top: 2vh;
+
+        @media (max-width: 768px) {
+            font-size: 0.7rem;
+            padding: 5px;
+            border-radius: 5px;
+        }
     `
 
     function PlayButton(props) {
@@ -178,6 +205,12 @@ export default function Gallery(props) {
                 color: #000;
                 background-color: #CCC;
                 cursor: not-allowed;
+            }
+
+            @media (max-width: 768px) {
+                font-size: 0.7rem;
+                padding: 5px;
+                border-radius: 5px;
             }
         `
 
